@@ -1,6 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def generate_sphere_surface_points_random(N, max_theta, max_phi, options = {"theta": False, "phi": False}):
+    min_z = np.cos(max_theta) 
+    z = min_z + (1 - min_z)*np.random.rand(N)
+    phi = np.random.uniform(0, max_phi, N)
+    theta = np.arccos(z)
+    return np.c_[theta, phi]
+#fin generate_shpere_random
+
 def generate_sphere_surface_points(N, max_theta, max_phi, options = {"theta": False, "phi": False}):
     Omega = (max_phi * (1 - np.cos(max_theta))) / N
     d_med = Omega**(1/2)
@@ -22,7 +30,8 @@ def generate_sphere_surface_points(N, max_theta, max_phi, options = {"theta": Fa
 #fin función
 
 if __name__ == "__main__":
-    combi = generate_sphere_surface_points(4, 0.5*np.pi, np.pi, options = {"theta": True, "phi": True})
+    #combi = generate_sphere_surface_points(4, 0.5*np.pi, np.pi, options = {"theta": True, "phi": True})
+    combi = generate_sphere_surface_points_random(5000, 0.5*np.pi, np.pi, options = {"theta": True, "phi": True})
     print(combi)
     print("Número de puntos")
     print(len(combi))

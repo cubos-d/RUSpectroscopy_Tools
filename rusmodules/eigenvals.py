@@ -1,4 +1,4 @@
-from . import rus
+from . import rus, geometry
 import numpy as np
 import scipy
 
