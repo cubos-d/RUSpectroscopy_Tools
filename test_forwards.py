@@ -12,10 +12,10 @@ beta = 2.600392
 const_rel = {"x_K": A*K, "x_mu": A*mu}
 relative_0_eig = eigenvals.get_eigenvalues_from_crystal_structure(Ng, const_rel, eta, beta, shape)["eig"]
 relative_eig = np.zeros(5)
-print(relative_0_eig[:5])
+#print(relative_0_eig[:5])
 for i in range(5):
     relative_eig[i] = 1/relative_0_eig[i+1] if i == 0 else relative_0_eig[i]/relative_0_eig[i+1]
-    #relative_eig[i] = np.log(relative_eig[i])
+    relative_eig[i] = np.log(relative_eig[i])
 #fin for 
 print(relative_eig)
 
@@ -26,12 +26,9 @@ Gamma = rus.gamma_matrix(Ng, C_iso, geometry, 0)
 E = rus.E_matrix(Ng, 0)
 vals = scipy.linalg.eigvalsh(Gamma, b = E)
 vals_fin = vals[6:]
-vals_rel0_fin = vals_fin[:]
-vals_rel0_fin[1:] = vals_rel0_fin[1:]/vals_fin[0]
-print(vals_rel0_fin[:5])
 rel_eig = np.zeros(5)
 for i in range(5):
-    rel_eig[i] = 1/vals_fin[i+1] if i == 0 else vals_fin[i]/vals_fin[i+1]
-    #rel_eig[i] = np.log(rel_eig[i])
+    rel_eig[i] = vals_fin[i]/vals_fin[i+1]
+    rel_eig[i] = np.log(rel_eig[i])
 #fin for
 print(rel_eig)
