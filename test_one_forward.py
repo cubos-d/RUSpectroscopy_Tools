@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import time
 
 np.set_printoptions(suppress = True)
-shape = 1 # 0: parallelepiped, 1: cilinder, 2: ellipsoid 
+shape = 0 # 0: parallelepiped, 1: cilinder, 2: ellipsoid 
 alphas = (1.0, np.pi/4, np.pi/6)
 alpha = alphas[shape]
 """
@@ -25,8 +25,8 @@ nombre_archivo = 'constantesSmB6.csv' #Mbar
 """
 A = 1
 #Datos del URu2Si2
-Ng = 14
-m = (A**3) * 0.20688 #g 9.84029 #9.839 #g/cm^3 
+Ng = 6
+m = 0.20688 #g 9.84029 #9.839 #g/cm^3 
 m_p = (A**3) * m
 nombre_archivo = 'constant_data/constantesURu2Si2.csv' #Mbar
 
@@ -34,7 +34,8 @@ nombre_archivo = 'constant_data/constantesURu2Si2.csv' #Mbar
 C_const = np.genfromtxt(nombre_archivo, delimiter=',', skip_header=0, dtype=float)
 #geometry = np.array([0.30529,0.20353,0.25334]) #cm  FeGa
 #geometry = np.array([0.10872, 0.13981, 0.01757]) #cm SmB6
-geometry = A * np.array([0.29605, 0.31034, 0.29138]) #cm URu2Si2
+#geometry = np.array([0.29605, 0.29138, 0.31034])
+geometry = np.array([0.29605, 0.31034, 0.29138]) #cm URu2Si2
 geometry_p = A * geometry
 #vol = alpha*np.prod(geometry)
 r = (sum(geometry**2))**0.5
