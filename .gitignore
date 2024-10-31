@@ -15,6 +15,7 @@
 *.swp
 *.doc
 *.pyc
+*.keras
 build/*
 ruspectroscopy_tools.egg-info/*
 dist/*
