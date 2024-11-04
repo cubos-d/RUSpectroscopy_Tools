@@ -49,11 +49,12 @@ def get_eigenvalues(Ng, C, eta, beta, shape):
 def get_elastic_constants(independent_constants):
     """
     Get the elastic constants given the crystaline structure and relevant 
-    parameters.
+    parameters. The crystal structure will be detected automatically 
+    based on the lenght of the independent_constants argument. 
 
     Arguments:
     independent_constants -- <dict> Names of independent constants in the 
-    keys and the constants itself in the values. 
+        keys and the constants itself in the values. 
 
     Returns:
     C -- <np.array> The 6x6 matrix of the elastic constants. 

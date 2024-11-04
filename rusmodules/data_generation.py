@@ -1,10 +1,21 @@
 import numpy as np
 import pandas as pd
+import itertools
 from . import geometry
 
 def gen_random_C(dict_C, key):
     """
-    DOCUMENTAR
+    Generate N random values of a given constant with an uniform distribution
+
+    Arguments: 
+    dict_C -- <dict>: A dictionary containing the rank of the constants and
+        how many of them will be included in the parameters generated.
+    key -- <string>: Name of the constant 
+
+    Returns:
+    params -- <np.array>: N(Finura) constants dsitributed uniformly between the min and the 
+        max given.
+
     """
     min_value = dict_C[key]["min"] * (1/dict_C[key]["Finura"])
     max_value = dict_C[key]["max"]
@@ -12,9 +23,29 @@ def gen_random_C(dict_C, key):
     return multi*np.random.rand(dict_C[key]["Finura"]) + min_value
 #fin get_random_C
 
-def gen_random_parameters(Ng, C_rank, Np, shape):
+def gen_random_parameters(C_rank, Np, shape):
     """
-    DOCUMENTAR
+    Generate random parameters (without executing forward problem yet). Each parameter
+    generated will have a random uniform distribution for the constants and each geome
+    tric parameter will be distributed in an uniform way over the surface of the sphere. 
+    It works despie the crystal structure
+    
+    Arguments:
+    C_rank -- <dict>: A dictionary containing the rank of the constants and how many of 
+        them will be included in the parameters generated. 
+        It mus be written the following way:{"constant_name1": {"min": <float>, "max": 
+        <float>, "Finura": <int>}, "constant_name2": {"min": ...}, "constant_name3": 
+        {"min": ...}, ...}
+    Np_dim -- <int>: Aproximate number of geometries to add to the combinations. 
+    shape -- <string>: Shape of the sample. Currently supports: Parallelepiped, 
+        Cylinder and Ellipsoid
+
+    Returns: 
+    total_combinations -- <tuple>: Returns a tuple of dictionaries, where each dictionary
+        contains the information of a single combination of constants and parameters. Each 
+        dictionary is ready to be filled with the eigenvalues once the forward problem is 
+        run with this tuple of dicts. 
+
     """
     max_eta = {"Parallelepiped": 0.5*np.pi, "Cylinder": np.pi, "Ellipsoid": 0.5*np.pi}
     max_beta = {"Parallelepiped": np.pi, "Cylinder": np.pi, "Ellipsoid": np.pi}
@@ -30,9 +61,26 @@ def gen_random_parameters(Ng, C_rank, Np, shape):
     return total_vals 
 
 
-def gen_combinatorial_parameters(Ng, C_rank, Np_dim, shape):
+def gen_combinatorial_parameters(C_rank, Np_dim, shape):
     """
-    TODO: DOCUMENTAR
+    Generate combinatorial parameters (without executing forward problem yet) of every 
+    possible combination of Constants with every combination of geometries (distributed
+    over a sphere). It works despie the crystal structure
+    
+    Arguments:
+    C_rank -- <dict>: A dictionary containing the rank of the constants and how many of 
+        will be included in the combinations. It mus be written the following way: 
+        {"constant_name1": {"min": <float>, "max": <float>, "Finura": <int>}, 
+        "constant_name2": {"min": ...}, "constant_name3": {"min": ...}, ...}
+    Np_dim -- <int>: Aproximate number of geometries to add to the combinations. 
+    shape -- <string>: Shape of the sample. Currently supports: Parallelepiped, Cylinder
+        and Ellipsoid
+
+    Returns: 
+    total_combinations -- <tuple>: Returns a tuple of dictionaries, where each dictionary
+        contains the information of a single combination of constants and parameters. Each 
+        dictionary is ready to be filled with the eigenvalues once the forward problem is 
+        run with this tuple of dicts. 
     """
     max_eta = {"Parallelepiped": 0.5*np.pi, "Cylinder": np.pi, "Ellipsoid": 0.5*np.pi}
     max_beta = {"Parallelepiped": np.pi, "Cylinder": np.pi, "Ellipsoid": np.pi}
