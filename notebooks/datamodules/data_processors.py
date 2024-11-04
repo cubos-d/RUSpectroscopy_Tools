@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import sklearn
+from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error, make_scorer
 
 def preprocess_data(d_frame, N_eig, target, opt = True):
     """
@@ -61,10 +63,37 @@ def get_metrics(X, y, model):
     return {"R2": R2, "RMSE": RMSE/(np.pi/2), "MAE": MAE/(np.pi/2)}
 #fin función
 
-def transform_full_sized_data_isotropic(KG_data):
+def transform_full_sized_data_isotropic(KG_data, N_eig):
+    """
+    This function Transform a full sized data (with units) to a standard form
+    (adimensionalized). Only owrks for isotropic data 
+    """
     new_data = KG_data.copy()
     del new_data["rho"]
     for q in range(N_eig+1):#nondeg_minlen):
         new_data['eig_' + str(q)] = new_data['eigvals'].apply(lambda arr: arr[6 + q])
     #fin for 
-    datos_kg_random = datos_kg_random.drop(columns=['eigvals'])
+    new_data = new_data.drop(columns=['eigvals'])
+
+    new_data["phi_K"] = np.arctan(new_data["G"]/new_data["K"])
+    indexes = new_data.index
+    new_data["eta"] = np.ones(len(new_data))
+    new_data["beta"] = np.ones(len(new_data))
+    new_data["R"] = np.ones(len(new_data))
+    new_data["V"] = np.ones(len(new_data))
+    for i in indexes:
+        lis_or = np.sort([new_data["dx"][i], new_data["dy"][i], new_data["dz"][i]])
+        r = (lis_or[0]**2 + lis_or[1]**2 + lis_or[2]**2)**0.5
+        new_data.loc[i, "R"] = r
+        new_data.loc[i, "eta"] = 2*np.arccos(lis_or[2]/r)
+        new_data.loc[i, "beta"] = 4*np.arctan(lis_or[0]/lis_or[1])
+        new_data.loc[i, "V"] = lis_or[0]*lis_or[1]*lis_or[2]
+    #fin for
+    for i in range(N_eig + 1):
+        key_i = "eig_" + str(i) 
+        new_data.loc[:, key_i] = (new_data["V"]*new_data[key_i])/new_data["R"]
+    #fin for 
+    del new_data["V"]
+    del new_data["R"]
+    return new_data.copy()
+#fin función
