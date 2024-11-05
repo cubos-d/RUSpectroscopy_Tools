@@ -3,9 +3,10 @@ import pandas as pd
 import scipy
 import os
 import itertools
+import sys
 from rusmodules import eigenvals, data_generation
 
-def generate_data_isotropic(path, Ng, data_gen,shape, mode = "Magnitude", N_vals = 100):
+def generate_data_isotropic(path, Ng, data_gen,shape, mode = "Magnitude", N_vals = 20):
     if data_gen["type"] == "combi":
         pars = data_generation.gen_combinatorial_parameters({"phi_K": {"min": 0, "max": np.pi/2, "Finura": data_gen["N_const"]}}, data_gen["N_geo"], shape)
     else:
@@ -21,6 +22,10 @@ def generate_data_isotropic(path, Ng, data_gen,shape, mode = "Magnitude", N_vals
         keys_eigen = tuple(map(lambda x: "eig_" + str(x), range(N_vals)))
         for i in range(N_vals):
             param[keys_eigen[i]] = vals[i]
+        #fin for
+        possible_shapes = ("Parallelepiped", "Cylinder", "Ellipsoid")
+        for shape_i in possible_shapes:
+            param[shape_i] = 1 if shape == shape_i else 0
         #fin for 
         with open(path, "a+t") as f:
             if a == 0:
@@ -35,10 +40,13 @@ def generate_data_isotropic(path, Ng, data_gen,shape, mode = "Magnitude", N_vals
 if __name__ == "__main__":
     """
     """
-    data_gen = {"type": "combi",
+    if len(sys.argv) < 3:
+        raise IndexError("Coloque 2 argumentos: 1: Tipo de generación de datos, 2: Forma de la muestra")
+    #fin if 
+    data_gen = {"type": sys.argv[1],
                 "N_const": 10,
                 "N_geo": 6,
                 "N_data": 20,
                 }
     ruta_archivo = "input_data/" + data_gen["type"] +"_" + str(os.getpid()) + ".csv"
-    generate_data_isotropic(ruta_archivo, 6, data_gen, "Parallelepiped")  
+    generate_data_isotropic(ruta_archivo, 6, data_gen, sys.argv[2])  
