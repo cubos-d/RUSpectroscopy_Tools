@@ -60,7 +60,7 @@ def get_metrics(X, y, model):
     R2 = r2_score(y, y_gorro)
     RMSE = root_mean_squared_error(y, y_gorro)
     MAE = mean_absolute_error(y, y_gorro)
-    return {"R2": R2, "RMSE": RMSE/(np.pi/2), "MAE": MAE/(np.pi/2)}
+    return {"R2": R2, "RMSE": RMSE, "MAE": MAE}
 #fin función
 
 def transform_full_sized_data_isotropic(KG_data, N_eig):
@@ -97,3 +97,29 @@ def transform_full_sized_data_isotropic(KG_data, N_eig):
     del new_data["R"]
     return new_data.copy()
 #fin función
+
+def transform_experimental_data_isotropic(KG_data, N_eig, keys_eig):  
+    new_data = KG_data.copy()
+    new_data["phi_K"] = np.arctan(new_data["G"]/new_data["K"])
+    indexes = new_data.index
+    new_data["eta"] = np.ones(len(new_data))
+    new_data["beta"] = np.ones(len(new_data))
+    new_data["R"] = np.ones(len(new_data))
+    new_data["V"] = np.ones(len(new_data))
+    for i in indexes:
+        lis_or = np.sort([new_data["dx"][i], new_data["dy"][i], new_data["dz"][i]])
+        r = (lis_or[0]**2 + lis_or[1]**2 + lis_or[2]**2)**0.5
+        new_data.loc[i, "R"] = r
+        new_data.loc[i, "eta"] = 2*np.arccos(lis_or[2]/r)
+        new_data.loc[i, "beta"] = 4*np.arctan(lis_or[0]/lis_or[1])
+        new_data.loc[i, "V"] = lis_or[0]*lis_or[1]*lis_or[2]
+    #fin for
+    for i in range(N_eig + 1):
+        key_obj_i = "eig_" + str(i)
+        key_scr_i = keys_eig + str(i)
+        new_data[key_obj_i] = (new_data["rho"]*new_data["V"]*new_data[key_scr_i])/new_data["R"]
+        del new_data[key_scr_i]
+    #fin for 
+    del new_data["V"]
+    del new_data["R"]
+    return new_data.copy()
