@@ -47,7 +47,7 @@ def gen_random_parameters(C_rank, Np, shape):
         run with this tuple of dicts. 
 
     """
-    max_eta = {"Parallelepiped": 0.5*np.pi, "Cylinder": np.pi, "Ellipsoid": 0.5*np.pi}
+    max_eta = {"Parallelepiped": 0.61*np.pi, "Cylinder": np.pi, "Ellipsoid": 0.61*np.pi}
     max_beta = {"Parallelepiped": np.pi, "Cylinder": np.pi, "Ellipsoid": np.pi}
     geometry_options = {"Parallelepiped": {"theta": True, "phi": True}, 
                         "Cylinder": {"theta": False, "phi": True},
@@ -82,7 +82,7 @@ def gen_combinatorial_parameters(C_rank, Np_dim, shape):
         dictionary is ready to be filled with the eigenvalues once the forward problem is 
         run with this tuple of dicts. 
     """
-    max_eta = {"Parallelepiped": 0.5*np.pi, "Cylinder": np.pi, "Ellipsoid": 0.5*np.pi}
+    max_eta = {"Parallelepiped": 0.61*np.pi, "Cylinder": np.pi, "Ellipsoid": 0.61*np.pi}
     max_beta = {"Parallelepiped": np.pi, "Cylinder": np.pi, "Ellipsoid": np.pi}
     geometry_options = {"Parallelepiped": {"theta": True, "phi": True}, 
                         "Cylinder": {"theta": False, "phi": True},
