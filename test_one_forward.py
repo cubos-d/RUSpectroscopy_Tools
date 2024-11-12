@@ -25,8 +25,8 @@ nombre_archivo = 'constantesSmB6.csv' #Mbar
 """
 A = 1
 #Datos del URu2Si2
-Ng = 6
-m = 0.20688 #g 9.84029 #9.839 #g/cm^3 
+Ng = 14
+m = 0.2634 #g 9.84029 #9.839 #g/cm^3 
 m_p = (A**3) * m
 nombre_archivo = 'constant_data/constantesURu2Si2.csv' #Mbar
 
