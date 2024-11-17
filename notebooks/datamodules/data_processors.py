@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import sklearn
-from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error, make_scorer
+from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error, make_scorer, mean_absolute_percentage_error
 
 def preprocess_data(d_frame, N_eig, target, opt = True):
     """
@@ -51,7 +51,24 @@ def preprocess_data(d_frame, N_eig, target, opt = True):
     return dat_copy[features_tot]
 #fin procesar_datos
 
-def get_metrics(X, y, model):
+def get_SDAE(y, y_gorro):
+    mat_comp = np.c_[y, y_gorro]
+    MAE = abs(mat_comp[:,0] - mat_comp[:,1])
+    return np.std(MAE)
+#fin función
+
+def get_mape(y, y_gorro):
+    cosines = np.c_[np.cos(y), np.cos(y_gorro)]
+    sines = np.c_[np.sin(y), np.sin(y_gorro)]
+    MAE_cos = abs(cosines[:,0] - cosines[:,1])/cosines[:,0]
+    MAE_sin = abs(sines[:,0] - sines[:,1])/sines[:,0]
+    resp = dict()
+    resp["mean"] = np.average(0.5*MAE_cos + 0.5*MAE_sin)
+    resp["sdev"] = np.std(0.5*MAE_cos + 0.5*MAE_sin)
+    return resp
+#fin get shape
+
+def get_metrics(X, y, model, mapes = False):
     """
     This is a function just to return some metrics given the real values
     "y", the features X and any model that has the "fit" method. 
@@ -60,7 +77,14 @@ def get_metrics(X, y, model):
     R2 = r2_score(y, y_gorro)
     RMSE = root_mean_squared_error(y, y_gorro)
     MAE = mean_absolute_error(y, y_gorro)
-    return {"R2": R2, "RMSE": RMSE, "MAE": MAE}
+    SDAE = get_SDAE(y, y_gorro)
+    resp = {"R2": R2, "RMSE": RMSE, "MAE": MAE, "SDAE": SDAE}
+    if mapes:
+        mapes_data = get_mape(y, y_gorro)
+        resp["MAPE"] = mapes_data["mean"]
+        resp["SDPE"] = mapes_data["sdev"]
+    #fin if 
+    return resp
 #fin función
 
 def transform_full_sized_data_isotropic(KG_data, N_eig):
