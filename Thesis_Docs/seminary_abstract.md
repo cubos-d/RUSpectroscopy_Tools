@@ -1,0 +1,10 @@
+<h1> Resolución del problema inverso de RUS (Espectroscopía de Resonancia Ultrasónica) en el caso isotrópico </h1>
+
+## Alejandro Cubillos
+### Estudiante de maestría, Universidad de los Andes
+
+En el presente seminario veremos como se obtienen las frecuencias de resonancia de un sólido dadas sus constantes elásticas, lo cual se denomina problema directo o "forward problem". Estas frecuencias de resonancia se obtienen mediante una técnica experimental llamada Espectroscopía de Resonancia Ultrasónica o RUS por sus siglas en inglés [1]. En la presente charla se describirá brevemente este método [2]. Al conocer cierta cantidad de frecuencias de resonancia es posible también conocer las constantes elásticas mediante el problema inverso, el cual es un problema mucho mas complejo de resolver que el problema directo. Para resolver este problema inverso se ha propuesto, en el grupo de Julian Rincón, usar modelos de Aprendizaje Automático que obtengan las constantes elásticas de un sólido a partir de las frecuencias de resonancia. También se ha propuesto distintas transformaciones a las variables de entrada (features) como a las variables de salida (targets) que permitan al modelo resolver el problema mas fácilmente. En el presente seminario se propondrá una serie de transformaciones y un modelo que podría resolver el problema inverso en el caso isotrópico. Encontrar las constantes elásticas de un sólido tiene aplicaciones importantes para encontrar cambios de fase de sólidos a distintas temperaturas [3].
+
+[1] R. G. Leisure and F. A. Willis. Resonant ultrasound spectroscopy. Journal of Physics: Condensed Matter, 9(28):6001, jul 1997
+[2] A. Migliori, J. Sarrao, W. M. Visscher, T. Bell, M. Lei,Z. Fisk, and R. Leisure. Resonant ultrasound spectroscopic techniques for measurement of the elastic moduli of solids. Physica B: Condensed Matter, 183(1):1–24,1993
+[3] F. Mouhat, F. X. Coudert. Necessary and Sufficient Stability Conditions in Variuous Crystal Systems. Phys. Rev. B, 90,224104, 2014  
