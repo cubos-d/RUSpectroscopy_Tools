@@ -69,7 +69,11 @@ def get_elastic_constants(independent_constants):
         C_sec = C_sec * independent_constants["mu"]
         C_shear_prim = C_shear_prim * (independent_constants["K"] - (2/3)*independent_constants["mu"])
         C = C_prim + C_sec + C_shear_prim
-    #fin if 
+    elif len(independent_constants) == 3:
+        C_prim = C_prim * (independent_constants["K"] + 2*independent_constants["a"])
+        C_sec = C_sec * independent_constants["mu"]
+        C_shear_prim = C_shear_prim * (independent_constants["K"] - independent_constants["a"])
+        C = C_prim + C_sec + C_shear_prim
     return C
 #fin funcióN
 

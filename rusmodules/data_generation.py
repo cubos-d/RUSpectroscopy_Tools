@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import itertools
 from . import geometry
+#import geometry
 
 def gen_random_C(dict_C, key):
     """
@@ -14,11 +15,12 @@ def gen_random_C(dict_C, key):
 
     Returns:
     params -- <np.array>: N(Finura) constants dsitributed uniformly between the min and the 
-        max given.
+        max given (in an open interval).
 
     """
-    min_value = dict_C[key]["min"] * (1/dict_C[key]["Finura"])
-    max_value = dict_C[key]["max"]
+    step = (dict_C[key]["max"] - dict_C[key]["min"])/dict_C[key]["Finura"]
+    min_value = dict_C[key]["min"] + step
+    max_value = dict_C[key]["max"] - step
     multi = (max_value - min_value)
     return multi*np.random.rand(dict_C[key]["Finura"]) + min_value
 #fin get_random_C
@@ -33,7 +35,7 @@ def gen_random_parameters(C_rank, Np, shape):
     Arguments:
     C_rank -- <dict>: A dictionary containing the rank of the constants and how many of 
         them will be included in the parameters generated. 
-        It mus be written the following way:{"constant_name1": {"min": <float>, "max": 
+        It must be written the following way:{"constant_name1": {"min": <float>, "max": 
         <float>, "Finura": <int>}, "constant_name2": {"min": ...}, "constant_name3": 
         {"min": ...}, ...}
     Np_dim -- <int>: Aproximate number of geometries to add to the combinations. 
@@ -65,7 +67,7 @@ def gen_combinatorial_parameters(C_rank, Np_dim, shape):
     """
     Generate combinatorial parameters (without executing forward problem yet) of every 
     possible combination of Constants with every combination of geometries (distributed
-    over a sphere). It works despie the crystal structure
+    over a sphere). It works despite the crystal structure
     
     Arguments:
     C_rank -- <dict>: A dictionary containing the rank of the constants and how many of 
@@ -100,4 +102,9 @@ def gen_combinatorial_parameters(C_rank, Np_dim, shape):
     return total_combinations
 #fin funcion
 
-
+if __name__ == "__main__":
+    Np = 100
+    tuple_iso = gen_random_parameters({"phi_K": {"min": 0, "max": 1, "Finura": Np}}, Np, "Parallelepiped")
+    tuple_cube = gen_random_parameters({"phi_a": {"min": 0, "max": 1, "Finura": Np}, "phi_K": {"min":0, "max": 1, "Finura": Np}}, Np, "Parallelepiped")
+    print(pd.DataFrame(tuple_iso))
+    print(pd.DataFrame(tuple_cube))

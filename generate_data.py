@@ -37,6 +37,14 @@ def generate_data_isotropic(path, Ng, data_gen,shape, mode = "Magnitude", N_vals
     #return pd.DataFrame(pars)
 #fin función
 
+def generate_data_cubic(path, Ng, N_data, shape, mode = "Magnitude", N_vals = 20):
+    """
+    This one will have only the option to generate random data. Is quite crazy to generate combinatorial data at this point
+    """
+    param_rank = {"phi_a": {"min": 0, "max": np.pi/2, "Finura": N_data},
+                  "x_K": {"min": 0, "max": 1, "Finura": N_data}}
+    pars_raw = data_generation.gen_random_parameters(param_rank, N_data, shape)
+
 if __name__ == "__main__":
     """
     """
