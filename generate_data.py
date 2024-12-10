@@ -43,18 +43,44 @@ def generate_data_cubic(path, Ng, N_data, shape, mode = "Magnitude", N_vals = 20
     """
     param_rank = {"phi_a": {"min": 0, "max": np.pi/2, "Finura": N_data},
                   "x_K": {"min": 0, "max": 1, "Finura": N_data}}
-    pars_raw = data_generation.gen_random_parameters(param_rank, N_data, shape)
+    pars = data_generation.gen_random_parameters(param_rank, N_data, shape)
+    exponents = {"Magnitude": 1, "Sum": 2}
+    for a, param in enumerate(pars):
+        param["phi_K"] = np.arccos(param["x_K"])
+        x_K = (param["x_K"])**exponents[mode]
+        x_a = (np.sin(param["phi_K"])*np.cos(param["phi_a"]))**exponents[mode]
+        x_mu = (np.sin(param["phi_K"])*np.sin(param["phi_a"]))**exponents[mode]
+        constant_relations = {"x_K": x_K, "x_a": x_a, "x_mu": x_mu}
+        data_vals = eigenvals.get_eigenvalues_from_crystal_structure(Ng, constant_relations, param["eta"], param["beta"], shape)
+        vals = data_vals["eig"]
+        keys_eigen = tuple(map(lambda x: "eig_" + str(x), range(N_vals)))
+        for i in range(N_vals):
+            param[keys_eigen[i]] = vals[i]
+        #fin for 
+        for shape_i in ("Parallelepiped", "Cylinder", "Ellipsoid"):
+            param[shape_i] = 1 if shape == shape_i else 0
+        #fin for 
+        with open(path, "a+t") as f:
+            if a == 0:
+                f.write(",".join(list(param.keys())) + "\n")
+            #fin if 
+            f.write(",".join(list(map(lambda x: str(x), param.values()))) + "\n")
+        #fin with 
+    #fin for
+    #return pd.DataFrame(pars)
+#fin función
+
 
 if __name__ == "__main__":
     """
-    """
-    if len(sys.argv) < 3:
-        raise IndexError("Coloque 2 argumentos: 1: Tipo de generación de datos, 2: Forma de la muestra")
-    #fin if 
     data_gen = {"type": sys.argv[1],
                 "N_const": 10,
                 "N_geo": 6,
                 "N_data": 20,
                 }
     ruta_archivo = "input_data/" + data_gen["type"] +"_" + str(os.getpid()) + ".csv"
-    generate_data_isotropic(ruta_archivo, 6, data_gen, sys.argv[2])  
+    generate_data_isotropic(ruta_archivo, 6, data_gen, sys.argv[2]) 
+    """
+    ruta_archivo = "input_data/cubic_" + str(os.getpid()) + ".csv"
+    generate_data_cubic(ruta_archivo, 6, 50000, sys.argv[1])
+#el fin
