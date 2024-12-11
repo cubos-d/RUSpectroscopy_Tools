@@ -24,7 +24,8 @@ def preprocess_data(d_frame, N_eig, target, opt = True):
     features_eig = list(map(lambda x: "eig_" + str(x+1), range(N_eig)))
     features_dim = ["eta", "beta"]
     feature_especial = ["eig_0"]
-    features_tot = [target] + feature_especial + features_dim + features_eig
+    target_f = [target] if isinstance(target, str) else target
+    features_tot = target_f + feature_especial + features_dim + features_eig
     dat_copy = d_frame.copy()
     dat_copy[target] = d_frame[target]/(np.pi/2)
     for i in range(N_eig):
