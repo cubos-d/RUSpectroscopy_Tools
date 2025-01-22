@@ -2,6 +2,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_sphere_surface_points_random(N, max_theta, max_phi, options = {"theta": False, "phi": False}):
+    """
+    Generates N random points uniformly distributed in the surface of a sphere,
+    between 0 and max_theta for the polar angle and 0 and max_phi for the 
+    azimutal angle. 
+
+    Arguments:
+    N -- <int>: Number of points to be generaetd
+    max_theta -- <float>: Upper bound of the polar angle
+    max_phi -- <float>: Upper bound of the azimutal angle
+    options -- <dict>: Irrelevant in this function. To be removed soon
+
+    Returns: 
+    points -- <np.array>: The points generated, represented in each row
+        of the matrix. The first column is the polar angle and the
+        second column is the azimuthal angle. 
+    """
     min_z = np.cos(max_theta) 
     z = min_z + (1 - min_z)*np.random.rand(N)
     phi = np.random.uniform(0, max_phi, N)
@@ -10,6 +26,24 @@ def generate_sphere_surface_points_random(N, max_theta, max_phi, options = {"the
 #fin generate_shpere_random
 
 def generate_sphere_surface_points(N, max_theta, max_phi, options = {"theta": False, "phi": False}):
+    """
+    Generates approximately N points (not random) uniformly distributed over the 
+    surface of a sphere between 0 and max_theta (for the polar angle) and 
+    between 0 and max_phi (for the azimuthal angle). 
+
+    Arguments:
+    N -- <int>: Approximate number of points to be generated
+    max_theta -- <float>: Upper bound of the polar angle
+    max_phi -- <float>: Upper bound of the azimutal angle
+    options -- <dict>: Check if the max_eta or max_theta will be included in the 
+        interval of generation of points. By default none of these will be 
+        included
+
+    Returns: 
+    points -- <np.array>: The points generated, represented in each row
+        of the matrix. The first column is the polar angle and the
+        second column is the azimuthal angle. 
+    """
     Omega = (max_phi * (1 - np.cos(max_theta))) / N
     d_med = Omega**(1/2)
     N_latitudes = int(max_theta/d_med)
