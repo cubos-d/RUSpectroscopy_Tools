@@ -118,6 +118,51 @@ def get_eigenvalues_from_crystal_structure(Ng, const_relations, eta, beta, shape
     return relative_eig
 #fin función
 
+def forward_stardard(phis, eta, beta, shape, Ng):
+    """
+    Get the normalized eigenvalues given the angular relations
+    of the constants.
+
+    Arguments:
+    phis -- <dict> A dictionary containing the angular relations of the
+            constants. For example, for cubic structure it should look like
+            the following: {"phi_a": <float>, "phi_K": <float>}
+    eta -- <float> First relation in the dimensions of the sample:
+            cos(2*eta) = lz/(lx^2 + ly^2 + lz^2).
+    beta -- <float> Second relation in the dimensions of the sample:
+            cos(4*beta) = lx/(lx^2 + ly^2).
+    shape -- <string> Shape of the sample. Currently only supports one of these
+            values: "Parallelepiped", "Cylinder", and "Ellipsoid".
+    Ng -- <int> Maximum degree of the basis function in the forward problem. 
+
+    Returns:
+    A dictionary containing the following:
+    key: "eig" -- <np.array> Normalized eigenvalues of the rus forward problem. 
+            Thefirst element `vals[0]` is the first eigenvalue (lambda_0) and 
+            has the same units and order of magnitude as the given elastic
+            constants. The rest of the elements (vals[1:]) are the relation
+            between the i-th eigenvalue and the first eigenvalue (lambda_i /
+            lambda_0). Each eigenvalue is:
+            lambda_i = (m (omega_i)^2) / r) where r is: r = (lx^2 + ly^2 + 
+            lz^2)^(1/2).
+
+    """
+    ind_constants = dict()
+    if len(phis) == 1:
+        ind_constants["K"] = np.cos(phis["phi_K"])
+        ind_constants["mu"] = np.sin(phis["phi_K"])
+    elif len(phis) == 2:
+        ind_constants["K"] = np.cos(phis["phi_K"])
+        ind_constants["a"] = np.sin(phis["phi_K"])*np.cos(phis["phi_a"])
+        ind_constants["mu"] = np.sin(phis["phi_K"])*np.sin(phis["phi_a"])
+    else:
+        raise ValueError("More than 2 values of phi is still not supported")
+    #fin if 
+    C = get_elastic_constants(ind_constants)
+    relative_eig = get_eigenvalues(Ng, C, eta, beta, shape)
+    return relative_eig
+#fin función
+
 if __name__ == "__main__":
     C_test = get_elastic_constants({"K": 3, "mu":1})
     print(C_test)
