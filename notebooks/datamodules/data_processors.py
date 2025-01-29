@@ -44,13 +44,13 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
         if i == 0:
             if compositions: 
                 dat_copy["x_0"] = 1/d_frame[key_fin]
-            else:
-                dat_copy[key_mod] = 1/d_frame[key_mod] if opt else d_frame[prev_key]/d_frame[key_mod]
-            #fin if 
+            #fin if
+            dat_copy[key_mod] = 1/d_frame[key_mod] if opt else d_frame[prev_key]/d_frame[key_mod] 
         else:
             if compositions:
                 key_comp = "x_" + str(i+1)
-                dat_copy[
+                dat_copy[key_comp] = (d_frame[key_mod] - d_frame[prev_key])/d_frame[key_fin]
+            #fin if 
             dat_copy[key_mod] = d_frame[prev_key]/d_frame[key_mod]
         #fin if 
     #fin for
@@ -76,6 +76,9 @@ def get_SDAE(y, y_gorro):
 #fin función
 
 def get_mape(y, y_gorro):
+    """
+
+    """
     cosines = np.c_[np.cos(y), np.cos(y_gorro)]
     sines = np.c_[np.sin(y), np.sin(y_gorro)]
     MAE_cos = abs(cosines[:,0] - cosines[:,1])/cosines[:,0]
