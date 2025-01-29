@@ -3,19 +3,28 @@ import pandas as pd
 import sklearn
 from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error, make_scorer, mean_absolute_percentage_error
 
-def preprocess_data(d_frame, N_eig, target, opt = True):
+def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
     """
     Takes a dataframe with standarized geometry, targets as angles,
     and with divided eigenvalues the following way: 
     new_eigen = eigen_{n-1}/eigen{n}. Also returns a the
     dataframe only with the first N_eig fist eigenvalues.
 
+    New bug, I mean feature: Now this function will return compositions
+    instead of modified lambdas if the user whishes so. And this option
+    will be enabled by default. 
+
     Arguments:
     d_frame -- <pd.DataFrame> Data frame to be transformed. Of course it
         will be copied. 
     N_eig -- <int>: Number of eigenvalues we want to be in the final 
         data frame
-    target -- <list>, <string>: Target or targets in form of angles. 
+    target -- <list> or <string>: Target or targets in form of angles. 
+    compositions -- <boolean>: Set True if you want this
+        function to return compositions (x_n = (lambda_n - lambda_{n-1})
+        /lambda_N)
+    opt -- <boolean>: Only enter False if the inputs are non relative 
+        eigenvalues or are frequencies directly. 
 
     Returns:
     dat_copy -- <pd.DataFrame>: Properly transformed data frame to be
@@ -28,12 +37,20 @@ def preprocess_data(d_frame, N_eig, target, opt = True):
     features_tot = target_f + feature_especial + features_dim + features_eig
     dat_copy = d_frame.copy()
     dat_copy[target] = d_frame[target]/(np.pi/2)
+    key_fin = "eig_" + str(N_eig - 1)
     for i in range(N_eig):
         key_mod = "eig_" + str(i+1)
         prev_key = "eig_" + str(i)
-        if i == 0:  
-            dat_copy[key_mod] = 1/d_frame[key_mod] if opt else d_frame[prev_key]/d_frame[key_mod]
+        if i == 0:
+            if compositions: 
+                dat_copy["x_0"] = 1/d_frame[key_fin]
+            else:
+                dat_copy[key_mod] = 1/d_frame[key_mod] if opt else d_frame[prev_key]/d_frame[key_mod]
+            #fin if 
         else:
+            if compositions:
+                key_comp = "x_" + str(i+1)
+                dat_copy[
             dat_copy[key_mod] = d_frame[prev_key]/d_frame[key_mod]
         #fin if 
     #fin for
