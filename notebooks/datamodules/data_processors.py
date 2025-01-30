@@ -37,13 +37,14 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
     features_tot = target_f + feature_especial + features_dim + features_eig
     dat_copy = d_frame.copy()
     dat_copy[target] = d_frame[target]/(np.pi/2)
-    key_fin = "eig_" + str(N_eig - 1)
+    key_fin = "eig_" + str(N_eig)
     for i in range(N_eig):
         key_mod = "eig_" + str(i+1)
         prev_key = "eig_" + str(i)
         if i == 0:
             if compositions: 
-                dat_copy["x_0"] = 1/d_frame[key_fin]
+                dat_copy["x_0"] = 1/d_frame[key_fin] if opt else d_frame[prev_key]/d_frame[key_fin]
+                dat_copy["x_1"] = (d_frame[key_mod] - 1)/d_frame[key_fin] if opt else (d_frame[key_mod] - d_frame[prev_key])/d_frame[key_fin] 
             #fin if
             dat_copy[key_mod] = 1/d_frame[key_mod] if opt else d_frame[prev_key]/d_frame[key_mod] 
         else:
@@ -66,6 +67,8 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
     except:
         pass #HEHE!!! I will figure out how to make this line less dangerous 
     #fin exception
+    if compositions:
+        features_tot = features_tot + list(map(lambda x: "x_" + str(x), range(N_eig + 1)))
     return dat_copy[features_tot]
 #fin procesar_datos
 
