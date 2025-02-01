@@ -3,7 +3,7 @@ import pandas as pd
 import sklearn
 from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error, make_scorer, mean_absolute_percentage_error
 
-def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
+def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True, angle_targets = True):
     """
     Takes a dataframe with standarized geometry, targets as angles,
     and with divided eigenvalues the following way: 
@@ -36,7 +36,8 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
     target_f = [target] if isinstance(target, str) else target
     features_tot = target_f + feature_especial + features_dim + features_eig
     dat_copy = d_frame.copy()
-    dat_copy[target] = d_frame[target]/(np.pi/2)
+    if angle_targets:
+        dat_copy[target] = d_frame[target]/(np.pi/2)
     key_fin = "eig_" + str(N_eig)
     for i in range(N_eig):
         key_mod = "eig_" + str(i+1)
@@ -71,6 +72,16 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True):
         features_tot = features_tot + list(map(lambda x: "x_" + str(x), range(N_eig + 1)))
     return dat_copy[features_tot]
 #fin procesar_datos
+
+def create_additional_geometric_features(d_frame):
+    features_dim = ["eta", "beta"]
+    d_frame["g0"] = np.cos(0.5*d_frame["eta"])*np.tan(0.25*d_frame["beta"])
+    d_frame["g1"] = np.cos(0.5*d_frame["eta"])/np.tan(0.25*d_frame["beta"])
+    d_frame["g2"] = np.tan(0.5*d_frame["eta"])*np.sin(0.5*d_frame["eta"])*np.sin(0.25*d_frame["beta"])*np.cos(0.25*d_frame["beta"])
+    d_frame["g3"] = np.sin(0.5*d_frame["eta"])*np.cos(0.25*d_frame["beta"])
+    d_frame["g4"] = np.sin(0.5*d_frame["eta"])*np.sin(0.25*d_frame["beta"])
+    d_frame["g5"] = np.cos(0.5*d_frame["eta"])
+#fin función 
 
 def get_SDAE(y, y_gorro):
     mat_comp = np.c_[y, y_gorro]
