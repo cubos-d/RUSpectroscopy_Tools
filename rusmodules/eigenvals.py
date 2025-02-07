@@ -118,7 +118,7 @@ def get_eigenvalues_from_crystal_structure(Ng, const_relations, eta, beta, shape
     return relative_eig
 #fin función
 
-def forward_stardard(phis, eta, beta, shape, Ng):
+def forward_standard(phis, eta, beta, shape, Ng):
     """
     Get the normalized eigenvalues given the angular relations
     of the constants.
