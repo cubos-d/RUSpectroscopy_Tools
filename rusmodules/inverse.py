@@ -2,7 +2,7 @@ from . import eigenvals
 import numpy as np
 import pandas as pd
 
-def get_predicted_C(lambda_0, eta, beta, phis_pred, shape = "Parallelepiped", Ng = 6):
+def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", Ng = 6, method = "Full_freqs"):
     """
     Get the predicted values of the elastic constants given the
     predicted values of phi (relations between K, a and mu), the 
@@ -32,7 +32,13 @@ def get_predicted_C(lambda_0, eta, beta, phis_pred, shape = "Parallelepiped", Ng
     """
     data_forward = eigenvals.forward_standard(phis_pred, eta, beta, shape, Ng)
     eigs = data_forward["eig"]
-    Magnitude = lambda_0/eigs[0]
+    #Magnitude = lambda_0/eigs[0]
+    Magnitude_0 = eigs_orig[0]/eigs[0]
+    if method = "Full_freqs":
+        Magnitude = (Magnitude_0/len(eigs_orig))*(1 + sum(map(lambda i: eigs_orig[i]/eigs[i], range(1, len(eigs_orig)))))
+    else:
+        Magnitude = Magnitude_0
+    #fin if 
     if len(phis_pred) == 1:
         K = Magnitude*np.cos(phis_pred["phi_K"])
         mu = Magnitude*np.sin(phis_pred["phi_K"])
@@ -139,7 +145,7 @@ def get_constants(eigs, eta, beta, model, include_x0 = True, Nmax = 20, shape = 
             dictionary like this: {"C00": <float>, "C01": <float>, "C02":
             <float>}. 
     """
-    lambda_0 = eigs[0]
+    #lambda_0 = eigs[0]
     xn = get_compositions(eigs, Nmax)
     phi_pred = inverse_standard(xn, eta, beta, model, include_x0)[0,:]
     dic_phi = dict()
@@ -151,7 +157,7 @@ def get_constants(eigs, eta, beta, model, include_x0 = True, Nmax = 20, shape = 
     else:
         raise ValueError("Crystal structures above cubic are not supported yet!")
     #fin if
-    pred_C = get_predicted_C(lambda_0, eta, beta, dic_phi, shape, Ng)
+    pred_C = get_predicted_C(eigs, eta, beta, dic_phi, shape, Ng)
     return pred_C
 #fin función
  
