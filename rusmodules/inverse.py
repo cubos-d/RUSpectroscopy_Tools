@@ -34,7 +34,7 @@ def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", N
     eigs = data_forward["eig"]
     #Magnitude = lambda_0/eigs[0]
     Magnitude_0 = eigs_orig[0]/eigs[0]
-    if method = "Full_freqs":
+    if method == "Full_freqs":
         Magnitude = (Magnitude_0/len(eigs_orig))*(1 + sum(map(lambda i: eigs_orig[i]/eigs[i], range(1, len(eigs_orig)))))
     else:
         Magnitude = Magnitude_0
