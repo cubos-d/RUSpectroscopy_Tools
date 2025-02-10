@@ -69,7 +69,7 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True, ang
         pass #HEHE!!! I will figure out how to make this line less dangerous 
     #fin exception
     if compositions:
-        features_tot = features_tot + list(map(lambda x: "x_" + str(x), range(N_eig + 1)))
+        features_tot = features_tot + list(map(lambda x: "x_" + str(x), range(N_eig + 1))) 
     return dat_copy[features_tot]
 #fin procesar_datos
 
