@@ -80,7 +80,34 @@ def get_compositions(eigenvalues, Nmax = 20):
     return compositions
 #fin if
 
-def inverse_standard(x_n, eta, beta, model, include_x0 = True):
+def scale(d_frame, mean, standard_dev):
+    """
+    Scales the data substracting by a given mean and then dividing 
+    by a given standard deviation. 
+
+    Arguments:
+    d_frame -- <pd.DataFrame> Data frame containing the row of data 
+            to be standarized
+    mean -- <dict> Dictionary containing every mean value of every
+            feature, given in this format: {"eta": <float>, "beta":
+            <float>, "x_0": <float>, "x_1": <float>, ...}
+    standard_dev -- <dict> Dictionary containing every standard deviation 
+            value of every feature, given in this format: {"eta": <float>, 
+            "beta": <float>, "x_0": <float>, "x_1": <float>, ...}
+
+    Returns:
+
+    A data frame with the feature values standarized. 
+ 
+    """
+    dat_copy = d_frame.copy()
+    for key in d_frame.keys():
+        dat_copy[key] = (d_frame[key] - mean[key])/standard_dev[key]
+    #fin for
+    return dat_copy
+#fin función
+
+def inverse_standard(x_n, eta, beta, model_data, include_x0 = True):
     """
     Predicts the values of phi (the relations between the
     elastic constants) given  the compositions, the geometric
@@ -92,7 +119,11 @@ def inverse_standard(x_n, eta, beta, model, include_x0 = True):
              cos(2*eta) = lz/(lx^2 + ly^2 + lz^2).
     beta -- <float> Second relation in the dimensions of the sample:
             cos(beta) = lx/(lx^2 + ly^2).
-    model -- <keras.model> Keras or scikit-learn model
+    model_data -- <dict> A dictionary containing the following: The Keras or 
+            scikit-learn model, the mean and the standars deviation of 
+            every feature the following way: {"model": <keras.model>,
+            "mean": {"eta": <float>, "beta": <float>, "x_0": <float>,
+            ...}, "std": {"eta": <float>, "beta": <float>, ...}}
     include_x0 -- <bool> Some models don't include x0 as a feature. 
             If that's the case turn it into False, but in any case
             there MUST be a x_0 fed to the function. 
@@ -109,12 +140,17 @@ def inverse_standard(x_n, eta, beta, model, include_x0 = True):
     dict_geo = {"eta": eta, "beta": beta}
     dict_tot = {**dict_geo, **dict_x}
     data_frame = pd.DataFrame(dict_tot, index = [0])
-    y = model.predict(data_frame)
+    if isinstance(model_data, dict):
+        data_frame = scale(data_frame, model_data["mean"], model_data["std"])
+        y = model_data["model"].predict(data_frame)
+    else:
+        y = model_data.predict(data_frame)
+    #fin if
     phis = (np.pi/2)*y
     return phis
 #fin función
 
-def get_constants(eigs, eta, beta, model, include_x0 = True, Nmax = 20, shape = "Parallelepiped", Ng = 6):
+def get_constants(eigs, eta, beta, model_data, include_x0 = True, Nmax = 20, shape = "Parallelepiped", Ng = 6):
     """
     This function predicts the elastic constants, given the 
     eigenvalues (as returned in the forward problem), the 
@@ -134,8 +170,11 @@ def get_constants(eigs, eta, beta, model, include_x0 = True, Nmax = 20, shape = 
              cos(2*eta) = lz/(lx^2 + ly^2 + lz^2).
     beta -- <float> Second relation in the dimensions of the sample:
             cos(beta) = lx/(lx^2 + ly^2).
-    model -- <keras.model> Keras or scikit-learn model. The model MUST get 
-            the parameters in the follwing order: [eta, beta, x0, x1, ...]
+    model_data -- <dict> A dictionary containing the following: The Keras or 
+            scikit-learn model, the mean and the standars deviation of 
+            every feature the following way: {"model": <keras.model>,
+            "mean": {"eta": <float>, "beta": <float>, "x_0": <float>,
+            ...}, "std": {"eta": <float>, "beta": <float>, ...}}
     include_x0 -- <bool> Some models don't include x0 as a feature. 
             If that's the case turn it into False, but in any case
             there MUST be a x_0 fed to the function.
@@ -147,7 +186,7 @@ def get_constants(eigs, eta, beta, model, include_x0 = True, Nmax = 20, shape = 
     """
     #lambda_0 = eigs[0]
     xn = get_compositions(eigs, Nmax)
-    phi_pred = inverse_standard(xn, eta, beta, model, include_x0)[0,:]
+    phi_pred = inverse_standard(xn, eta, beta, model_data, include_x0)[0,:]
     dic_phi = dict()
     if len(phi_pred) == 1:
         dic_phi["phi_K"] = phi_pred[0]

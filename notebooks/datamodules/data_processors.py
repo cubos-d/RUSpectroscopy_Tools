@@ -73,6 +73,14 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True, ang
     return dat_copy[features_tot]
 #fin procesar_datos
 
+def scale(d_frame):
+    dat_copy = d_frame.copy()
+    for key in d_frame.keys():
+        dat_copy[key] = (d_frame[key] - np.average(d_frame[key]))/np.std(d_frame[key])
+    #fin for
+    return dat_copy
+#fin función
+
 def create_additional_geometric_features(d_frame):
     features_dim = ["eta", "beta"]
     d_frame["g0"] = np.cos(0.5*d_frame["eta"])*np.tan(0.25*d_frame["beta"])
