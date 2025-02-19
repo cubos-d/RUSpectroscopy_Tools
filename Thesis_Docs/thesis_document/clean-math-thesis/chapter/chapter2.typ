@@ -74,6 +74,7 @@ The symmetry relations found allow us to interchange the first two indices and t
   caption: "Index pair transformation of elasticity tensor, strain tensor and stress tensor.",
 )<table:Voigt_transform>
 
+
 With these new indices, the elastic potential energy per unit volume $upsilon$ can be expressed as follows:
 
 $ upsilon = 1/2 C_(m n)epsilon_(m)epsilon_(n). $<eq:potential_energy_density>
@@ -81,8 +82,27 @@ $ upsilon = 1/2 C_(m n)epsilon_(m)epsilon_(n). $<eq:potential_energy_density>
 From this, it can be seen that the indices n and m can be interchanged, which implies that $ C_(m n) = C_(n m)$. Returning to the old notation, we have
 $ C_(i j k l) = C_(k l i j). $<eq:third_contant_reduction> 
 
-Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general case. 
+For example, $C_(0022) = C_(02)$, $C_(0212) = C_(1202) = C_(43) = C_(34)$ and $C_(1112) = C_(1121) = C_(13) = C_(31)$. 
+
+Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general case. However, due to symmetries, different crystal structures have less independent constants. In this study we will see the particular case of the cubic solids, which have only 3 independent constants. 
 
 == Restrictions between the constants in every crystal structure
 
+For a cubic solid, due to it's symmetries, the matrix of elastic constants, using Voigt notation is given by: 
 
+$ arrow.l.r(C) = mat(
+  C_(00), C_(01), C_(01), 0, 0, 0;
+  C_(01), C_(00), C_(01), 0, 0, 0;
+  C_(01), C_(01), C_(00), 0, 0, 0;
+  0, 0, 0, C_(33), 0, 0;
+  0, 0, 0, 0, C_(33), 0;
+  0, 0, 0, 0, 0, C_(33);
+) $
+
+In order for a solid to be a feasible one, it must be mechanically stable. That is, it's free energy in function of the different strains must be in a minimum. This implies that the elastic constants matrix, which is #cite(<Mouhat_2014>): 
+
+$ C_(i j) = 1/V_0 ((partial^2 E)/(partial epsilon_i partial epsilon_j)), $
+
+must be definite positive, or in other words, its eigenvalues must be all positive. This is known as the "Born stability criteria". In the case of cubic solids the elastic constants matrix must follow the following restrictions: 
+
+$ C_(11) + 2C_(12) > 0; C_(11) - C_(12) > 0; C_(44) > 0 $<eq:restrictions_cubic_solids>
