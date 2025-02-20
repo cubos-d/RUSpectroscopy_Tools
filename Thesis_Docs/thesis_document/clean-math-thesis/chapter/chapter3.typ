@@ -10,29 +10,29 @@ $ K = 1/2 integral_V rho dot(u)^2 d V, $<eq:kinetic_raw>
 
 where $rho$ is the density of the sample, $V$ is the volume and $dot(u)$ is the displacement velocity. Assuming periodic behaviour such that $dot(u) = omega u$ and expressing $u^2$ as $u^2 = sum_(i=0)^2 u_i^2 = sum_(i=0)^2 sum_(k=0)^2 delta_("ik") u_i u_k$, the kinetic energy can be expressed as the following #cite(<Leisure_1997>): 
 
-$ K = 1/2 integral_V rho omega^2 (sum_(i=0)^2 sum_(k=0)^2 delta_("ik") u_i u_k ) d V. $<eq:kinetic_middle>
+$ K = 1/2 integral_V rho omega^2 ( delta_(i k) u_i u_k ) d V. $<eq:kinetic_middle>
 
 On the other hand, the potential energy density is given by @eq:potential_energy_density. Expressing it with the full index notation and integrating over all the volume of the sample we get: 
 
-$ U = 1/2 integral_V sum_(i=0)^2 sum_(j=0)^2 sum_(k=0)^2 sum_(l=0)^2 C_("ijkl") epsilon_("ij") epsilon_("kl") d V. $<eq:U_raw_raw>
+$ U = 1/2 integral_V C_(i j k l) epsilon_(i j) epsilon_(k l) d V. $<eq:U_raw_raw>
 
 Replacing the definition of the strain tensor components given by @eq:strain_tensor in @eq:U_raw_raw, we get a new expression for the potential energy:
 
-$ U = 1/2 integral_V sum_(i=0)^2 sum_(j=0)^2 sum_(k=0)^2 sum_(l=0)^2 C_("ijkl") (partial u_i)/(partial r_j) (partial u_k)/(partial u_l) d V. $<eq:potential_raw>
+$ U = 1/2 integral_V  C_(i j k l) (partial u_i)/(partial r_j) (partial u_k)/(partial r_l) d V, $<eq:potential_raw>
 
-Using Rayleigh-Ritz method #cite(<Migliori_1993>) $u_i$ displacements can be expressed in terms of base functions the following way:
+where $r_0 = x$, $r_1 = y$, and $r_2 = z$. Using Rayleigh-Ritz method #cite(<Migliori_1993>) $u_i$ displacements can be expressed in terms of base functions the following way:
 
-$ u_i = sum_(lambda, mu, nu = 0)^(lambda + mu + nu lt.eq N_g) a_(i lambda mu nu) phi.alt_(i lambda mu nu), $ <eq:u_in_terms_basis_func>
+$ u_i =  a_(i lambda mu nu) phi.alt_(i lambda mu nu). $ <eq:u_in_terms_basis_func>
 
-where $N_g$ is the maximum degree of the basis functions and is, chosen arbitrarily. The higher this number, the greater the number of frequencies obtained from the problem. However, the computational time will also increase, scaling with the 9th power as $N_g$ increases #cite(<Leisure_1997>). The family of basis functions used in the present project is given by: 
+Every term in @eq:u_in_terms_basis_func follows thw rule: $lambda + mu + nu lt.eq N_g$, where $N_g$ is the maximum degree of the basis functions and is chosen arbitrarily. The higher this number, the greater the number of frequencies obtained from the problem. However, the computational time will also increase, scaling with the 9th power as $N_g$ increases #cite(<Leisure_1997>). The family of basis functions used in the present project is given by: 
 
 $ phi.alt_(i lambda mu nu) = (x/L_x)^lambda (y/L_y)^mu (z/L_z)^nu = X^lambda Y^mu Z^nu, $<eq:Basis_functions>
 
-where $L_x$, $L_y$, $L_z$ are the lengths of the sample in $x$, $y$, $z$ respectively. Replacing $u_i$ from @eq:u_in_terms_basis_func in @eq:kinetic_raw and @eq:potential_raw we get new expressions to kinetic energy and potential energy: 
+where $L_x$, $L_y$, $L_z$ are the lengths of the sample in $x$, $y$, $z$ respectively. Replacing $u_i$ from @eq:u_in_terms_basis_func in @eq:kinetic_raw and @eq:potential_raw we get new expressions to kinetic energy and potential energy (remember that the conditions $lambda_1 + mu_1 + nu_1 lt.eq N_g$ and $lambda_2 + mu_2 + nu_2 lt.eq N_g$ must be met): 
 
-$ K = 1/2 rho omega^2 sum_(i=0)^2 sum_(k=0)^2 sum_(lambda_1, mu_1, nu_1 = 0)^(lambda_1 + mu_1 + nu_1 lt.eq N_g) sum_(lambda_2, mu_2, nu_2 = 0)^(lambda_2 + mu_2 + nu_2 lt.eq N_g) a_(i lambda_1 mu_1 nu_1) (Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)) a_(i lambda_2 mu_2 nu_2), $<eq:kinetic_final>
+$ K = 1/2 rho omega^2 a_(i lambda_1 mu_1 nu_1) Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) a_(i lambda_2 mu_2 nu_2), $<eq:kinetic_final>
 
-$ U = 1/2 sum_(i=0)^2 sum_(k=0)^2 sum_(lambda_1, mu_1, nu_1 = 0)^(lambda_1 + mu_1 + nu_1 lt.eq N_g) sum_(lambda_2, mu_2, nu_2 = 0)^(lambda_2 + mu_2 + nu_2 lt.eq N_g) a_(i lambda_1 mu_1 nu_1) (Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)) a_(i lambda_2 mu_2 nu_2), $<eq:potential_final>
+$ U = 1/2 a_(i lambda_1 mu_1 nu_1) Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) a_(i lambda_2 mu_2 nu_2), $<eq:potential_final>
 
 where 
 
@@ -40,7 +40,7 @@ $ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_( i k
 
 and
 
-$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_("ijkl") integral_V (partial phi.alt_(i lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(k lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
+$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l) integral_V (partial phi.alt_(i lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(k lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
 
 
 The constants $a_(i lambda mu nu)$ can be organized inside a vector $arrow(a)$, while the values of $Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ and $Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ can be organized inside the matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$. This way, we can express the kinetic and potential energy in terms of vector and matrix products: 
@@ -69,7 +69,13 @@ where $Re_j = r_j/L_j$.
 
 == Some useful integrals for different shapes
 
-TODO: Write the integrals for parallelepiped, cylinder and ellipsoid. Also define $alpha$.
+If the sample is a parallelepiped, the integrals inside the expressions @eq:E_matrix_def and @eq:Gamma_matrix_def can be written as:
+
+$ integral_V X^p Y^q Z^r d X d Y d Z = 1/((p+1)(q+1)(r+1)), $
+
+where the coefficients $p, q$ and $r$ depend on $lambda_1, lambda_2, mu_1, mu_2, nu_1$ and $nu_2$. If the sample is an spheroid, that integral can be written the following way #cite(<Visscher_1991>):
+
+$ integral_V X^p Y^q Z^r d X d Y d Z = ((p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)!!. $
 
 == Simplifying the problem: Getting eigenvalues that are independent of the size of the sample
 
@@ -93,7 +99,18 @@ $ peso_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 L
 
 where $L_(j l) = L_(3 - j - l)$ if $j != l$. Else $L_(j l) = (L_x L_y L_z)/L_j^2$.
 
-From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample. They only depend on the values of the constants and the shape of the sample.
+From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample. They only depend on the values of the constants and the shape of the sample (but not it's size).
+
+== Examples of eigenvalues spectra for a sphere isotropic material
+
+Using @eq:Peso_matrix_def we can get the eigenvalues $lambda_n$ of a spheric solid, made of an isotropic material with relation between the Bulk Modulus $K$ and the shear modulus $G$ of $K/G = 7/1$, in the following scatterplot: 
+#figure(
+  image("../images/eigenvals_degeneration.png", width: 100%),
+  caption: "Eigenvalues of a spheric isotropic solid with relation of bulk modulus:shear modulus of 7:1"
+
+) <fig:degenerate_eigenvalues>
+
+It can be noted that there is a lot of degenerate eigenvalues, and the number of degenerate eigenvalues in each leves is odd. This is due to the isotropic nature of the material, and it's sphericalñ geometry.  
 
 == Defining the shape of a 3D sample with two parameters
 

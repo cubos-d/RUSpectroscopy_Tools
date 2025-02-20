@@ -6,7 +6,7 @@ In this chapter, we will explore some essential concepts in the theory of elasti
 
 == The displacement vector and the strain tensor
 
-Label the position of a point inside an unstressed solid, relative to some origin, by its position vector $arrow(r)$. Let a force to be applied, so the body deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)_((arrow(r)))$. If $arrow(u)$ was constant, the body would simply be translated and will not have any deformation. To produce a deformation we must make the displacement $arrow(u)$ change from one location to another. The most simple, coordinate independent way to quantify those changes is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
+Let's call the distance from a point inside an unstressed solid to some origin $arrow(r)$. Not let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)_((arrow(r)))$. If $arrow(u)$ was constant, the body would simply be translated and will not have any deformation. To produce a deformation we must make the displacement $arrow(u)$ change from one location to another. The most simple, coordinate independent way to quantify those changes is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
 
 $ arrow.l.r(W) = arrow(nabla) arrow(u). $<eq:u_gradient>
 
@@ -18,7 +18,7 @@ This tensor can be expressed as the sum of it's symmetric part and it's antisymm
 
 $ arrow.l.r(W) = 1/2 arrow.l.r(W)_("sym") + 1/2 arrow.l.r(W)_("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
 
-The antisymmetric part describes a pure rotation of the solid, which is not related to the deformation of the solid, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
+The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
 
 $ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) $<eq:strain_tensor>
 
@@ -103,6 +103,6 @@ In order for a solid to be a feasible one, it must be mechanically stable. That 
 
 $ C_(i j) = 1/V_0 ((partial^2 E)/(partial epsilon_i partial epsilon_j)), $
 
-must be definite positive, or in other words, its eigenvalues must be all positive. This is known as the "Born stability criteria". In the case of cubic solids the elastic constants matrix must follow the following restrictions: 
+must be definite positive, or in other words, its eigenvalues must be all positive. This is known as the "Born stability criteria". In the case of cubic solids the elastic constants matrix must follow the following restrictions #cite(<Mouhat_2014>): 
 
 $ C_(11) + 2C_(12) > 0; C_(11) - C_(12) > 0; C_(44) > 0 $<eq:restrictions_cubic_solids>
