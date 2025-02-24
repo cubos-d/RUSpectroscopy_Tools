@@ -10,7 +10,7 @@
 #lorem(50)
 
 == Example Use of the Theorem Environment <sec:example_theorem>
- An example citation is @Cooley65, then we also see the bibliography at the end of the document.
+ An example citation is //@Cooley65, then we also see the bibliography at the end of the document.
 
 Example definition in @def:Example. This and all the following are examples using `great-theorems`.
 #definition(title: "Example Definition")[

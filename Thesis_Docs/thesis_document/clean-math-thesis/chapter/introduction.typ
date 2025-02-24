@@ -1,13 +1,22 @@
 = Introduction<chap:introduction>
 
-- In this chapter we will take a look to some necessary concepts to understand the forward problem, described in , 
-/*
-- examples in @chap:example
-  - use of `great-theorems` in @sec:example_theorem
-  - equations in @sec:example_equations
-  - algorithms/pseudocode with `lovelace`, tables and figures in @sec:example_algo_table_and_fig
-- and the conclusion in @chap:conclusions_outlook
-- appendix can be found in @sec:notation and @sec:abbreviations
-*/
-#v(1cm)
-#lorem(350)
+Ultrasonic measurements have been valuable for the study of condensed matter. They allow for the determination of the elastic constants of materials, which are fundamentally important as they are directly related to their atomic structure. Additionally, they are connected to the thermal properties of solids through Debye theory. The elastic constants, in combination with thermal expansion measurements, can also be used to determine the equation of state for various thermodynamic functions #cite(<Leisure_1997>).
+
+One of the experimental techniques used to obtain the elastic constants of a solid is the Resonant Ultrasound Spectroscopy (RUS). This technique consists in placing a solid sample between two piezoelectric transducers, that hold the solid in two of their edges #cite(<Migliori_1993>). For example, if the solid has a cubic or parallelepiped shape the transducers hold it in two of its vertices, as shown in @fig:rus_setup. This allows the sample to have free boundary conditions. Usually the sample has well defined shapes, like parallelepipeds, cylinders or ellipsoids. However this technique doesn't get the elastic constants directly. Instead it gets the resonance frequencies of the sample. To get the frequencies, the first transducer oscillates, compressing and releasing the solid, at certain frequency and then it makes a frequency sweep to make the solid oscillate in a range of frequencies. This way an amplified response is observed in the second transducer whenever the oscillation frequency of the first transducer matches with one of the resonance frequencies of the solid #cite(<Leisure_1997>). The following figure shows the experimental setup: 
+
+#figure(
+  image("../images/rus_setup.png", width: 60%),
+  caption: [Setup of the RUS technique, taken from #cite(<Leisure_1997>).]
+) <fig:rus_setup>
+
+Knowing in advance the elastic constants, one can predict easily the resonance frequencies by just solving a generalized eigenvalue problem (shown in @eq:raw_eig_problem), which will be described in detail in @chap:forward. Getting the frequencies from the elastic constants, the mass and the geometry of the sample is called the forward problem: 
+
+//COLOQUE AQUÍ UN ESQUEMA DE CAJITAS PARA EL FORWARD PROBLEM
+
+On the other hand, the inverse problem consists in getting the elastic constants from the frequencies, the mass and the geometry of the sample. Solving this inverse problem for cubic solids, using a machine learning model, is the objective of the present work. Traditionally the inverse problem have been solved by iterative methods that solve the forward problem repeatedly until we get the constants that yield the minimum error between the measured frequencies and the frequencies got in the last forward problem performed. One of such methods if the Levenberg-Marquardt algorithm which is non-linear least squares method #cite(<Fukuda_2023>). However, this method has some limitations, one of them is the time that take even actual computers to solve it. The other limitation is that a good initial guess of the constants is needed, which requires approximate values of the constants to be known in advace #cite(<Fukuda_2023>). 
+
+A fast method to solve the inverse problem, without the need of a close initial guess in needed, and the use of machine learning models can be used to solve the inverse problem. Using machine learning models to solve the inverse problem has been done before. Fukuda in 2023, created a series of models that allowed solvien the inverse problem of solids with cubic crystal structure and parallelepiped shape with sides ratio of 3:4:5 #cite(<Fukuda_2023>). Fukuda first transformed every frequency spectra, with 100 values of frequencies, into an image. That image was fed into a first convolutional neural network which classified the spectra into  one of 16 groups. Each group had a range of possible values of relations between elastic constants. Then, the spectra was fed into a regression model corresponding to the group the spectra was classified before #cite(<Fukuda_2023>). The present project offers a method that works for samples with any side ratio using only 20 frequencies. [ENLACE CAPITULO 6] will describe in detail the inverse method used in the present project, which can be summarized in the following diagram:
+
+//COLOQUE AQUÍ UN ESQUEMA DE CAJITAS PARA EL INVERSE PROBLEM.
+
+
