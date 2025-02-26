@@ -1,3 +1,0 @@
-= Introduction<chap:introduction>
-
-Hola

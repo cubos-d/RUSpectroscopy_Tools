@@ -71,7 +71,7 @@ The symmetry relations found allow us to interchange the first two indices and t
     table.vline(stroke: .6pt),
     table.hline(stroke: .6pt),
   ), 
-  caption: "Index pair transformation of elasticity tensor, strain tensor and stress tensor.",
+  caption: "Voigt notation showing each index pair transformation of elasticity tensor, strain tensor and stress tensor.",
 )<table:Voigt_transform>
 
 

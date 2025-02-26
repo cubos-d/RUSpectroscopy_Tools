@@ -53,29 +53,19 @@ obtaining the following Lagrangian:
 
 $ cal(L) = K - U = 1/2 rho omega^2 arrow(a)^T arrow.l.r(Epsilon) arrow(a) - 1/2 arrow(a)^T arrow.l.r(Gamma) arrow(a). $ <eq:Lagrangian_final>
 
-By extremizing the Lagrangian, $(partial cal(L))/(partial arrow(a)) = 0$, a generalized eigenvalue problem is obtained #cite(<Leisure_1997>). Solving this generalized eigenvalue problem makes it possible to determine the resonance frequencies of the solid (which are among the eigenvalues) based on its elastic constants. The generalized eigenvalue problem to be solved is shown below:
+By extremizing the Lagrangian, $(delta cal(L))/(delta arrow(a)) = 0$, a generalized eigenvalue problem is obtained #cite(<Leisure_1997>). Solving this generalized eigenvalue problem makes it possible to determine the resonance frequencies of the solid (which are among the eigenvalues) based on its elastic constants. The generalized eigenvalue problem to be solved is shown below:
 
 $ rho omega^2 arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Gamma) arrow(a). $<eq:raw_eig_problem>
 
-Finally, replacing the basis functions of equation @eq:Basis_functions in @eq:E_matrix and @eq:Gamma_matrix, and then cancelling the $L_x L_y L_z$ in each side of the equation @eq:raw_eig_problem we have that an element of the $arrow.l.r(Epsilon)$ matrix is given by: 
+Finally, replacing the basis functions of equation @eq:Basis_functions in @eq:E_matrix and @eq:Gamma_matrix,  and then cancelling the $L_x L_y L_z$ in each side of the equation @eq:raw_eig_problem we have that an element of the $arrow.l.r(Epsilon)$ matrix is given by: 
 
-$ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_( i k) X^(lambda_1 + lambda_2) Y^(mu_1 + mu_2) Z^(nu_1 + nu_2) d X d Y d Z, $<eq:E_matrix_def>
+$ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_(i k) X^(lambda_1 + lambda_2) Y^(mu_1 + mu_2) Z^(nu_1 + nu_2) d X d Y d Z, $<eq:E_matrix_def>
 
 and an element of the $arrow.l.r(Gamma)$ matrix is given by: 
 
-$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial Re_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial Re_l) d X d Y d Z, $<eq:Gamma_matrix_def>
+$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Gamma_matrix_def>
 
-where $Re_j = r_j/L_j$.
-
-== Some useful integrals for different shapes
-
-If the sample is a parallelepiped, the integrals inside the expressions @eq:E_matrix_def and @eq:Gamma_matrix_def can be written as:
-
-$ integral_V X^p Y^q Z^r d X d Y d Z = 1/((p+1)(q+1)(r+1)), $
-
-where the coefficients $p, q$ and $r$ depend on $lambda_1, lambda_2, mu_1, mu_2, nu_1$ and $nu_2$. If the sample is an spheroid, that integral can be written the following way #cite(<Visscher_1991>):
-
-$ integral_V X^p Y^q Z^r d X d Y d Z = ((p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)!!. $
+where $b_j = r_j/L_j$. In other words: $b_0 = x/L_x = X, b_1 = y/L_y = Y$ and $b_2 = z/L_z = Z$.
 
 == Simplifying the problem: Getting eigenvalues that are independent of the size of the sample
 
@@ -89,13 +79,13 @@ This way the @eq:raw_eig_problem is now as follows:
 
  $ rho V omega^2/R arrow.l.r(Epsilon) arrow(a) = V/R arrow.l.r(Gamma) arrow(a). $<eq:eig_preparing>
 
-Let's define a new matrix $arrow.l.r(peso) = V/R arrow.l.r(Gamma)$. With this definition we have the final generalized eigenvalue problem to solve: 
+Let's define a new matrix $arrow.l.r(Kai) = V/R arrow.l.r(Gamma)$. With this definition we have the final generalized eigenvalue problem to solve: 
 
-$ lambda arrow.l.r(Epsilon) arrow(a) = arrow.l.r(peso) arrow(a). $<eq:eig_final>
+$ lambda arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Kai) arrow(a). $<eq:eig_final>
 
-In equation @eq:eig_final $lambda = m omega^2/R$ and an element of the matrix $arrow.l.r(peso)$ is given by:  
+In equation @eq:eig_final $lambda = m omega^2/R$ and an element of the matrix $arrow.l.r(Kai)$ is given by:  
 
-$ peso_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial Re_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial Re_l) d X d Y d Z, $<eq:Peso_matrix_def>
+$ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial Re_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial Re_l) d X d Y d Z, $<eq:Peso_matrix_def>
 
 where $L_(j l) = L_(3 - j - l)$ if $j != l$. Else $L_(j l) = (L_x L_y L_z)/L_j^2$.
 

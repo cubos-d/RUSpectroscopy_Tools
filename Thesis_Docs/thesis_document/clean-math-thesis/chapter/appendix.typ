@@ -4,7 +4,18 @@
 
 #set heading(numbering: "A.1", supplement: [Appendix])  // Defines Appendix numbering
 
-== Notation<sec:notation>
+== Some useful integrals for different shapes<apx:integrals>
+
+If the sample is a parallelepiped, the integrals (evaluated from -1 to 1 in $X, Y$ and $Z$) inside the expressions @eq:E_matrix_def and @eq:Gamma_matrix_def can be written as:
+
+$ integral_V X^p Y^q Z^r d X d Y d Z = 1/((p+1)(q+1)(r+1)), $
+
+where the coefficients $p, q$ and $r$ depend on $lambda_1, lambda_2, mu_1, mu_2, nu_1$ and $nu_2$. If the sample is an spheroid, that integral can be written the following way #cite(<Visscher_1991>):
+
+$ integral_V X^p Y^q Z^r d X d Y d Z = ((p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)!!. $
+
+== Abbreviations<sec:abbreviations>
+/*
 #table(
   columns: 2,
   column-gutter: 3em,
@@ -12,9 +23,7 @@
   [$C_0$], [functions with compact support],
   [$overline(RR)$], [extended real numbers $RR union {oo}$],
 )
-#v(1.5cm, weak: true)
 
-== Abbreviations<sec:abbreviations>
 #table(
   columns: 2,
   column-gutter: 1.55em,
@@ -24,4 +33,4 @@
   [w.r.t.], [with respect to],
   [w.l.o.g], [without loss of generality],
 )
-
+*/
