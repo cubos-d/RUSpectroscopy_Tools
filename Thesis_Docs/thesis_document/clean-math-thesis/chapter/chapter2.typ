@@ -1,24 +1,34 @@
 = Elasticity in Solids<chap:elastic_theory>
 
-In this chapter, we will explore some essential concepts in the theory of elasticity in solids, which are necessary for understanding the forward problem, discussed in @chap:forward, and the inverse problem, outlined in [], of Resonant Ultrasound Spectroscopy. 
+In this chapter, we will explore some essential concepts in the theory of elasticity in solids, which are necessary for understanding the forward problem, discussed in @chap:forward, and the inverse problem, outlined in [], of Resonant Ultrasound Spectroscopy. Theory of elasticity plays a crucial role in acoustic measurements which give very important information of the fundamental physics in a material #cite(<Maynard_2024>). As we will see in this chapter in @section:Constant_Restrictions, acoustic data determine derivatives of free energy with respect to atomic positions, and provide important information of the physics of the material, like piezoelectric phenomena, thermoelectric phenomena, etc #cite(<Maynard_2024>). Also the measurement of acoustic properties taken as function of temperature or pressure is related to other fundamental thermodynamic quantities like state equation, specific heat, Debye temperature, and can be used to check theoretical models #cite(<Maynard_2024>). Some other applications of acoustic measurements of solids include determining the phonon distribution function of the diamond, checking the life cycle of nuclear fuel like plutonium, finding rare materials with high electrical conductivity and low thermal conductivity to create thermoelectric devices and studying the ample spectrum of piezoelectric materials #cite(<Maynard_2024>).    
 
 #v(1cm)
 
 == The displacement vector and the strain tensor
 
-Let's call the distance from a point inside an unstressed solid to some origin $arrow(r)$. Not let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)_((arrow(r)))$. If $arrow(u)$ was constant, the body would simply be translated and will not have any deformation. To produce a deformation we must make the displacement $arrow(u)$ change from one location to another. The most simple, coordinate independent way to quantify those changes is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
+Let's call the distance from a point inside an unstressed solid to some origin $arrow(r)$. Not let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)(arrow(r))$. Here $arrow(u)$ is the displacement of such point from it's equilibrium position to another position. If $arrow(u)$ was constant along the space, so the displacements of all points in the solid are the same, which means $(partial arrow(u))/(partial x) = (partial arrow(u))/(partial y) = (partial arrow(u))/(partial z) = 0$, the body would simply be translated and will not have any deformation. To have a deformation any of the previous derivatives must be non-zero. In fact, all the information on the deformations (and also rotations as we will see later) of the solid is inside those derivatives. The most simple, coordinate independent way to express the values of those derivatives is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
 
 $ arrow.l.r(W) = arrow(nabla) arrow(u). $<eq:u_gradient>
 
-In a Cartesian coordinate system the components of $arrow.l.r(W)$ are: 
+In Cartesian coordinates one can express the gradient of a vectorial function as a matrix, where each row is the gradient of the individual components of the function. This yields to a well known matrix with a special name: the Jacobian, which is the following: 
 
-$ W_(i j) = (partial u_i) / (partial r_j). $<eq:strain_components>
+$ arrow(nabla) arrow(u) = mat((partial arrow(u))/(partial x),  (partial arrow(u))/(partial y), (partial arrow(u))/(partial z)) =
+  mat(arrow(nabla)^T u_x; arrow(nabla)^T u_y; arrow(nabla)^T u_z) = 
+  mat((partial u_x)/(partial x),(partial u_x)/(partial y), (partial u_x)/(partial z); 
+      (partial u_y)/(partial x),(partial u_y)/(partial y), (partial u_y)/(partial z);
+      (partial u_z)/(partial x),(partial u_z)/(partial y), (partial u_z)/(partial z)) $<eq:MrJacobian>
 
-This tensor can be expressed as the sum of it's symmetric part and it's antisymmetric part, as shown below: 
 
-$ arrow.l.r(W) = 1/2 arrow.l.r(W)_("sym") + 1/2 arrow.l.r(W)_("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
+In summary, in a Cartesian coordinate system the components of $arrow.l.r(W)$ are: 
 
-The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
+$ W_(i j) = (partial u_i) / (partial r_j), $<eq:strain_components>
+
+where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum of it's symmetric part and it's antisymmetric part, as shown below: 
+
+$ arrow.l.r(W) = arrow.l.r(W)_("sym") + arrow.l.r(W)_("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
+
+Let's return [TODO: Take a look to the section 2.1.1 of the Leisure book and derive the strain from that section] 
+// The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
 
 $ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) $<eq:strain_tensor>
 
@@ -86,7 +96,7 @@ For example, $C_(0022) = C_(02)$, $C_(0212) = C_(1202) = C_(43) = C_(34)$ and $C
 
 Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general case. However, due to symmetries, different crystal structures have less independent constants. In this study we will see the particular case of the cubic solids, which have only 3 independent constants. 
 
-== Restrictions between the constants in every crystal structure
+== Restrictions between the constants in every crystal structure<section:Constant_Restrictions>
 
 For a cubic solid, due to it's symmetries, the matrix of elastic constants, using Voigt notation is given by: 
 
