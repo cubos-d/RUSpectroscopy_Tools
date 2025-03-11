@@ -25,7 +25,7 @@ $ W_(i j) = (partial u_i) / (partial r_j), $<eq:strain_components>
 
 where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum of it's symmetric part and it's antisymmetric part, as shown below: 
 
-$ arrow.l.r(W) = arrow.l.r(W)_("sym") + arrow.l.r(W)_("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
+$ arrow.l.r(W) = arrow.l.r(W)^("sym") + arrow.l.r(W)^("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
 
 The curl of $arrow(u)$ contains all the information about rotations of the solid. For example, if the solid rotates an angle $phi$ around the z axis, the curl of the displacement would be just $arrow(nabla) times arrow(u) = 2 phi hat(z)$. The curl of the displacement in cartesian coordinates is: 
 
@@ -33,15 +33,15 @@ $ arrow(nabla) times arrow(u) = mat((partial u_z)/(partial y) - (partial u_y)/(p
 
 On the other hand, an element of the antisymmetric part of $arrow.l.r(W)$ is: 
 
-$ W_("anti" i j) = 1/2 ((partial u_i)/(partial r_j) - (partial u_j)/(partial r_i)). $<eq:w_antisym>
+$ W^("anti")_(i j) = 1/2 ((partial u_i)/(partial r_j) - (partial u_j)/(partial r_i)). $<eq:w_antisym>
 
 Here we can see the antisymmetric part of $arrow.l.r(W)$ and $arrow(nabla) times arrow(u)$ hold the exact same information. In fact we can see the relation between the two here: 
 
-$ W_("anti" i j) = 1/2 sum_(k=1)^(3) epsilon.alt_(i j k) (arrow(nabla) times arrow(u))_k, $<eq:anti_curl_relation>
+$ W^("anti")_(i j) = 1/2 sum_(k=1)^(3) epsilon.alt_(i j k) (arrow(nabla) times arrow(u))_k, $<eq:anti_curl_relation>
 
 where $epsilon.alt_(i j k)$ is the Levi-Civita symbol. This way we can see that the antisymmetric part of $arrow.l.r(W)$ holds the information about the rotations of the solid.  
 
-To get the idea where information about deformation is, inside $arrow.l.r(W)$, we have to go back to the deformed solid where some point inside of it moved from $arrow(r)$ to $arrow(r)_("New") = arrow(r) + arrow(u)$. Now let's think in two points inside the material A and B, which are originally separated by $d arrow(r)$. After a deformation a moves from A to A' and B moves from B to B', so that the new separation is the following #cite(<Leisure_2017>):
+In order to understand where the information about deformation is located, we have to go back to the deformed solid where some point inside of it moved from $arrow(r)$ to $arrow(r)_("New") = arrow(r) + arrow(u)$. Now let's think in two points inside the material $A$ and $B$, which are originally separated by $d arrow(r)$. After a deformation $A$ moves from $A$ to $A_("New")$ and $B$ moves from $B$ to $B_("New")$, so that the new separation is the following #cite(<Leisure_2017>):
 
 $ d arrow(r)_("New") = d arrow(r) + d arrow(u). $<eq:r_new>
 
@@ -69,11 +69,11 @@ and:
 
 $ epsilon_(i j) = 1/2 ((partial u_i)/(partial r_j) + (partial u_j)/(partial r_i) + sum_(l=1)^(3) (partial u_l)/(partial r_i) (partial u_l)/(partial r_j)). $<eq:raw_strain>
 
-For small deformations we can neglect the last term in equation @eq:raw_strain #cite(<Leisure_2017>). Note that only deformations (not rotations) affect $d r_("New")^2 - d r^2$ and also that the remaining terms in $epsilon_(i j)$ makes it the symmetric part of $arrow.l.r(W)$. This tensor $arrow.l.r(epsilon)$ is no other than the strain tensor which is the tensor that gives us all the information about deformations #cite(<Thorne>). With the neglected terms, we get the final expression for the strain tensor:  
+For small deformations we can neglect the last term in equation @eq:raw_strain, because it is a second order term and we only consider lineal deformations #cite(<Leisure_2017>). Note that only deformations (not rotations) affect $d r_("New")^2 - d r^2$ and also that the remaining terms in $epsilon_(i j)$ makes it the symmetric part of $arrow.l.r(W)$. This tensor $arrow.l.r(epsilon)$ is no other than the strain tensor which is the tensor that gives us all the information about deformations #cite(<Thorne>). With the neglected terms, we get the final expression for the strain tensor:  
 
 // The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
 
-$ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) = W_("sym" i j). $<eq:strain_tensor>
+$ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) = W^("sym")_(i j). $<eq:strain_tensor>
 
 == Stress tensor and generalized Hooke's law
 
@@ -89,7 +89,7 @@ The stress, $sigma_(i j)$, is defined as the force per unit area acting in the d
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l). $ <eq:hookes_law>
 
-Here, and from now on we will use the Einstein's notation, where repeated indexes mean that there is a sum of the terms with the same index. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. Here $C_(i j k l)$ are the elastic constants. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are less independent constants in reality. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
+From here on out, we will use the Einstein's notation, where repeated indexes mean that there is a sum of the terms with the same index. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the elastic constants. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are less independent constants in reality. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l) = C_(i j k l) epsilon_(l k), $
 
@@ -115,12 +115,12 @@ The symmetry relations found allow us to interchange the first two indices and t
     table.vline(stroke: .6pt),
     [i index], table.vline(stroke: .6pt),[j index], table.vline(stroke: .6pt), [new index m],
     table.hline(stroke: .6pt),
-    [0], [0], [0],
     [1], [1], [1],
     [2], [2], [2],
-    [1], [2], [3],
-    [0], [2], [4],
-    [0], [1], [5],
+    [3], [3], [3],
+    [2], [3], [4],
+    [1], [3], [5],
+    [1], [2], [6],
     table.vline(stroke: .6pt),
     table.hline(stroke: .6pt),
   ), 
@@ -138,7 +138,7 @@ $ upsilon = 1/2 C_(m n)epsilon_(m)epsilon_(n). $<eq:potential_energy_density>
 From this, it can be seen that the indices n and m can be interchanged, which implies that $ C_(m n) = C_(n m)$. Returning to the old notation, we have
 $ C_(i j k l) = C_(k l i j). $<eq:third_contant_reduction> 
 
-For example, $C_(0022) = C_(02)$, $C_(0212) = C_(1202) = C_(43) = C_(34)$ and $C_(1112) = C_(1121) = C_(13) = C_(31)$. 
+For example, $C_(1133) = C_(13)$, $C_(1323) = C_(2313) = C_(54) = C_(45)$ and $C_(1112) = C_(1121) = C_(16) = C_(61)$. 
 
 Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general case. However, due to symmetries, different crystal structures have less independent constants. In this study we will see the particular case of the cubic solids, which have only 3 independent constants. 
 
@@ -147,12 +147,12 @@ Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general 
 For a cubic solid, due to it's symmetries, the matrix of elastic constants, using Voigt notation is given by: 
 
 $ arrow.l.r(C) = mat(
-  C_(00), C_(01), C_(01), 0, 0, 0;
-  C_(01), C_(00), C_(01), 0, 0, 0;
-  C_(01), C_(01), C_(00), 0, 0, 0;
-  0, 0, 0, C_(33), 0, 0;
-  0, 0, 0, 0, C_(33), 0;
-  0, 0, 0, 0, 0, C_(33);
+  C_(11), C_(12), C_(12), 0, 0, 0;
+  C_(12), C_(11), C_(12), 0, 0, 0;
+  C_(12), C_(12), C_(11), 0, 0, 0;
+  0, 0, 0, C_(44), 0, 0;
+  0, 0, 0, 0, C_(44), 0;
+  0, 0, 0, 0, 0, C_(44);
 ) $
 
 In order for a solid to be a feasible one, it must be mechanically stable. That is, it's free energy in function of the different strains must be in a minimum. This implies that the elastic constants matrix, which is #cite(<Mouhat_2014>): 
