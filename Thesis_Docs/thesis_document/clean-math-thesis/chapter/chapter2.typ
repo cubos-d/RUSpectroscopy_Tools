@@ -6,7 +6,7 @@ In this chapter, we will explore some essential concepts in the theory of elasti
 
 == The displacement vector and the strain tensor
 
-Let's call the distance from a point inside an unstressed solid to some origin $arrow(r)$. Not let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)(arrow(r))$. Here $arrow(u)$ is the displacement of such point from it's equilibrium position to another position. If $arrow(u)$ was constant along the space, so the displacements of all points in the solid are the same, which means $(partial arrow(u))/(partial x) = (partial arrow(u))/(partial y) = (partial arrow(u))/(partial z) = 0$, the body would simply be translated and will not have any deformation. To have a deformation any of the previous derivatives must be non-zero. In fact, all the information on the deformations (and also rotations as we will see later) of the solid is inside those derivatives. The most simple, coordinate independent way to express the values of those derivatives is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
+Let's call the distance from a point inside an unstressed solid to some origin $arrow(r)$. Not let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)(arrow(r))$. Here $arrow(u)$ is the displacement of such point from it's equilibrium position to another position. We call it the displacement vector. If $arrow(u)$ was constant along the space, so the displacements of all points in the solid are the same, which means $(partial arrow(u))/(partial x) = (partial arrow(u))/(partial y) = (partial arrow(u))/(partial z) = 0$, the body would simply be translated and will not have any deformation. To have a deformation any of the previous derivatives must be non-zero. In fact, all the information on the deformations and rotations of the solid is inside those derivatives. The most simple, coordinate independent way to express the values of those derivatives is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
 
 $ arrow.l.r(W) = arrow(nabla) arrow(u). $<eq:u_gradient>
 
@@ -27,10 +27,53 @@ where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum 
 
 $ arrow.l.r(W) = arrow.l.r(W)_("sym") + arrow.l.r(W)_("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
 
-Let's return [TODO: Take a look to the section 2.1.1 of the Leisure book and derive the strain from that section] 
+The curl of $arrow(u)$ contains all the information about rotations of the solid. For example, if the solid rotates an angle $phi$ around the z axis, the curl of the displacement would be just $arrow(nabla) times arrow(u) = 2 phi hat(z)$. The curl of the displacement in cartesian coordinates is: 
+
+$ arrow(nabla) times arrow(u) = mat((partial u_z)/(partial y) - (partial u_y)/(partial z); (partial u_x)/(partial z) - (partial u_z)/(partial x); (partial u_y)/(partial x) - (partial u_x)/(partial y)). $<eq:curl_operator>
+
+On the other hand, an element of the antisymmetric part of $arrow.l.r(W)$ is: 
+
+$ W_("anti" i j) = 1/2 ((partial u_i)/(partial r_j) - (partial u_j)/(partial r_i)). $<eq:w_antisym>
+
+Here we can see the antisymmetric part of $arrow.l.r(W)$ and $arrow(nabla) times arrow(u)$ hold the exact same information. In fact we can see the relation between the two here: 
+
+$ W_("anti" i j) = 1/2 sum_(k=1)^(3) epsilon.alt_(i j k) (arrow(nabla) times arrow(u))_k, $
+
+where $epsilon.alt_(i j k)$ is the Levi-Civita symbol. This way we can see that the antisymmetric part of $arrow.l.r(W)$ holds the information about the rotations of the solid.  
+
+To get the idea where information about deformation is, inside $arrow.l.r(W)$, we have to go back to the deformed solid where some point inside of it moved from $arrow(r)$ to $arrow(r)_("New") = arrow(r) + arrow(u)$. Now let's think in two points inside the material A and B, which are originally separated by $d arrow(r)$. After a deformation a moves from A to A' and B moves from B to B', so that the new separation is the following #cite(<Leisure_2017>):
+
+$ d arrow(r)_("New") = d arrow(r) + d arrow(u). $<eq:r_new>
+
+Let's consider the difference in the square of the distance between the two points and how it changes with the deformation #cite(<Leisure_2017>): 
+
+$ d r_("New")^2 = d r^2 + 2 d arrow(r) dot d arrow(u) + d u^2. $<eq:defo_distances>
+
+Given that $arrow(u)$ is function of $arrow(r)$, we can express each component of $d arrow(u)$ the following way #cite(<Leisure_2017>):
+
+$ d u_i = sum_(j = 1)^(3)(partial u_i)/(partial r_j) d r_j. $<eq:ui_changes>
+
+Replacing @eq:ui_changes into @eq:defo_distances we get: 
+
+$ d r_("New")^2 = d r^2 + 2 sum_(i=1)^(3) sum_(j=1)^(3) (partial u_i)/(partial r_j) d r_j d r_i + sum_(i=1)^(3) sum_(j=1)^(3) sum_(l=1)^(3) ((partial u_i)/(partial r_j) d r_j ) ((partial u_i)/(partial r_l) d r_l ). $
+
+Rearranging the indices and doing some algebra we finally get to the following expression #cite(<Leisure_2017>):
+
+$ d r_("New")^2 - d r^2 = sum_(i=1)^(3) sum_(j=1)^(3) ((partial u_i)/(partial r_j) + (partial u_j)/(partial r_i) + sum_(l=1)^(3) (partial u_l)/(partial r_i) (partial u_l)/(partial r_j)) d r_i d r_j. $<eq:a_deformation>
+
+Let's define a new tensor $arrow.l.r(epsilon)$ (whose name will be given later) where 
+
+$ d r_("New")^2 - d r^2 = sum_(i=1)^(3) sum_(j=1)^(3) 2 epsilon_(i j) d r_i d r_j, $ <eq:a_deformation_again>
+
+and: 
+
+$ epsilon_(i j) = 1/2 ((partial u_i)/(partial r_j) + (partial u_j)/(partial r_i) + sum_(l=1)^(3) (partial u_l)/(partial r_i) (partial u_l)/(partial r_j)). $<eq:raw_strain>
+
+For small deformations we can neglect the last term in equation @eq:raw_strain #cite(<Leisure_2017>). Note that only deformations (not rotations) affect $d r_("New")^2 - d r^2$ and also that the remaining terms in $epsilon_(i j)$ makes it no other than the symmetric part of $arrow.l.r(W)$. This tensor $arrow.l.r(epsilon)$ is no other than the strain tensor which is the tensor that gives us all the information about deformations #cite(<Thorne>). With the neglected terms, we get the final expression for the strain tensor:  
+
 // The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
 
-$ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) $<eq:strain_tensor>
+$ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) = W_("sym" i j). $<eq:strain_tensor>
 
 == Stress tensor and generalized Hooke's law
 
