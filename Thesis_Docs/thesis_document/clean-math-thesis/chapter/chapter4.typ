@@ -1,117 +1,29 @@
-// package imports
-#import "@preview/lovelace:0.3.0": *
+= Making the inverse problem a simpler one <chap:transformations>
 
-// own imports
-#import "../customization/great-theorems-customized.typ": *
+== Simplifying the problem: Getting eigenvalues that are independent of the size of the sample
 
+We can see from the equations @eq:Gamma_matrix_def and @eq:raw_eig_problem, that the squared frequencies $omega^2$ depend on the size of the sample. If we measure the frequencies of a certain sample, let's call them $omega_(i)^2$, and then measure the frequencies of a second sample of the same material, same shape, but different size, for example two times the size of the first sample, $L_(x 2) = 2 L_(x 1), L_(y 2) = 2 L_(y 1), L_(z 2) = 2 L_(z 1)$, we will get as a result that the squared frequencies of the second sample are 4 times the frequencies of the first sample. In other words, with the second sample we would get the following frequencies: $4 omega_(i)^2$. We want to be able to get the constants of every sample regardless the size of the sample.
 
-= Example Chapter <chap:example>
+Let's multiply to both sides of the equation @eq:raw_eig_problem the following: $V/R$, where $V$ is the volume of the sample and 
 
-#lorem(50)
+$ R = sqrt(L_x^2 + L_y^2 + L_z^2). $<eq:R>
 
-== Example Use of the Theorem Environment <sec:example_theorem>
- An example citation is //@Cooley65, then we also see the bibliography at the end of the document.
+This way the @eq:raw_eig_problem is now as follows: 
 
-Example definition in @def:Example. This and all the following are examples using `great-theorems`.
-#definition(title: "Example Definition")[
-  This is how a definition looks like in this template.
-  To also have a definition we state
-  $
-  e = sum_(k=0)^oo 1/k!.
-  $
-]<def:Example>
+ $ rho V omega^2/R arrow.l.r(Epsilon) arrow(a) = V/R arrow.l.r(Gamma) arrow(a). $<eq:eig_preparing>
 
-#example(title: "Example Example")[
-  The exponential function at $a in RR$ can be expressed as
-  $
-  e ^a = sum_(k=0)^oo a^k/k!.
-  $
-]
+Let's define a new matrix $arrow.l.r(Kai) = V/R arrow.l.r(Gamma)$. With this definition we have the final generalized eigenvalue problem to solve: 
 
-#theorem[
-  The number $e$ is irrational
-]
-#proof[
-  The proof that $e$ is irrational is left to the reader.
-]
+$ lambda arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Kai) arrow(a). $<eq:eig_final>
 
+In equation @eq:eig_final $lambda = m omega^2/R$ and an element of the matrix $arrow.l.r(Kai)$ is given by:  
 
-#remark(title: "Further Theorem Environments")[
-  For a complete list of theorem environments, have a look at `customization/great-theorems-customization.typ`. There we can also change colors, other preferences, or add more environments if needed.
-]
-#lemma(title: "what about " + $sqrt(2)$ + "?")[
-  We state $sqrt(2) in RR without QQ$.
-]
-#proof[
-  Trivial, but the proof is not done yet.
+$ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Peso_matrix_def>
 
-  To demonstrate the breaking behavior we add another
+where $L_(j l) = L_(3 - j - l)$ if $j != l$. Else $L_(j l) = (L_x L_y L_z)/L_j^2$.
 
-  #lorem(150)
-]
+From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample. They only depend on the values of the constants and the shape of the sample (but not it's size).
 
-== Example Equations <sec:example_equations>
-Here we will have some equations. E.g.
-$
-(a + b)^2 = a^2 + 2a b + b^2
-$<eq:first_binom>
-which is labeled and therefore numbered. We can also reference it: @eq:first_binom.
-In the following, we have a multiline equation to demonstrate how `equate` handles it (if activated).
-$
-15^2 &= (10 + 5)^2 #<eq:sub1>\
-&= 10^2 + 2 * 10 * 5 + 5^2 #<eq:sub2>\
-&= 100 + 100 + 25 \
-&= 225.
-$<eq:multi_line_binom>
+== Defining the shape of a 3D sample with two parameters
 
-If `equate` is activated by passing `equate-settings` to the `template`, we can reference a subequation @eq:sub1
-or the whole equation @eq:multi_line_binom.
-Equations that are not of the same importance can be inline, e.g. $(a + b) (a - b) = a^2 - b^2$ or unlabeled
-$
-(a - b)^2 = a^2 - 2a b + b^2.
-$
-To make sure we do not break inline equations, we have this long equation$a^2 + b^2 = c^2; a,b,c in RR subset.not QQ := {m/n : m,n in ZZ} subset.not ZZ subset.not NN_0 := NN union {0}.$ As we see, it works.
-
-=== Example Algorithm, Table and Figure <sec:example_algo_table_and_fig>
-
-Here we have a complicated procedure in @algo:example_algo (using `lovelace`) which we could elaborate on for pages
-#figure(
-  kind: "algorithm",
-  supplement: [Algorithm],
-  pseudocode-list(booktabs: true, numbered-title: [#smallcaps[Example Algorithm]])[
-    - Input: $A, B, C$
-    + *for* $i in {A,B,C}$ #v(1mm)
-      + do very fancy stuff
-      + #line-label(<line:stopping>)*if* motivation is lost: *break*
-
-    + *end*
-  ],
-)<algo:example_algo>
-
-Because we do not want an empty list of figures, we can add the logos from the cover page once again in @fig:example
-#figure(
-  grid(
-    columns: 2,     // 2 means 2 auto-sized columns
-    gutter: 2mm,    // space between columns
-    image("../images/logo_placeholder.svg", width: 90%), // first image
-    image("../images/logo_placeholder.svg", width: 90%), // second image
-  ),
-  caption: "Two beautiful images."
-)<fig:example>
-
-#lorem(20)
-
-In @table:irrational_numbers we compare some irrational numbers, my favourite one is marked in green.
-
-#figure(
-  caption: "Some irrational numbers.",
-  table(
-  columns: 2,
-  stroke: none,
-    [], table.vline(stroke: .6pt),[approx. value],
-    table.hline(stroke: .6pt),
-    [$sqrt(2)$], [#calc.round(calc.sqrt(2), digits: 2)],
-    [$e$], [#calc.round(calc.exp(1), digits: 2)],
-    [$pi$], table.cell(fill:green)[#calc.round(calc.pi, digits: 2)],
-)
-)<table:irrational_numbers>
+TODO: Define $eta$ and $beta$ and explian why these two parameters can define the shape of a solid. 
