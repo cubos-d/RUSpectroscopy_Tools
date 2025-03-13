@@ -20,7 +20,7 @@ Replacing the definition of the strain tensor components given by @eq:strain_ten
 
 $ U = 1/2 integral_V  C_(i j k l) (partial u_i)/(partial r_j) (partial u_k)/(partial r_l) d V, $<eq:potential_raw>
 
-where $r_0 = x$, $r_1 = y$, and $r_2 = z$. Using Rayleigh-Ritz method #cite(<Migliori_1993>) $u_i$ displacements can be expressed in terms of base functions the following way:
+where $r_1 = x$, $r_2 = y$, and $r_3 = z$. Using Rayleigh-Ritz method #cite(<Migliori_1993>) $u_i$ displacements can be expressed in terms of base functions the following way:
 
 $ u_i =  a_(i lambda mu nu) phi.alt_(lambda mu nu). $ <eq:u_in_terms_basis_func>
 
@@ -36,11 +36,11 @@ $ U = 1/2 a_(i lambda_1 mu_1 nu_1) Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2
 
 where 
 
-$ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_( i k) phi.alt_(i lambda_1 mu_1 nu_1) phi.alt_(k lambda_2 mu_2 nu_2) d V $<eq:E_matrix>
+$ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_( i k) phi.alt_(lambda_1 mu_1 nu_1) phi.alt_(lambda_2 mu_2 nu_2) d V $<eq:E_matrix>
 
 and
 
-$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l) integral_V (partial phi.alt_(i lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(k lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
+$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l) integral_V (partial phi.alt_(lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
 
 The constants $a_(i lambda mu nu)$ can be organized inside a vector $arrow(a)$. The organization of this vector can be arbitrary as long it is consistent with the organization of the values of $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ in their respective matrices. In the present project, all the combinations of $lambda, mu, nu$ concerning the displacement in $x$ ($u_x$) were put first, then the values concerning the displacement in $y$ ($u_y$) and finally the values concerning the displacement in $z$ ($u_z$), creating the vector in three blocks. In each block, we have all the possible combinations of $lambda, mu, nu$ where $lambda + mu + nu lt.eq N_g$. Each block was generated according the following code in C:
 #figure(
@@ -76,31 +76,15 @@ int **generate_combinations(int N) {
   caption: [Code to generate all the possible combinations where $lambda + mu + nu lt.eq N_g$.]
 )<code:index_combinations>
 
-In @code:index_combinations, we can see the pointer "combi" as a matrix where each row is a combination of indices $lambda, mu, nu$. The first column contains the value of $lambda$ the second one contains the value of $mu$ and the third one contains the value of $nu$. The values of each block in $arrow(a)$ are arranged in the same order as the rows in the "combi" matrix are arranged. For example, with a value of $N_g = 1$ we get the following vector $arrow(a)$:
+In @code:index_combinations, we can see the pointer "combi" as a matrix where each row is a combination of indexes $lambda, mu, nu$. The first column contains the value of $lambda$ the second one contains the value of $mu$ and the third one contains the value of $nu$. The values of each block in $arrow(a)$ are arranged in the same order as the rows in the "combi" matrix are arranged. For example, with a value of $N_g = 1$ we get the following vector $arrow(a)$:
 
 $ arrow(a) = mat(a_(x 000), a_(x 001), a_(x 010), a_(x 100), a_(y 000), a_(y 001), a_(y 010), a_(y 100), a_(z 000), a_(z 001), a_(z 010), a_(z 100))^T $<eq:whois_baby_a>
 
-Note that each block have the combinations of indices 000, 001, 010 and 100. With an $N_g = 2$ we get the following $arrow(a)$:
+Note that each block have the combinations of indexes 000, 001, 010 and 100. With an $N_g = 2$ we get the following $arrow(a)$:
 
-$ arrow(a) = mat(a_(x 000), a_(x 001), a_(x 010), a_(x 100), a_(x 200), a_(x 011), a_(x 020), a_(x 101), a_(x 110), a_(x 200), a_(y 000), a_(y 001), a_(y 010), dots)^T $<eq:whois_a>
+$ arrow(a) = mat(a_(x 000), a_(x 001), a_(x 010), a_(x 100), a_(x 002), a_(x 011), a_(x 020), a_(x 101), a_(x 110), a_(x 200), a_(y 000), a_(y 001), a_(y 010), dots)^T $<eq:whois_a>
 
-On the other hand, the values of $Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ and $Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ can be organized inside the matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$. In those matrices, the row position is determined by the indices before the semicolon ($i, lambda_1, mu_1, nu_1$) in the same order the indexes $i, lambda, mu, nu$ are organized in $arrow(a)$, while the column position is determined by the indices after the semicolon ($k, lambda_2, mu_2, nu_2$), also in the same order as the indexes in $arrow(a)$.
-
-Here is an example of $arrow.l.r(Epsilon)$ matrix built with a value of $N_g = 1$: 
-
-$ arrow.l.r(Epsilon) = integral_V mat(1, z, y, x, 0, 0, 0, 0, 0, 0, 0, 0;
-                           z, z^2, y z, x z, 0, 0, 0, 0, 0, 0, 0, 0;
-                           y, z y, y^2, x y, 0, 0, 0, 0, 0, 0, 0, 0;
-                           x, x z, x y, x^2, 0, 0, 0, 0, 0, 0, 0, 0;
-                           0, 0, 0, 0, 1, z, y, x, 0, 0, 0, 0, ;
-                           0, 0, 0, 0, z, z^2, y z, x z, 0, 0, 0, 0;
-                           0, 0, 0, 0, y, y z, y^2, x y, 0, 0, 0, 0;
-                           0, 0, 0, 0, x, x z, x y, x^2, 0, 0, 0, 0;
-                           0, 0, 0, 0, 0, 0, 0, 0, 1, z, y, x;
-                           0, 0, 0, 0, 0, 0, 0, 0, z, z^2, y z, x z;
-                           0, 0, 0, 0, 0, 0, 0, 0, y, y z, y^2, x y;
-                           0, 0, 0, 0, 0, 0, 0, 0, x, x z, x y, x^2;
-                          ) d V, $<eq:E_matrix_example>
+On the other hand, the values of $Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ and $Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ can be organized inside the matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$. In those matrices, the row position is determined by the indexes before the semicolon ($i, lambda_1, mu_1, nu_1$) in the same order the indexes $i, lambda, mu, nu$ are organized in $arrow(a)$, while the column position is determined by the indexes after the semicolon ($k, lambda_2, mu_2, nu_2$), also in the same order as the indexes in $arrow(a)$. Equation @eq:E_matrix_example shows an example of an $arrow.l.r(Epsilon)$ matrix built with a value of $N_g = 1$.
 
 This way, we can express the kinetic and potential energy in terms of vector and matrix products: 
 
@@ -124,7 +108,25 @@ and an element of the $arrow.l.r(Gamma)$ matrix is given by:
 
 $ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Gamma_matrix_def>
 
-where $b_j = r_j/L_j$. In other words: $b_0 = x/L_x = X, b_1 = y/L_y = Y$ and $b_2 = z/L_z = Z$.
+where $b_j = r_j/L_j$. In other words: $b_1 = x/L_x = X, b_2 = y/L_y = Y$ and $b_3 = z/L_z = Z$.
+
+Here is an example of $arrow.l.r(Epsilon)$ matrix built with a value of $N_g = 1$: 
+
+$ arrow.l.r(Epsilon) = integral_V mat(1, Z, Y, X, 0, 0, 0, 0, 0, 0, 0, 0;
+                           Z, Z^2, Y Z, X Z, 0, 0, 0, 0, 0, 0, 0, 0;
+                           Y, Y Z, Y^2, X Y, 0, 0, 0, 0, 0, 0, 0, 0;
+                           X, X Z, X Y, X^2, 0, 0, 0, 0, 0, 0, 0, 0;
+                           0, 0, 0, 0, 1, Z, Y, X, 0, 0, 0, 0, ;
+                           0, 0, 0, 0, Z, Z^2, Y Z, X Z, 0, 0, 0, 0;
+                           0, 0, 0, 0, Y, Y Z, Y^2, X Y, 0, 0, 0, 0;
+                           0, 0, 0, 0, X, X Z, X Y, X^2, 0, 0, 0, 0;
+                           0, 0, 0, 0, 0, 0, 0, 0, 1, Z, Y, X;
+                           0, 0, 0, 0, 0, 0, 0, 0, Z, Z^2, Y Z, X Z;
+                           0, 0, 0, 0, 0, 0, 0, 0, Y, Y Z, Y^2, X Y;
+                           0, 0, 0, 0, 0, 0, 0, 0, X, X Z, X Y, X^2;
+                          ) d X d Y d Z. $<eq:E_matrix_example>
+
+For example, in the third row we have the following values for the first 4 indexes: $i = 1, lambda_1 = 0, mu_1 = 1, nu_1 = 0$, and in the second column we have the following values for the last 4 indexes $k = 1, lambda_2 = 0, mu_2 = 0, nu_2 = 1$. 
 
 
 //PLACE HERE THE EXAMPLE OF GAMMA MATRIX
@@ -140,5 +142,3 @@ Using @eq:Peso_matrix_def we can get the eigenvalues $omega_n$ of a spheric soli
 ) <fig:degenerate_eigenvalues>
 
 It can be noted that there is a lot of degenerate eigenvalues, and the number of degenerate eigenvalues in each level is odd. This is due to the isotropic nature of the material, and it's spherical geometry.  
-
-
