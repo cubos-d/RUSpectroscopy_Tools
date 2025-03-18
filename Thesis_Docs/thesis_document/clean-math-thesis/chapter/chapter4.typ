@@ -36,12 +36,25 @@ $ lambda arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Kai) arrow(a). $<eq:eig_final>
 
 In equation @eq:eig_final $lambda = m omega^2/R$ and an element of the matrix $arrow.l.r(Kai)$ is given by:  
 
-$ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Peso_matrix_def>
+$ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=1)^3 sum_(l=1)^3 L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Peso_matrix_def>
 
 where $L_(j l) = L_(6 - j - l)$ if $j != l$. Else $L_(j l) = (L_x L_y L_z)/L_j^2$.
 
-From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample. They only depend on the values of the constants and the shape of the sample (but not it's size).
+From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample, because $L_(j l)/R$ does not change with the size of the sample, and only changes with the proportions of $L_x$, $L_y$ and $L_z$. In summary, the eigenvalues $lambda$ only depend on the values of the elastic constants and the aspect ratio of the sample. This way we can eliminate the feature of the sample size, encoded in the variables $L_x$, $L_y$ and $L_z$, and we will see how right now. 
 
 == Defining the shape of a 3D sample with two parameters
 
-TODO: Define $eta$ and $beta$ and explian why these two parameters can define the shape of a solid. 
+To define the aspect ratio of a solid we would need only 2 parameters, for example we would need, $L_x/L_y$ and $L_y/L_z$. Nevertheless, defining the range of those values in which our data will be is quite difficult. Both $L_x/L_y$ and $L_y/L_z$ can be arbitrarily big, which doesn't solve the problem of having clear range of feature data generation. So we could define the following parameters $g_x = L_x/(L_x + L_y + L_z)$ and $g_y = L_y/(L_x + L_y + L_z)$, knowing that both have values between 0 and 1. This parameters are better, but are a little tricky to generate, because we cannot just generate some arbitrary numbers between 0 and 1, for example generating a value $g_x = 0.5$ and a value of $g_y = 0.6$, because the following condition must be met: $g_x + g_y lt.eq 1$. Still, is possible to generate values of those parameters respecting the restriction, but there is a way to approach this problem in a simpler and easier way. 
+
+Let's recall the parameter $R$ we defined in @eq:R. This is no other that the length of a line that goes from one vertex of the parallelepiped to it opposite vertex. Imagine now that the solid is inside a sphere of radius $R$ with one vertex at the origin and the opposite vertex touching the surface of the sphere as shown in the following figure:
+
+#figure(
+  image("../images/space_sphere.png", width: 75%),
+  caption: [Sample of a parallelepiped solid inside a sphere.]
+)<fig:aspect_ratio_space> 
+
+Here one can easily see the dimensions of the solid as coordinates of the vertex opposite to the origin, where:
+
+$ L_x = R sin(theta) cos(phi), L_y = R sin(theta) sin(phi), L_z = R cos(theta). $
+
+The angles $theta$ and $phi$ can represent any point of the surface of such sphere, thus they are also capable to represent any aspect ratio of the solid. For example, an aspect ratio of 3:4:5, can be represented with the following angles: $theta = arctan(sqrt(3^2 + 4^2)/5) = arctan(1) = pi/4$, $phi = arctan(4/3) = 0.29 pi$. Given there is no solid with negative lengths, so angles above $pi/2$ are forbidden, we can generate data representing every aspect ratio, generating values of $theta$ and $phi$ between 0 and $pi/2$. However, the eigenvalues of a solid with $L_x = 5$, $L_y = 4$ and $L_z = 3$ will be the same ones as the same solid with dimensions $L_x = 4$, $L_y = 5$ and $L_z = 3$. In other words, there is a lot of redundancy that can be eliminated. //To start removing redundancy, lets put the largest dimension as $L_z$ always and the lowest dimension as $L_y$.  

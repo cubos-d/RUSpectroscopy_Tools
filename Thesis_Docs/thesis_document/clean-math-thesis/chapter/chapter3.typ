@@ -40,7 +40,7 @@ $ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_( i k
 
 and
 
-$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l) integral_V (partial phi.alt_(lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
+$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=1)^3 sum_(l=1)^3 C_(i j k l) integral_V (partial phi.alt_(lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
 
 The constants $a_(i lambda mu nu)$ can be organized inside a vector $arrow(a)$. The organization of this vector can be arbitrary as long it is consistent with the organization of the values of $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ in their respective matrices. In the present project, all the combinations of $lambda, mu, nu$ concerning the displacement in $x$ ($u_x$) were put first, then the values concerning the displacement in $y$ ($u_y$) and finally the values concerning the displacement in $z$ ($u_z$), creating the vector in three blocks. In each block, we have all the possible combinations of $lambda, mu, nu$ where $lambda + mu + nu lt.eq N_g$. Each block was generated according the following code in C:
 #figure(
@@ -106,7 +106,7 @@ $ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_(i k)
 
 and an element of the $arrow.l.r(Gamma)$ matrix is given by: 
 
-$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=0)^2 sum_(l=0)^2 C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Gamma_matrix_def>
+$ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=1)^3 sum_(l=1)^3 C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Gamma_matrix_def>
 
 where $b_j = r_j/L_j$. In other words: $b_1 = x/L_x = X, b_2 = y/L_y = Y$ and $b_3 = z/L_z = Z$.
 
