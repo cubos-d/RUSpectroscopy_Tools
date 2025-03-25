@@ -1,29 +1,29 @@
 = Elasticity in Solids<chap:elastic_theory>
 
-In this chapter, we will explore some essential concepts in the theory of elasticity in solids, which are necessary for understanding the forward problem, discussed in @chap:forward, and the inverse problem, outlined in [], of Resonant Ultrasound Spectroscopy. Theory of elasticity plays a crucial role in acoustic measurements which give very important information of the fundamental physics in a material #cite(<Maynard_2024>). As we will see in this chapter in @section:Constant_Restrictions, acoustic data determine derivatives of free energy with respect to atomic positions, and provide important information of the physics of the material, like piezoelectric phenomena, thermoelectric phenomena, etc #cite(<Maynard_2024>). Also the measurement of acoustic properties taken as function of temperature or pressure is related to other fundamental thermodynamic quantities like state equation, specific heat, Debye temperature, and can be used to check theoretical models #cite(<Maynard_2024>). Some other applications of acoustic measurements of solids include determining the phonon distribution function of the diamond, checking the life cycle of nuclear fuel like plutonium, finding rare materials with high electrical conductivity and low thermal conductivity to create thermoelectric devices and studying the ample spectrum of piezoelectric materials #cite(<Maynard_2024>).    
+In this chapter, we will explore some essential concepts in the theory of elasticity in solids, which are necessary for understanding the forward problem, discussed in @chap:forward, and the inverse problem, outlined in @chap:transformations/* and chapter 5*/, of Resonant Ultrasound Spectroscopy. The theory of elasticity plays a crucial role in acoustic measurements which give very important information of the fundamental physics in a material #cite(<Maynard_2024>). As we will see in this chapter in @section:Constant_Restrictions, acoustic data determine derivatives of free energy with respect to atomic positions, and provide important information of the physics of the material, like piezoelectric and thermoelectric phenomena, etc #cite(<Maynard_2024>). Also the measurement of acoustic properties taken as function of temperature or pressure is related to other fundamental thermodynamic quantities like the state equation, specific heat, Debye temperature, and can be used to check theoretical models #cite(<Maynard_2024>). Some other applications of acoustic measurements of solids include determining the phonon distribution function of diamond, checking the life cycle of nuclear fuel like plutonium, finding rare materials with high electrical conductivity and low thermal conductivity to create thermoelectric devices and studying the ample spectrum of piezoelectric materials #cite(<Maynard_2024>).    
 
 #v(1cm)
 
 == The displacement vector and the strain tensor
 
-Let's call the distance from a point inside an unstressed solid to some origin $arrow(r)$. Not let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)(arrow(r))$. Here $arrow(u)$ is the displacement of such point from it's equilibrium position to another position. We call it the displacement vector. If $arrow(u)$ was constant along the space, so the displacements of all points in the solid are the same, which means $(partial arrow(u))/(partial x) = (partial arrow(u))/(partial y) = (partial arrow(u))/(partial z) = 0$, the body would simply be translated and will not have any deformation. To have a deformation any of the previous derivatives must be non-zero. In fact, all the information on the deformations and rotations of the solid is inside those derivatives. The most simple, coordinate independent way to express the values of those derivatives is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
+Let's call the position vector from a point inside an unstressed solid to some origin $arrow(r)$. Now let's apply a force to the body so it deforms and the point moves from $arrow(r)$ to $arrow(r) + arrow(u)(arrow(r))$. Here $arrow(u)$ is the displacement of such point from equilibrium position to another position. We call it the displacement vector. If $arrow(u)$ was constant throughout space, so the displacements of all points in the solid are the same and there is no change of displacement respect to any coordinate $x$, $y$ or $z$, which means $(partial arrow(u))/(partial x) = (partial arrow(u))/(partial y) = (partial arrow(u))/(partial z) = 0$, the body would simply be translated and will not have any deformation. To have a deformation any of the previous derivatives must be non-zero. In fact, all the information on the deformations and rotations of the solid is contained in those derivatives. The most simple, coordinate independent way to express the values of those derivatives is by the gradient of $arrow(u)$. This gradient is a second-rank tensor denoted by $arrow.l.r(W)$ #cite(<Thorne>): 
 
 $ arrow.l.r(W) = arrow(nabla) arrow(u). $<eq:u_gradient>
 
-In Cartesian coordinates one can express the gradient of a vectorial function as a matrix, where each row is the gradient of the individual components of the function. This yields to a well known matrix with a special name: the Jacobian, which is the following: 
+In Cartesian coordinates one can express the gradient of a vector function as a matrix, where each row is the gradient of the individual components of the function. This yields to a well known matrix with a special name: the Jacobian, which is the following: 
 
 $ arrow(nabla) arrow(u) = mat((partial arrow(u))/(partial x),  (partial arrow(u))/(partial y), (partial arrow(u))/(partial z)) =
   mat(arrow(nabla)^T u_x; arrow(nabla)^T u_y; arrow(nabla)^T u_z) = 
   mat((partial u_x)/(partial x),(partial u_x)/(partial y), (partial u_x)/(partial z); 
       (partial u_y)/(partial x),(partial u_y)/(partial y), (partial u_y)/(partial z);
-      (partial u_z)/(partial x),(partial u_z)/(partial y), (partial u_z)/(partial z)) $<eq:MrJacobian>
+      (partial u_z)/(partial x),(partial u_z)/(partial y), (partial u_z)/(partial z)). $<eq:MrJacobian>
 
 
-In summary, in a Cartesian coordinate system the components of $arrow.l.r(W)$ are: 
+In other words, in a Cartesian coordinate system the components of $arrow.l.r(W)$ are: 
 
 $ W_(i j) = (partial u_i) / (partial r_j), $<eq:strain_components>
 
-where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum of it's symmetric part and it's antisymmetric part, as shown below: 
+where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum of the symmetric part and the antisymmetric part, as shown below: 
 
 $ arrow.l.r(W) = arrow.l.r(W)^("sym") + arrow.l.r(W)^("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
 
@@ -41,7 +41,7 @@ $ W^("anti")_(i j) = 1/2 sum_(k=1)^(3) epsilon.alt_(i j k) (arrow(nabla) times a
 
 where $epsilon.alt_(i j k)$ is the Levi-Civita symbol. This way we can see that the antisymmetric part of $arrow.l.r(W)$ holds the information about the rotations of the solid.  
 
-In order to understand where the information about deformation is located, we have to go back to the deformed solid where some point inside of it moved from $arrow(r)$ to $arrow(r)_("New") = arrow(r) + arrow(u)$. Now let's think in two points inside the material $A$ and $B$, which are originally separated by $d arrow(r)$. After a deformation $A$ moves from $A$ to $A_("New")$ and $B$ moves from $B$ to $B_("New")$, so that the new separation is the following #cite(<Leisure_2017>):
+In order to understand where the information about deformation comes from, we have to go back to the deformed solid where some point inside of it moved from $arrow(r)$ to $arrow(r)_("New") = arrow(r) + arrow(u)$. Now let's think in two points inside the material $A$ and $B$, which are originally separated by $d arrow(r)$. After a deformation $A$ moves from $A$ to $A_("New")$ and $B$ moves from $B$ to $B_("New")$, so that the new separation is the following #cite(<Leisure_2017>):
 
 $ d arrow(r)_("New") = d arrow(r) + d arrow(u). $<eq:r_new>
 
@@ -57,19 +57,19 @@ Replacing @eq:ui_changes into @eq:defo_distances we get:
 
 $ d r_("New")^2 = d r^2 + 2 sum_(i=1)^(3) sum_(j=1)^(3) (partial u_i)/(partial r_j) d r_j d r_i + sum_(i=1)^(3) sum_(j=1)^(3) sum_(l=1)^(3) ((partial u_i)/(partial r_j) d r_j ) ((partial u_i)/(partial r_l) d r_l ). $
 
-Rearranging the indices and doing some algebra we finally get to the following expression #cite(<Leisure_2017>):
+Rearranging the indices and doing some algebra we get to the following expression #cite(<Leisure_2017>):
 
 $ d r_("New")^2 - d r^2 = sum_(i=1)^(3) sum_(j=1)^(3) ((partial u_i)/(partial r_j) + (partial u_j)/(partial r_i) + sum_(l=1)^(3) (partial u_l)/(partial r_i) (partial u_l)/(partial r_j)) d r_i d r_j. $<eq:a_deformation>
 
-Let's define a new tensor $arrow.l.r(epsilon)$ (whose name will be given later) where 
+Let's define a new tensor $arrow.l.r(epsilon)$ (whose name will be given later) such that 
 
 $ d r_("New")^2 - d r^2 = sum_(i=1)^(3) sum_(j=1)^(3) 2 epsilon_(i j) d r_i d r_j, $ <eq:a_deformation_again>
 
-and: 
+and 
 
 $ epsilon_(i j) = 1/2 ((partial u_i)/(partial r_j) + (partial u_j)/(partial r_i) + sum_(l=1)^(3) (partial u_l)/(partial r_i) (partial u_l)/(partial r_j)). $<eq:raw_strain>
 
-For small deformations we can neglect the last term in equation @eq:raw_strain, because it is a second order term and we only consider lineal deformations #cite(<Leisure_2017>). Note that only deformations (not rotations) affect $d r_("New")^2 - d r^2$ and also that the remaining terms in $epsilon_(i j)$ makes it the symmetric part of $arrow.l.r(W)$. This tensor $arrow.l.r(epsilon)$ is no other than the strain tensor which is the tensor that gives us all the information about deformations #cite(<Thorne>). With the neglected terms, we get the final expression for the strain tensor:  
+For small deformations we can neglect the last term in equation @eq:raw_strain, because it is a second order term and we will only consider lineal deformations #cite(<Leisure_2017>). This is known as linear elasticity. Note that only deformations (not rotations) affect $d r_("New")^2 - d r^2$ and also that the remaining terms in $epsilon_(i j)$ makes it the symmetric part of $arrow.l.r(W)$. This tensor $arrow.l.r(epsilon)$ is no other than the strain tensor which is the tensor that gives us all the information about deformations #cite(<Thorne>). Removing the neglected terms, we get the final expression for the strain tensor:  
 
 // The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
 
