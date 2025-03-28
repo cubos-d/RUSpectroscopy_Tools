@@ -14,6 +14,10 @@ where the coefficients $p, q$ and $r$ depend on $lambda_1, lambda_2, mu_1, mu_2,
 
 $ integral_V X^p Y^q Z^r d X d Y d Z = ((p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)!!. $
 
+
+== Rayleigh-Ritz Method<apx:Rayleigh-ritz>
+
+Here we describe Rayleigh-Ritz method
 == Abbreviations<sec:abbreviations>
 /*
 #table(

@@ -71,13 +71,13 @@ $ epsilon_(i j) = 1/2 ((partial u_i)/(partial r_j) + (partial u_j)/(partial r_i)
 
 For small deformations we can neglect the last term in equation @eq:raw_strain, because it is a second order term and we will only consider lineal deformations #cite(<Leisure_2017>). This is known as linear elasticity. Note that only deformations (not rotations) affect $d r_("New")^2 - d r^2$ and also that the remaining terms in $epsilon_(i j)$ makes it the symmetric part of $arrow.l.r(W)$. This tensor $arrow.l.r(epsilon)$ is no other than the strain tensor which is the tensor that gives us all the information about deformations #cite(<Thorne>). Removing the neglected terms, we get the final expression for the strain tensor:  
 
-// The antisymmetric part describes only rotations of the solid, which are not related to it's deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
+// The antisymmetric part describes only rotations of the solid, which are not related to its deformation, and elastic materials don't resist rotations. For this reason the symmetric part of $arrow.l.r(W)$ is given a special name: the strain tensor $arrow.l.r(epsilon)$. The components of the strain tensor are related to the displacements as shown below #cite(<Thorne>): 
 
 $ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial r_i)) = W^("sym")_(i j). $<eq:strain_tensor>
 
 == Stress tensor and generalized Hooke's law
 
-The deformations of a material occur thanks to external forces that are being applied to it #cite(<Leisure_2017>). However, long-range forces (or body forces, which apply to all material at once) such as gravity are ignored in the present treatment #cite(<Leisure_2017>). This is because, such forces don't produce any deformation on the material, and molecular forces are assumed to be short range #cite(<Leisure_2017>). The forces causing deformation differ depending on the position within the solid. That's why it is convenient to consider forces per unit area, which are called stresses. These stresses are represented in the stress tensor $arrow.l.r(sigma)$. @fig:stress_tensor illustrates how each component of the stress tensor exerts force per unit area on each face of an infinitesimal cube. 
+The deformations of a material occur thanks to external forces that are being applied to it #cite(<Leisure_2017>). However, long-range forces (or body forces, which apply to all material at once) such as gravity are ignored in the present treatment #cite(<Leisure_2017>). This is because, such forces don't produce any deformation on the material, and molecular forces are assumed to be short range #cite(<Leisure_2017>). The forces causing deformation differ depending on the position within the solid. That's why it is convenient to consider forces per unit area, which are called stresses. These stresses are represented in the stress tensor $arrow.l.r(sigma)$. @fig:stress_tensor shows what we've described.  
 
 #figure(
   image("../images/stress_tensor1.png", width: 70%),
@@ -89,7 +89,7 @@ The stress, $sigma_(i j)$, is defined as the force per unit area acting in the d
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l). $ <eq:hookes_law>
 
-From here on out, we will use the Einstein's notation, where repeated indexes mean that there is a sum of the terms with the same index. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the elastic constants. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are less independent constants in reality. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
+From here on out, we will use the Einstein's notation, where repeated indices mean that there is a sum of the terms. /* with the same index */. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the elastic constants. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are, in fact, less independent constants. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l) = C_(i j k l) epsilon_(l k), $
 
@@ -105,7 +105,9 @@ which implies that:
 
 $ C_(i j k l) = C_(j i k l). $<eq:second_constant_reduction>
 
-The symmetry relations found allow us to interchange the first two indices and the last two indices of the elastic constants tensor. This reduces the number of independent constants from 81 to 36. That's because, in principle we needed $3^4 = 81$ constants for the four indexes, each one with three possible values. Now we need only $6^2 = 36$ constants for the two pair of indexes, each with six possible values. Each pair of indices can be organized in six ways, meaning the elastic constants tensor $arrow.l.r(C)$ can be rewritten as a 6x6 matrix by replacing each pair of indices with a new one according to @table:Voigt_transform. The same can be done with the strain tensor and the stress tensor, which can be rewritten as a 6-component vector. This way of representing a symmetric tensor as a vector or a tensor of reduced order is known as Voigt notation #cite(<Jamal_2014>).
+/*The symmetry relations found allow us to interchange the first two indices and the last two indices of the elastic constants tensor. This reduces the number of independent constants from 81 to 36. That's because, in principle we needed $3^4 = 81$ constants for the four indexes, each one with three possible values. Now we need only $6^2 = 36$ constants for the two pair of indexes, each with six possible values. Each pair of indices can be organized in six ways, meaning the elastic constants tensor $arrow.l.r(C)$ can be rewritten as a 6x6 matrix by replacing each pair of indices with a new one according to @table:Voigt_transform. The same can be done with the strain tensor and the stress tensor, which can be rewritten as a 6-component vector. This way of representing a symmetric tensor as a vector or a tensor of reduced order is known as Voigt notation #cite(<Jamal_2014>). */
+
+As mentioned before, four indices ($i, j, k$ and $l$ in $C_(i j k l)$) each with 3 possible values (1, 2 and 3) yield to 81 constant values in $arrow.l.r(C)$ matrix. However given the symmetry relations found, some of the constants inside $arrow.l.r(C)$ are repeated. For example $C_(1 2 1 1) = C_(2 1 1 1)$. If we count only the non-repeated constants, we would have only 36 independent constants. That is because each pair of indices ($i, j$) and ($k, l$) has six possible combinations as shown in @table:Voigt_transform. 
 
 #figure(
   table(
@@ -127,11 +129,11 @@ The symmetry relations found allow us to interchange the first two indices and t
   caption: "Voigt notation showing each index pair transformation of elasticity tensor, strain tensor and stress tensor.",
 )<table:Voigt_transform>
 
-Now let's define the potential energy per unit of volume $upsilon$ originated from the torsion #cite(<Leisure_1997>):
+Now let's define the potential energy per unit of volume $upsilon$ originated from elastic linear deformations #cite(<Leisure_1997>):
 
 $ upsilon = 1/2 C_(i j k l) epsilon_(i j)epsilon_(k l). $<eq:raw_potential_energy_density>
 
-With these new indices, the elastic potential energy per unit volume $upsilon$ can be expressed as follows:
+Using Voight notation, the elastic potential energy per unit volume $upsilon$ can be expressed as follows:
 
 $ upsilon = 1/2 C_(m n)epsilon_(m)epsilon_(n). $<eq:potential_energy_density>
 
