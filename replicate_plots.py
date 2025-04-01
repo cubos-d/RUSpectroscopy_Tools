@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 import time
 
 np.set_printoptions(suppress = True)
-shape = 1 # 0: parallelepiped, 1: cilinder, 2: ellipsoid 
+shape = 2 # 0: parallelepiped, 1: cilinder, 2: ellipsoid 
 alphas = (1, np.pi/4, np.pi/6)
 alpha = alphas[shape]
 Finura = 500
 
-A = 2
+A = 1
 #Datos del URu2Si2
 Ng = 8
 rho = 1
@@ -39,17 +39,21 @@ for i in range(Finura):
     m = (A**3)*rho*vol[i]
     gamma = rus.gamma_matrix(Ng, C_const, b[i,:], shape)
     E = rus.E_matrix(Ng, shape)
-    vals, vects = scipy.linalg.eigh(a = (vol[i]**(-1/3))*gamma, b = E)
+    vals, vects = scipy.linalg.eigh(a = gamma, b = E)
     print("***Iteración número ", i)
     #print("Norma: ", np.linalg.norm(gamma - gamma.T))
     #print("Norma: ", np.linalg.norm(E - E.T))
     #print(vals[:7])
-    freq = (vals[6:]*(vol[i]**(1/3))/(m*2*np.pi))**0.5
+    freq = (1/(2*np.pi))*(vals[6:]/m)**0.5
     freqs[:,i] = freq[:filas]
 #fin for
 
+xlabel_v = count/count[-1]
 fig1 = plt.figure(figsize = (30, 20))
 ax1 = fig1.add_subplot(111)
-ax1.plot(count, freqs.T)
+ax1.plot(xlabel_v, freqs.T)
 ax1.set_ylim([0,1])
-plt.savefig("familia_de_resonancias_forma_" + str(shape) + ".png")
+ax1.set_xlabel("Aspect ratio indicator")
+ax1.set_ylabel("Frequency in Hz")
+plt.show()
+#plt.savefig("familia_de_resonancias_forma_" + str(shape) + ".png")

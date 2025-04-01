@@ -1,0 +1,1 @@
+magick cylinder_frequencies_replication.png ellipsoid_frequencies_replication.png +append cylinder_ellipsoid_frequencies_replication.png

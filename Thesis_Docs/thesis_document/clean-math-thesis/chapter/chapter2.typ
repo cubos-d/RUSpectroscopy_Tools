@@ -23,7 +23,7 @@ In other words, in a Cartesian coordinate system the components of $arrow.l.r(W)
 
 $ W_(i j) = (partial u_i) / (partial r_j), $<eq:strain_components>
 
-where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum of the symmetric part and the antisymmetric part, as shown below: 
+where $r_1 = x, r_2 = y$ and $r_3 = z$. This tensor can be expressed as the sum of its symmetric part and its antisymmetric part, as shown below: 
 
 $ arrow.l.r(W) = arrow.l.r(W)^("sym") + arrow.l.r(W)^("anti")= 1/2 (arrow.l.r(W) + arrow.l.r(W)^T) + 1/2 (arrow.l.r(W) - arrow.l.r(W)^T). $<eq:strain_descomposition>
 
@@ -89,7 +89,7 @@ The stress, $sigma_(i j)$, is defined as the force per unit area acting in the d
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l). $ <eq:hookes_law>
 
-From here on out, we will use the Einstein's notation, where repeated indices mean that there is a sum of the terms. /* with the same index */. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the elastic constants. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are, in fact, less independent constants. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
+From here on out, we will use the Einstein's notation, where repeated indices mean that there is a sum of the terms. /* with the same index */For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the elastic constants. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are, in fact, less independent constants. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l) = C_(i j k l) epsilon_(l k), $
 
@@ -97,7 +97,7 @@ which implies that:
 
 $ C_(i j k l) = C_(i j l k). $<eq:first_constant_reduction>
 
-As mentioned earlier, the stress matrix is also symmetric in the absence of torques, $sigma_(i j) = sigma_(j i)$. Applying the generalized Hooke’s law to both sides of the equation, we have: 
+Remember that the stress matrix is also symmetric in the absence of torques, $sigma_(i j) = sigma_(j i)$. Applying the generalized Hooke’s law to both sides of the equation, we have: 
 
 $ C_(i j k l) epsilon_(k l) =  C_(j i k l) epsilon_(k l),  $
 
@@ -107,7 +107,7 @@ $ C_(i j k l) = C_(j i k l). $<eq:second_constant_reduction>
 
 /*The symmetry relations found allow us to interchange the first two indices and the last two indices of the elastic constants tensor. This reduces the number of independent constants from 81 to 36. That's because, in principle we needed $3^4 = 81$ constants for the four indexes, each one with three possible values. Now we need only $6^2 = 36$ constants for the two pair of indexes, each with six possible values. Each pair of indices can be organized in six ways, meaning the elastic constants tensor $arrow.l.r(C)$ can be rewritten as a 6x6 matrix by replacing each pair of indices with a new one according to @table:Voigt_transform. The same can be done with the strain tensor and the stress tensor, which can be rewritten as a 6-component vector. This way of representing a symmetric tensor as a vector or a tensor of reduced order is known as Voigt notation #cite(<Jamal_2014>). */
 
-As mentioned before, four indices ($i, j, k$ and $l$ in $C_(i j k l)$) each with 3 possible values (1, 2 and 3) yield to 81 constant values in $arrow.l.r(C)$ matrix. However given the symmetry relations found, some of the constants inside $arrow.l.r(C)$ are repeated. For example $C_(1 2 1 1) = C_(2 1 1 1)$. If we count only the non-repeated constants, we would have only 36 independent constants. That is because each pair of indices ($i, j$) and ($k, l$) has six possible combinations as shown in @table:Voigt_transform. 
+As mentioned before, four indices ($i, j, k$ and $l$ in $C_(i j k l)$) each with 3 possible values (1, 2 and 3) yield to 81 constant values in $arrow.l.r(C)$ matrix. However given the symmetry relations found, some of the constants inside $arrow.l.r(C)$ are repeated. For example $C_(1 2 1 1) = C_(2 1 1 1)$. If we count only the non-repeated constants, we would have only 36 independent constants. That is because each pair of indices ($i, j$) and ($k, l$) has six possible combinations as shown in each row in @table:Voigt_transform. This lets us rewrite the matrix $arrow.l.r(C)$ as a 6x6 matrix, with $m$ as the row index and $n$ as the column index, where 36 values can be stored. The transformation rules from a pair of indices [$i$, $j$] to $m$ and [$k$, $l$] to $n$ is listed in @table:Voigt_transform. This transformation can be also applied to the strain tensor, allowing us to rewrite it as a six component vector. Representing a symmetric tensor as a vector or as a tensor of reduced order, as mentioned before is known as Voigt notation #cite(<Jamal_2014>). 
 
 #figure(
   table(
@@ -115,7 +115,7 @@ As mentioned before, four indices ($i, j, k$ and $l$ in $C_(i j k l)$) each with
   stroke: none,
     table.hline(stroke: .6pt),
     table.vline(stroke: .6pt),
-    [i index], table.vline(stroke: .6pt),[j index], table.vline(stroke: .6pt), [new index m],
+    [i or k index], table.vline(stroke: .6pt),[j or l index], table.vline(stroke: .6pt), [new index m or n],
     table.hline(stroke: .6pt),
     [1], [1], [1],
     [2], [2], [2],
@@ -128,6 +128,21 @@ As mentioned before, four indices ($i, j, k$ and $l$ in $C_(i j k l)$) each with
   ), 
   caption: "Voigt notation showing each index pair transformation of elasticity tensor, strain tensor and stress tensor.",
 )<table:Voigt_transform>
+
+Following the rules of Voigt notation described in @table:Voigt_transform we can write the elastic constants matrix $arrow.l.r(C)$ as 
+
+$ arrow.l.r(C) = mat(
+  C_(1111), C_(1122), C_(1133), C_(1123), C_(1113), C_(1112);
+  C_(2211), C_(2222), C_(2233), C_(2223), C_(2213), C_(2212);
+  C_(3311), C_(3322), C_(3333), C_(3323), C_(3313), C_(3312);
+  C_(2311), C_(2322), C_(2333), C_(2323), C_(2313), C_(2312);
+  C_(1311), C_(1322), C_(1333), C_(1323), C_(1313), C_(1312);
+  C_(1211), C_(1222), C_(1233), C_(1223), C_(1213), C_(1212);
+), $
+
+and the strain tensor in its reduced vector form as
+
+$ arrow.l.r(epsilon) = mat(epsilon_(11);epsilon_(22);epsilon_(33);epsilon_(23);epsilon_(13);epsilon_(12)). $
 
 Now let's define the potential energy per unit of volume $upsilon$ originated from elastic linear deformations #cite(<Leisure_1997>):
 
@@ -142,7 +157,7 @@ $ C_(i j k l) = C_(k l i j). $<eq:third_contant_reduction>
 
 For example, $C_(1133) = C_(13)$, $C_(1323) = C_(2313) = C_(54) = C_(45)$ and $C_(1112) = C_(1121) = C_(16) = C_(61)$. 
 
-Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general case. However, due to symmetries, different crystal structures have less independent constants. In this study we will see the particular case of the cubic solids, which have only 3 independent constants. 
+Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general case. However, due to symmetries, different crystal structures have less independent constants. In this study we will see the particular case of isotropic solids which have only two independent constants and cubic solids, which have only three independent constants. 
 
 == Restrictions between the constants in every crystal structure<section:Constant_Restrictions>
 

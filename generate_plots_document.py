@@ -21,7 +21,7 @@ eigs_show = eigs[:64]
 fig = plt.figure()
 ax1 = fig.add_subplot(111)
 ax1.set_xlabel("# of eigenvalue")
-ax1.set_ylabel(r"$\frac{\lambda_n}{\lambda_0}$", rotation=0, labelpad=15, fontsize = 16)
+ax1.set_ylabel(r"$\frac{\omega_n^2}{\omega_0^2}$", rotation=0, labelpad=15, fontsize = 16)
 ax1.scatter(range(len(eigs_show)), eigs_show, color = "red")
 plt.show()
 plt.close()

@@ -95,11 +95,11 @@ Finally, having both the potential and kinetic energy we have the following expr
 
 $ cal(L) = K - U = 1/2 rho omega^2 arrow(a)^T arrow.l.r(Epsilon) arrow(a) - 1/2 arrow(a)^T arrow.l.r(Gamma) arrow(a). $ <eq:Lagrangian_final>
 
-By extremizing the Lagrangian, $(delta cal(L))/(delta arrow(a)) = 0$, a generalized eigenvalue problem is obtained #cite(<Leisure_1997>). Solving this generalized eigenvalue problem makes it possible to determine the resonance frequencies of the solid, contained inside the eigenvalues, based on its elastic constants. The generalized eigenvalue problem to be solved is shown below:
+By extremizing the Lagrangian, $(delta cal(L))/(delta arrow(a)) = 0$, a generalized eigenvalue problem is obtained #cite(<Leisure_1997>).
 
 $ rho omega^2 arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Gamma) arrow(a). $<eq:raw_eig_problem>
 
-Replacing the basis functions of equation @eq:Basis_functions in @eq:E_matrix and @eq:Gamma_matrix,  and then cancelling the $L_x L_y L_z$ in each side of the equation @eq:raw_eig_problem we have that an element of the $arrow.l.r(Epsilon)$ matrix is given by: 
+As shown later in @eq:Gamma_matrix_def, matrix $arrow.l.r(Gamma)$ depends on the elastic constants, $C_(i j k l)$, and the dimensions of the sample, $L_x$, $L_y$ and $L_z$. Solving this generalized eigenvalue problem makes it possible to determine the resonance frequencies of the solid, contained inside the eigenvalues, based on its elastic constants. Replacing the basis functions of equation @eq:Basis_functions in @eq:E_matrix and @eq:Gamma_matrix,  and then cancelling the $L_x L_y L_z$ in each side of the equation @eq:raw_eig_problem we have that an element of the $arrow.l.r(Epsilon)$ matrix is given by: 
 
 $ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_(i k) X^(lambda_1 + lambda_2) Y^(mu_1 + mu_2) Z^(nu_1 + nu_2) d X d Y d Z, $<eq:E_matrix_def>
 
@@ -125,7 +125,7 @@ $ arrow.l.r(Epsilon) = integral_V mat(1, Z, Y, X, 0, 0, 0, 0, 0, 0, 0, 0;
                            0, 0, 0, 0, 0, 0, 0, 0, X, X Z, X Y, X^2;
                           ) d X d Y d Z. $<eq:E_matrix_example>
 
-For example, in the third row we have the following values for the first 4 indices: $i = 1, lambda_1 = 0, mu_1 = 1, nu_1 = 0$, and in the second column we have the following values for the last 4 indices $k = 1, lambda_2 = 0, mu_2 = 0, nu_2 = 1$. 
+For example, in the third row we have the following values for the first 4 indices: $i = 1, lambda_1 = 0, mu_1 = 1, nu_1 = 0$, and in the second column we have the following values for the last 4 indices $k = 1, lambda_2 = 0, mu_2 = 0, nu_2 = 1$. Note that this matrix is made of 3 diagonal blocks of identical matrices. Each block has $N_b times N_b$ dimensions, where $N_b = 1/6 (N_g + 1)(N_g + 2)(N_g + 3)$. In the case of $N_g = 1$ we can see in @eq:E_matrix_example that each block is 4x4 in size. 
 
 
 //PLACE HERE THE EXAMPLE OF GAMMA MATRIX
@@ -133,11 +133,22 @@ For example, in the third row we have the following values for the first 4 indic
 
 == Examples of eigenvalues spectra for a sphere isotropic material
 
-Using @eq:Peso_matrix_def we can get the eigenvalues $omega_n$ of a solid sphere, made of an isotropic material with relation between the bulk modulus $K$ and the shear modulus $G$ of $K/G = 7/1$, in the following scatterplot: 
+Using @eq:raw_eig_problem, @eq:E_matrix_def and @eq:Gamma_matrix_def, we are able to get the resonance frequencies given the elastic constants, dimensions and shape of a sample. In other words, with these equations we are able to solve the forward problem. All the codes made to implement those equations and solve the forward problem are found in the repo https://github.com/jacubillos10/RUSpectroscopy_Tools. The code to generate $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ matrices can be found in rusmodules/rus.c. The generalized eigenvalue problem is solved using linalg.eigh function in scipy #cite(<scipy>). 
+
+Running the mentioned codes we got the eigenvalues $omega_n$ of a solid sphere, made of an isotropic material with relation between the bulk modulus $K$ and the shear modulus $G$ of $K/G = 7/1$, in the following scatterplot: 
 #figure(
   image("../images/eigenvals_degeneration.png", width: 100%),
   caption: "Eigenvalues of a spheric isotropic solid with relation of bulk modulus:shear modulus of 7:1"
 
 ) <fig:degenerate_eigenvalues>
 
-It can be noted that there is a lot of degenerate eigenvalues, and the number of degenerate eigenvalues in each level is odd. This is due to the isotropic nature of the material, and its spherical geometry.  
+It can be noted that there is a lot of degenerate eigenvalues, and the number of degenerate eigenvalues in each level is odd. This is due to the isotropic nature of the material, and its spherical geometry. 
+
+To check if the code was running correctly the figures 4 and 5 of reference #cite(<Visscher_1991>) were replicated in @fig:cyl_elli_frequencies. The plot at the left side has the frequencies for a family of cylinder samples, while the plot at the right side has the frequencies for a family of ellipsoids. Values below 0.5 in the aspect ratio indicator indicate that the height of the sample is held constant at 2 and the diameter/height ratio is varied linearly from 0 at the origin and 1 at the center of the plot, or when aspect ratio indicator reaches 0.5. Values above 0.5 in the aspect ratio indicator mean that the diameter is held constant at 2 and the height is linearly decreased to 0 at the end of the plot, when the aspect ratio indicator reaches 1.  
+
+#figure(
+  image("../images/cylinder_ellipsoid_frequencies_replication.png", width: 120%),
+  caption: [Resonant frequencies of a family of cylinder isotropic samples on the left, and ellipsoid isotropic samples on the right, both with $K = 3$, $mu = 1$ and $rho = 1$. All frequency values were generated using a value of $N_g=8$.] 
+)<fig:cyl_elli_frequencies>
+
+We can see in the plot at the left of @fig:cyl_elli_frequencies that there are modes which frequencies are independent of the cylinder's diameter for any aspect ratio, which are no other than the torsional modes #cite(<Visscher_1991>) and were also observed in Visscher's work. Also we can observe modes which frequencies are independent of the cylinder's height, at the right side of the plot. This ones are called compressional Young's modulus modes #cite(<Visscher_1991>). We can see that the plots inside @fig:cyl_elli_frequencies are just identical as the figures 4 and 5 reported by #cite(<Visscher_1991>), which indicates that the code is solving the forward problem correctly.  
