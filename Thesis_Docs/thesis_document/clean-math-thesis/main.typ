@@ -46,6 +46,7 @@
 #include "chapter/chapter2.typ"
 #include "chapter/chapter3.typ"
 #include "chapter/chapter4.typ"
+#include "chapter/chapter5.typ"
 //#include "chapter/conclusions_outlook.typ"
 #include "chapter/appendix.typ"
 
