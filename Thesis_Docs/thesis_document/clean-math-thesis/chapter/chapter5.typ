@@ -34,9 +34,13 @@ Let's define a new matrix $arrow.l.r(Kai) = V/R arrow.l.r(Gamma)$. With this def
 
 $ lambda arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Kai) arrow(a). $<eq:eig_final>
 
-In equation @eq:eig_final $lambda = m omega^2/R$ and an element of the matrix $arrow.l.r(Kai)$ is given by:  
+Here 
 
-$ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = sum_(j=1)^3 sum_(l=1)^3 L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Peso_matrix_def>
+$ lambda = m omega^2/R, $<eq:def_lambda>
+
+and an element of the matrix $arrow.l.r(Kai)$ is given by:  
+
+$ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = L_(j l)/R C_(i j k l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Peso_matrix_def>
 
 where $L_(j l) = L_(6 - j - l)$ if $j != l$. Else $L_(j l) = (L_x L_y L_z)/L_j^2$.
 
@@ -67,11 +71,42 @@ $ beta = 4 phi. $<eq:beta_definition>
 
 Angle $eta$ is defined between 0 and $pi$ and $beta$ is defined between 0 and $2 pi$. Now the dimensions are related to these new angles as follows:
 
-$ L_x = R sin(1/2 eta) cos(1/4 beta), L_y = R sin(1/2 eta) cos(1/4 beta), L_z = R cos(1/2 eta). $<eq:dim_in_terms_of_eta_and_beta>
+$ L_x = R sin(1/2 eta) cos(1/4 beta), L_y = R sin(1/2 eta) sin(1/4 beta), L_z = R cos(1/2 eta). $<eq:dim_in_terms_of_eta_and_beta>
 
-These transformed angles yield to values of $L_x$, $L_y$ and $L_z$ that are always positive allowing us to move all around the new sphere. For example a value of $eta$ of $pi/2$ (in the equator of the new sphere) means that $L_z = sqrt(L_x^2 + L_y^2)$, a value of $eta$ close to 0 means that $L_z >> sqrt(L_x^2 + L_y^2)$ and a value of $eta$ close to $pi$ means that $L_z << sqrt(L_x^2 + L_y^2)$. On the other hand a value of $beta$ of $pi$ means that $L_x = L_y$, a value of $beta$ close to 0 means that $L_x >> L_y$ and a value of $beta$ close to $2 pi$ means that $L_x << L_y$. 
+These transformed angles yield to values of $L_x$, $L_y$ and $L_z$ that are always positive allowing us to move all around the new sphere, shown in []. For example a value of $eta$ of $pi/2$ (in the equator of the new sphere) means that $L_z = sqrt(L_x^2 + L_y^2)$, a value of $eta$ close to 0 means that $L_z >> sqrt(L_x^2 + L_y^2)$ and a value of $eta$ close to $pi$ means that $L_z << sqrt(L_x^2 + L_y^2)$. On the other hand a value of $beta$ of $pi$ means that $L_x = L_y$, a value of $beta$ close to 0 means that $L_x >> L_y$ and a value of $beta$ close to $2 pi$ means that $L_x << L_y$. If we assign always the largest dimension as $L_z$ and the lowest dimension as $L_y$, some values of $eta$ and $beta$ we can represent all possible aspect ratio of the solids using angles of $eta$ between 0 and $0.61 pi$ (this last value covers the case where $L_x = L_y = L_z$) and angles of $beta$ between 0 and $pi$. In those ranges there is still some redundancy, but in general, redundancy has been significantly reduced, and now we are able to generate data representing all the possible ratios in the dimensions of the solid.   
 
-lets assign the largest dimension as $L_z$ always and the lowest dimension as $L_y$.  
+// Figure of sphere in eta, beta space. This one can be 2D.
+
+In summary, $eta$ and $eta$ values can represent every aspect ratio of the sample and the eigenvalues $lambda_n$ only depend on the aspect ratio. Thus the eigenvalues $lambda_n$ depend on $eta$ and $beta$, but not R. When training the machine learning model instead of having three geometrical features $L_x$, $L_y$ and $L_z$ now we have only two: $eta$ and $beta$. In terms of the dimensions we get the following expressions for the new features: 
+
+$ eta = 2 arctan(sqrt(L_x^2 + L_y^2)/L_z), $<eq:def_eta>
+and 
+
+$ beta = 4 arctan(L_y/L_x). $<eq:def_beta> 
+
+== Setting new targets according to the elastic constant restrictions
+
+One of the biggest problems of making a model to solve the inverse problem is to know how to generate the constants that will make up the training data. As we saw in @chap:failure, some constant values were generated according to a literature review. However, this is problematic, because there is no guarantee that the model trained with such values will find correctly a elastic constant value which is very different from the ones found in literature. As we did with the dimensions, we need the model to be able to work to any constant value despite it order of magnitude. We will see that it is possible to get the relations between the constants using a machine learning model, and then its magnitude just by doing some multiplications.
+
+=== Setting new targets in the isotropic case
+
+Imagine an isotropic solid, lets call it solid A, with a bulk modulus of $K_A = 4$ and with a shear modulus of $G_A = 3$, with some given dimensions, where we perform a forward problem, using @eq:Peso_matrix_def to get its eigenvalues, which are $lambda_(A 0)$, $lambda_(A 1)$, $lambda_(A 2)$, ..., $lambda_(A n)$. Now imagine an isotropic solid, lets call it solid B, with the same dimensions and shape, but with bulk modulus of $K_B = 8$ and shear modulus of $G_B = 6$. If we perform a forward problem to get the eigenvalues of solid B we get: $lambda_(B 0) = 2 lambda_(A 0)$, $lambda_(B 1) = 2 lambda_(A 1)$, $lambda_(B 2) = 2 lambda_(A 2)$, ..., $lambda_(B n) = 2 lambda_(A n)$. In other words, due to the linear nature of @eq:Peso_matrix_def, if we double the values of the constants (keeping the same proportions), we would just double each of the eigenvalues. This means that the eigenvalues are proportional to some magnitude related to the constants. If we define a magnitude such as $M = sqrt(K^2 + G^2)$, the following is true: $lambda_(A n)/M_A = lambda_(B n)/M_B$. In other words: 
+
+$ lambda_n prop M, $<eq:prop_M_lambda>
+
+if the relation between $K$ and $G$ is constant. 
+
+Now lets define a new variable $xi$, related to the eigenvalues, where $xi_n = lambda_n/lambda_(n + 1)$. The values of $xi$ for both solid A and solid B are just the same. We have created a new variable that only depends on the relation between $K$ and $G$ ($K/G$), but does not depend on the magnitude of those variables. In other words, the relation between eigenvalues depend only on the relations between constants and the aspect ratio of the sample. Nevertheless, $K/G$ does not have a definite range.... CONTINUE HERE 
+
+This way it is possible to create a model that is able to predict a single target, which is the relation between $K$ and $G$ given the relations between eigenvalues $xi_n$, $eta$ and $beta$ as the features. However it is still necessary to compute the magnitude, but performing this task is quite easy if we have a model that predicts correctly the relation between $K$ and $G$, but ¿how?
+
+Imagine we get experimental frequency spectra of some solid with given dimensions, and also have a working model able to predict the relation between $K$ and $G$. First, we calculate $lambda_n$, $xi_n$, $eta$ and $beta$ from $m$, $omega_n^2$, $L_x$, $L_y$ and $L_z$ using @eq:def_lambda, @eq:def_eta and @eq:def_beta. Then we predict the relation between $K$ and $G$ using the model and calculate test values of $K$ and $G$ with a magnitude $M$ of 1, calling them $K^("test")$ and $G^("test")$. Using the test values we perform a forward problem obtaining some values of eigenvalues and its relations $lambda_n^("test")$ and $xi_n^("test")$. The values of $xi_n$ and $xi_n^("test")$ should be the exact same. On the other hand we just saw that the eigenvalues are proportional to the magnitude $M$. So we know that the experimental eigenvalues and the test eigenvalues are related the following way: $lambda_n/M = lambda_n^("test")/M^("test")$, and given that $M^("test") = 1$ we obtain the experimental magnitude as follows: 
+
+$ M = sqrt(K^2 + G^2) = lambda_n/lambda_n^("test"). $
+
+With this magnitude and the relation $K/G$ given in the model we finally get the experimental values of $K$ and $G$. However, $K/G$ can be in a range between 0 and $inf$, and we want to generate data in a defined range. So, instead of creating a model able to predict $K/G$ let's define another target with a well defined range, like an angle. 
+
+
 
 OK THERE IS A LOT TO WRITE AND DEFINE BEFORE SHOWING MUTUAL INFO. The following is a short analysis that will be paraphrased in the final version:
 
