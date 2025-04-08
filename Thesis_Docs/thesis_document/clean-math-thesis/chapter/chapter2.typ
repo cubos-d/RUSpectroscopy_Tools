@@ -161,6 +161,17 @@ Thus the tensor $arrow.l.r(C)$ has 21 independent constants in the most general 
 
 == Restrictions between the constants in every crystal structure<section:Constant_Restrictions>
 
+For an isotropic solid, the elastic constant matrix, using Voigt notation is given by: 
+
+$ arrow.l.r(C) = mat(
+  K + 4/3 G, K - 2/3 G, K - 2/3 G, 0, 0, 0;
+  K - 2/3 G, K + 4/3 G, K - 2/3 G, 0, 0, 0;
+  K - 2/3 G, K - 2/3 G, K + 4/3 G, 0, 0, 0;
+  0, 0, 0, G, 0, 0;
+  0, 0, 0, 0, G, 0;
+  0, 0, 0, 0, 0, G;
+) $
+
 For a cubic solid, due to it's symmetries, the matrix of elastic constants, using Voigt notation is given by: 
 
 $ arrow.l.r(C) = mat(
