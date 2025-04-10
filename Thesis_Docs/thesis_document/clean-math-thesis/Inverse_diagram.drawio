@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1911" dy="827" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
+    <mxGraphModel dx="2145" dy="862" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="1" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -139,7 +139,7 @@
             <mxPoint y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="LGbQXgu_67-oY3pk9uCM-64" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Get compositions&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;$$x_n = \frac{\lambda_{n} - \lambda_{n-1}}{\lambda_{N_f}}$$$$x_0 = \frac{\lambda_0}{\lambda_N}$$&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="LGbQXgu_67-oY3pk9uCM-64" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Get compositions&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;$$\chi_n = \frac{\lambda_{n} - \lambda_{n-1}}{\lambda_{N_f}}$$$$\chi_0 = \frac{\lambda_0}{\lambda_N}$$&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="400" y="155" width="130" height="127.5" as="geometry" />
         </mxCell>
         <mxCell id="LGbQXgu_67-oY3pk9uCM-82" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=light-dark(#006600,#FFFFFF);entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" target="LGbQXgu_67-oY3pk9uCM-93" edge="1">
@@ -209,7 +209,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="LGbQXgu_67-oY3pk9uCM-93" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Get predicted constants&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;$$M = \frac{\lambda_0}{\lambda_{0 fwd, \eta, \beta, \varphi_K, \varphi_a}}$$ $$ K = M\cos(\varphi_K); C_{00} = K + 2a$$ $$ a = M\sin(\varphi_K)\cos(\varphi_a); C_{01} = K - a $$ $$ \mu = M\sin(\varphi_K)\sin(\varphi_a); C_{33} = \mu$$&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="LGbQXgu_67-oY3pk9uCM-93" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Get predicted constants&lt;/span&gt;&lt;/h1&gt;&lt;p&gt;$$M = \frac{\lambda_0}{\lambda_{0, \eta, \beta, \varphi_K, \varphi_a}^{fwd}}$$ $$ K = M\cos(\varphi_K); C_{11} = K + 2a$$ $$ a = M\sin(\varphi_K)\cos(\varphi_a); C_{12} = K - a $$ $$ \mu = M\sin(\varphi_K)\sin(\varphi_a); C_{44} = \mu$$&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="510" y="440" width="250" height="170" as="geometry" />
         </mxCell>
         <mxCell id="LGbQXgu_67-oY3pk9uCM-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.003;entryY=0.545;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=light-dark(#0066CC,#FFFFFF);" parent="WIyWlLk6GJQsqaUBKTNV-1" source="LGbQXgu_67-oY3pk9uCM-63" target="LGbQXgu_67-oY3pk9uCM-93" edge="1">

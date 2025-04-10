@@ -181,7 +181,7 @@ $ arrow.l.r(C) = mat(
   0, 0, 0, C_(44), 0, 0;
   0, 0, 0, 0, C_(44), 0;
   0, 0, 0, 0, 0, C_(44);
-) $
+) $<eq:cubic_constant_matrix>
 
 In order for a solid to be a feasible one, it must be mechanically stable. That is, it's free energy in function of the different strains must be in a minimum. This implies that the elastic constants matrix, which is #cite(<Mouhat_2014>): 
 
