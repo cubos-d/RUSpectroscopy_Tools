@@ -76,6 +76,10 @@ $ L_x = R sin(1/2 eta) cos(1/4 beta), L_y = R sin(1/2 eta) sin(1/4 beta), L_z = 
 These transformed angles yield to values of $L_x$, $L_y$ and $L_z$ that are always positive allowing us to move all around the new sphere, shown in []. For example a value of $eta$ of $pi/2$ (in the equator of the new sphere) means that $L_z = sqrt(L_x^2 + L_y^2)$, a value of $eta$ close to 0 means that $L_z >> sqrt(L_x^2 + L_y^2)$ and a value of $eta$ close to $pi$ means that $L_z << sqrt(L_x^2 + L_y^2)$. On the other hand a value of $beta$ of $pi$ means that $L_x = L_y$, a value of $beta$ close to 0 means that $L_x >> L_y$ and a value of $beta$ close to $2 pi$ means that $L_x << L_y$. If we assign always the largest dimension as $L_z$ and the lowest dimension as $L_y$, some values of $eta$ and $beta$ we can represent all possible aspect ratio of the solids using angles of $eta$ between 0 and $0.61 pi$ (this last value covers the case where $L_x = L_y = L_z$) and angles of $beta$ between 0 and $pi$. In those ranges there is still some redundancy, but in general, redundancy has been significantly reduced, and now we are able to generate data representing all the possible ratios in the dimensions of the solid.   
 
 // Figure of sphere in eta, beta space. This one can be 2D.
+#figure(
+  image("../images/space_sphere_eta.png", width: 45%),
+  caption: [Visual representation of the aspect ratio of the sample. $eta_1$ represents a solid with a shape similar to a match stick, while $eta_2$ represents a sample shaped like a PC case and $eta_3$ represents a sample shaped like a pizza box]
+)<fig:space_sphere_eta>
 
 In summary, $eta$ and $beta$ values can represent every aspect ratio of the sample and the eigenvalues $lambda_n$ only depend on the aspect ratio. Thus the eigenvalues $lambda_n$ depend on $eta$ and $beta$, but not $R$. When training the machine learning model instead of having three geometrical features $L_x$, $L_y$ and $L_z$ now we have only two: $eta$ and $beta$. In terms of the dimensions we get the following expressions for the new features: 
 

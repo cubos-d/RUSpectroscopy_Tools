@@ -1,8 +1,8 @@
 = Training some machine learning models
 
-Here we talk about machine learning models that were trained to predict $phi_K$ and $phi_a$, which were the polynomial one and the neural network. Before all of that we put some EDA made, like correlation matrices and mutual information analysis.
+In the present chapter we will explore the training and the test processes .
 
-== The following will be inside chapter 6
+== Exploratory data analysis for the cubic case
 
 OK THERE IS A LOT TO WRITE AND DEFINE BEFORE SHOWING MUTUAL INFO. The following is a short analysis that will be paraphrased in the final version:
 
