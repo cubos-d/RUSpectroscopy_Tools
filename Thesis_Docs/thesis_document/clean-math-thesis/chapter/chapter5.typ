@@ -44,7 +44,7 @@ $ Kai_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = L_(j l)/R C_(i j k l) inte
 
 where $L_(j l) = L_(6 - j - l)$ if $j != l$. Else $L_(j l) = (L_x L_y L_z)/L_j^2$.
 
-From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample, because $L_(j l)/R$ does not change with the size of the sample, and only changes with the proportions of $L_x$, $L_y$ and $L_z$. In summary, the eigenvalues $lambda$ only depend on the values of the elastic constants and the aspect ratio of the sample. This way we can eliminate the feature of the sample size, encoded in the variables $L_x$, $L_y$ and $L_z$, and we will see how right now. 
+From the equations @eq:eig_final and @eq:Peso_matrix_def we can note that $lambda$ eigenvalues do not depend on the size of the sample, because $L_(j l)/R$ does not change with the size of the sample, and only changes with the proportions of $L_x$, $L_y$ and $L_z$, therefore $arrow.l.r(Kai)$ depends only on such proportions and the values of the elastic constants. This implies that the eigenvalues $lambda$ only depend on the values of the elastic constants and the aspect ratio of the sample. This way we can eliminate the feature of the sample size, encoded in the variables $L_x$, $L_y$ and $L_z$, and we will see how right now. 
 
 == Defining the shape of a three spatial dimensional (3D) sample with two parameters<sec:eta_beta_definition>
 
@@ -73,7 +73,7 @@ Angle $eta$ is defined between 0 and $pi$ and $beta$ is defined between 0 and $2
 
 $ L_x = R sin(1/2 eta) cos(1/4 beta), L_y = R sin(1/2 eta) sin(1/4 beta), L_z = R cos(1/2 eta). $<eq:dim_in_terms_of_eta_and_beta>
 
-These transformed angles yield to values of $L_x$, $L_y$ and $L_z$ that are always positive allowing us to move all around the new sphere, shown in []. For example a value of $eta$ of $pi/2$ (in the equator of the new sphere) means that $L_z = sqrt(L_x^2 + L_y^2)$, a value of $eta$ close to 0 means that $L_z >> sqrt(L_x^2 + L_y^2)$ and a value of $eta$ close to $pi$ means that $L_z << sqrt(L_x^2 + L_y^2)$. On the other hand a value of $beta$ of $pi$ means that $L_x = L_y$, a value of $beta$ close to 0 means that $L_x >> L_y$ and a value of $beta$ close to $2 pi$ means that $L_x << L_y$. If we assign always the largest dimension as $L_z$ and the lowest dimension as $L_y$, some values of $eta$ and $beta$ we can represent all possible aspect ratio of the solids using angles of $eta$ between 0 and $0.61 pi$ (this last value covers the case where $L_x = L_y = L_z$) and angles of $beta$ between 0 and $pi$. In those ranges there is still some redundancy, but in general, redundancy has been significantly reduced, and now we are able to generate data representing all the possible ratios in the dimensions of the solid.   
+These transformed angles yield to values of $L_x$, $L_y$ and $L_z$ that are always positive allowing us to move all around the new sphere, shown in @fig:space_sphere_eta. For example a value of $eta$ of $pi/2$ (in the equator of the new sphere) means that $L_z = sqrt(L_x^2 + L_y^2)$, a value of $eta$ close to 0 means that $L_z >> sqrt(L_x^2 + L_y^2)$ and a value of $eta$ close to $pi$ means that $L_z << sqrt(L_x^2 + L_y^2)$. On the other hand a value of $beta$ of $pi$ means that $L_x = L_y$, a value of $beta$ close to 0 means that $L_x >> L_y$ and a value of $beta$ close to $2 pi$ means that $L_x << L_y$. If we assign always the largest dimension as $L_z$ and the lowest dimension as $L_y$, some values of $eta$ and $beta$ we can represent all possible aspect ratio of the solids using angles of $eta$ between 0 and $0.61 pi$ (this last value covers the case where $L_x = L_y = L_z$) and angles of $beta$ between 0 and $pi$. In those ranges there is still some redundancy, but in general, redundancy has been significantly reduced, and now we are able to generate data representing all the possible ratios in the dimensions of the solid.   
 
 // Figure of sphere in eta, beta space. This one can be 2D.
 #figure(
@@ -113,8 +113,8 @@ $ G_("base") = M sin(phi_K). $
 - Compute the eigenvalues of the "base" constants performing a forward problem. Lets call them $lambda_0^("fwd"), lambda_1^("fwd")$, etc. Note that the relation between eigenvalues obtained from this forward problem ($xi_n^("fwd")$ or $chi_n^("fwd")$) must be equal to the original eigenvalues ($xi_n$ or $chi_n$).
 - Get the real magnitude $sqrt(K^2 + G^2)$, using the proportion relation mentioned in @eq:prop_M_lambda, with any of the eigenvalues (not necessarily $lambda_0$): $ sqrt(K^2 + G^2) = (lambda_0/lambda_0^("fwd")) sqrt(K_("base")^2 + G_("base")^2). $<eq:M_determination1>
 - Finally, get the constants $K$ and $G$ the following way: 
-$ K = cos(phi_K), $<eq:isotropic_K_relation> 
-$ G = sin(phi_K). $<eq:isotropic_G_relation>
+$ K = M cos(phi_K), $<eq:isotropic_K_relation> 
+$ G = M sin(phi_K). $<eq:isotropic_G_relation>
 
 In summary, the problem of getting a model able to predict $K$ and $G$ given the frequencies $omega_n$, the dimensions $L_x$, $L_y$, $L_z$, and the density $rho$ has been transformed into a simpler problem able to predict $phi_K$ given the relation between eigenvalues $xi_n$ of $chi_n$ and the geometric parameters $eta$ and $beta$.
 
@@ -135,7 +135,7 @@ $ arrow.l.r(C) = mat(
   0, 0, 0, 0, 0, mu;
 ) $<eq:cubic_constant_matrix_definitive>
 
-Each of the new variables, has now the following restrictions: 
+Each of the new variables, have now the following restrictions: 
 
 $ Kappa > 0; a > 0; mu >0. $
 
@@ -151,7 +151,11 @@ and,
 
 $ phi_a = arctan(mu/a). $
 
-In the case of cubic solids, the relation between eigenvalues will be represented only by the variable $chi_n = (lambda_n - lambda_(n-1))/lambda_N$, where $N$ is the maximum number of eigenvalues used, because to train a model able to predict $phi_a$ and $phi_Kappa$ we will need to use more eigenvalues. To be exact $N = 20$ eigenvalues. This makes $xi_n$ a bad candidate for use as a feature, because for large $n$, like $n = 20$, all the values of $xi_n$ will be very close to 1. In the present work the variables $chi_n$ were given a special name: "compositions". This is because $chi_n$ represents the percentage of occupation of the gap between two eigenvalues in the whole spectrum from 0 to the Nth eigenvalue (20th in this case). The first composition $chi_0$ is defined differently as the others: $chi_0 = lambda_0/lambda_N$. Similar to the isotropic case we can create a model able to predict $phi_Kappa$ and $phi_a$ given the values of $chi_n$, $eta$ and $beta$. Once we have that model, we perform the following steps to get $Kappa$, $a$ and $mu$:
+In the case of cubic solids, the relation between eigenvalues will be represented only by the variable 
+
+$ chi_n = (lambda_n - lambda_(n-1))/lambda_N, $<eq:chi_definition>
+
+where $N$ is the maximum number of eigenvalues used, because to train a model able to predict $phi_a$ and $phi_Kappa$ we will need to use more eigenvalues. To be exact $N = 20$ eigenvalues. This makes $xi_n$ a bad candidate for use as a feature, because for large $n$, like $n = 20$, all the values of $xi_n$ will be very close to 1. In the present work the variables $chi_n$ were given a special name: "compositions". This is because $chi_n$ represents the percentage of occupation of the gap between two eigenvalues in the whole spectrum from 0 to the Nth eigenvalue (20th in this case). The first composition $chi_0$ is defined differently as the others: $chi_0 = lambda_0/lambda_N$. Similar to the isotropic case we can create a model able to predict $phi_Kappa$ and $phi_a$ given the values of $chi_n$, $eta$ and $beta$. Once we have that model, we perform the following steps to get $Kappa$, $a$ and $mu$:
 
 - Predict $phi_Kappa$ and $phi_a$ using the values of $chi_n$, $eta$ and $beta$ as the features. 
 - Establish an arbitrary base value of magnitude, for example $M = sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2) = 1$ and calculate a base value of $Kappa$, $a$ and $mu$ using: 
@@ -161,9 +165,9 @@ $ mu_("base") = M sin(phi_Kappa)sin(phi_a). $
 - Compute the eigenvalues of the "base" constants performing a forward problem. Lets call them $lambda_0^("fwd"), lambda_1^("fwd")$, etc. Note that the relation between eigenvalues obtained from this forward problem $chi_n^("fwd")$ must be equal to the original eigenvalues $chi_n$.
 - Get the real magnitude $sqrt(Kappa^2 + a^2 + mu^2)$, using the proportion relation mentioned in @eq:prop_M_lambda2, with any of the eigenvalues (not necessarily $lambda_0$): $ sqrt(Kappa^2 + a^2 + mu^2) = (lambda_0/lambda_0^("fwd")) sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2). $<eq:M_determination1>
 - Finally, get the constants $Kappa$, $a$ and $mu$ the following way: 
-$ Kappa = cos(phi_K), $<eq:cubic_K_relation> 
-$ a = sin(phi_Kappa)cos(phi_a), $<eq:cubic_a_relation>
-$ mu = sin(phi_Kappa)sin(phi_a). $<eq:cubic_mu_relation>
+$ Kappa = M cos(phi_K), $<eq:cubic_K_relation> 
+$ a = M sin(phi_Kappa)cos(phi_a), $<eq:cubic_a_relation>
+$ mu = M sin(phi_Kappa)sin(phi_a). $<eq:cubic_mu_relation>
 
 All the transformations of features and targets, or in general, the transformation of the inverse problem can be summarized in the following flow diagram: 
 
