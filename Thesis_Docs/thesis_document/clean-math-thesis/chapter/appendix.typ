@@ -18,7 +18,7 @@ $ integral_V X^p Y^q Z^r d X d Y d Z = ((p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)
 == Rayleigh-Ritz Method<apx:Rayleigh-ritz>
 
 Here we describe Rayleigh-Ritz method
-== Abbreviations<sec:abbreviations>
+== Spect of the computer used<apx:specs>
 /*
 #table(
   columns: 2,
