@@ -6,7 +6,16 @@ In this chapter we explore the initial attempts to solve the inverse problem. He
 
 == Data Generation
 
-The data to train and test the model was constructed with 32678 rows, where each row had a value of $K$ and $G$ uniformly distributed between 0.3 $"G" "din"/("cm")^2$ and 5.6 $"G" "din"/("cm")^2$, a value of density $rho$ uniformly distributed between 0.2 $g/("cm")^3$ and a value for each length $L_x, L_y$ and $L_z$ uniformly distributed between 0.1 $"cm"$ and 1$"cm"$. Each row also had their respective frequencies of the forward problem performed with the $K$, $G$, dimensions and density data previously mentioned. Having that data, we can see the distribution of the squared frequencies $omega_n^2$. For example, for the first frequency the distribution was:
+The data to train and test the model was constructed with 32678 rows, where each row had a value of $K$ and $G$ uniformly distributed between 0.3 $"G" "din"/("cm")^2$ and 5.6 $"G" "din"/("cm")^2$, a value of density $rho$ uniformly distributed between 0.2 $g/("cm")^3$ and a value for each length $L_x, L_y$ and $L_z$ uniformly distributed between 0.1 $"cm"$ and 1$"cm"$. Each row also had their respective frequencies of the forward problem performed with the $K$, $G$, dimensions and density data previously mentioned. 
+
+The codes made to generate the data, visualize data, train the models and evaluate the models make extensive use of the following Python libraries:
+- numpy #cite(<numpy>) 
+- pandas #cite(<pandas>) 
+- matplotlib #cite(<matplotlib>)
+- scipy #cite(<scipy>)
+- scikit-learn #cite(<scikit-learn>)
+
+Having that data, we can see the distribution of the squared frequencies $omega_n^2$. For example, for the first frequency the distribution was:
 
 #figure(
   image("../images/omega_distribution.png", width: 75%),
