@@ -11,7 +11,7 @@
   // personal/subject related stuff
   author: "Jose Alejandro Cubillos Muñoz",
   title: "Numerical study of the elasticity tensor in the mechanical response of solids to resonant ultrasound modulation",
-  supervisor1: "Prof. Dr. Julian Rincon",
+  supervisor1: "Prof. PhD. Julian Rincon",
   supervisor2: "",
   degree: "Msc Physics",
   program: "",
