@@ -318,3 +318,10 @@ We can observe in @fig:c11_predictions that the present pipeline has strong pred
 )<fig:c44_predictions>
 
 On the other hand $C_44$ is the easiest constant for the present pipeline to predict. We can observe in @fig:c44_predictions that almost all the point are over the line $y = x$, which means a very precise prediction of this constant.
+
+Finally is worth to mention that the codes made to generate the data, visualize data, train the models and evaluate the models make extensive use of the following Python libraries:
+- numpy #cite(<numpy>) 
+- pandas #cite(<pandas>) 
+- matplotlib #cite(<matplotlib>)
+- scipy #cite(<scipy>)
+- scikit-learn #cite(<scikit-learn>)
