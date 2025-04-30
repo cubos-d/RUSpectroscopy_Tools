@@ -1,4 +1,4 @@
-= The inverse problem
+= The inverse problem<chap:inverse_problem>
 
 In this chapter, we will explore the training process of different machine learning models, whose purpose is to predict the variable $phi_K$ for the isotropic case and the variables $phi_Kappa$ and $phi_a$ for the cubic case. We will examine the training, testing, and validation data generation processes, and perform an exploratory analysis on them. Then, we will present different metrics that demonstrate the performance of the models in predicting their respective $phi$ values. Finally, we will show the performance of the entire pipeline proposed in @chap:transformations and summarized in @fig:diagram_inverse, fed with different models, to predict the elastic constants of different materials, from isotropic and cubic crystal families, whose values are reported in literature.
 

@@ -5,7 +5,8 @@ In this chapter, we explore the initial attempts to solve the inverse problem. F
 Next, we present the exploratory data analysis (EDA) carried out to understand the distribution of the frequencies and identify possible transformations that could improve model performance. Despite these efforts, both a linear regression model and a random forest model failed to yield satisfactory results. This outcome highlights the complexity of the inverse problem, even in the simplest case of isotropic materials, and demonstrates the need for further preprocessing and more sophisticated modeling approaches — which will be addressed in @chap:transformations.
 #v(1cm)
 
-== Linear model
+
+== Data generation
 
 To construct the dataset used in the initial modeling attempts, combinatorial and random approaches were employed. In the combinatorial approach range of values was defined for the bulk modulus $K$, shear modulus $G$, density $rho$ and the sample dimensions $L_x$, $L_y$, and $L_z$. Within each range, a finite set of uniformly spaced values was selected, and the Cartesian product of all these sets was computed. This procedure generated all possible combinations of $K$, $G$, $rho$, and the geometric parameters for each shape. 196608 data entries were generated with the combinatorial approach.  In the random approach the data was simply generated uniformly distributed within each range. In random approach 229376 data entries were generated. The following table shows the ranges of each value: 
 
@@ -27,9 +28,9 @@ To construct the dataset used in the initial modeling attempts, combinatorial an
 
 The considered shapes were parallelepiped, cylinder, ellipsoid, cone, pyramid and tetrahedron. Initially, the goal was to solve the inverse problem regardless of the sample’s shape. However, as will be discussed in @chap:transformations, it is more practical to begin by solving the problem for one shape at a time.
 
-=== Exploratory data analysis
+== Exploratory data analysis
 
-A histogram of the first resonance frequency $omega_0$ was plotted using a logarithmic scale on the y-axis, and is shown in @fig:omega_distribution. This visualization helps assess the distribution shape of $omega_0$ across the dataset. The use of a log scale suggests the frequency values span multiple orders of magnitude which suggests that the features referring to the frequencies should be, in principle, their logarithms. 
+Using the data generated with the combinatorial approach, a histogram of the first resonance frequency $omega_0$ was plotted using a logarithmic scale on the y-axis, and is shown in @fig:omega_distribution. This visualization helps assess the distribution shape of $omega_0$ across the dataset. The use of a log scale suggests the frequency values span multiple orders of magnitude which suggests that the features referring to the frequencies should be, in principle, their logarithms. 
 
 #figure(
   image("../images/omega_distribution.png", width: 75%),
@@ -77,7 +78,50 @@ $ v_K = sqrt(K/rho), v_G = sqrt(G/rho). $
 
 With all the transformations mentioned the targets and the features were as follows: 
 
-- *Features*: $L_x$, $L_y$, $L_z$, $sqrt(rho)$ and the logarithms of the first 10 frequencies $log(omega_n)$.
+- *Features*: $L_x$, $L_y$, $L_z$, $sqrt(rho)$ and the logarithms of the first 10 frequencies: $log(omega_n)$.
 - *Targets*: $sqrt(K)$ and $sqrt(G)$.
 
-The dataset generated with the random approach transformed as mentioned before was used to fit an ordinary linear regression. The results are shown in the following table [Aquí ya estamos viendo el cuadervo de cv_linearregress. La primera estadística es de la regresión lineal simple]:  
+== Fitting a linear model
+
+The dataset generated with the random approach transformed as mentioned before was used to fit an ordinary linear regression, because this dataset showed better results than the model trained with combinatorial data. The results, of the prediction power of the model for $K$ target, are shown in the following table:
+
+#figure(
+  table(
+    columns: 3,
+    [], [*Train*], [*Test*],
+    [*RMSE*], [1.511 $"Tdyn"/"cm"^2$], [1.515 $"Tdyn"/"cm"^2$], 
+    [*MAE*], [1.291 $"Tdyn"/"cm"^2$], [1.296 $"Tdyn"/"cm"^2$],
+    [*MAPE*], [80%], [80%]
+  ),
+  caption: [Performance metrics for the first linear model trained.]
+)<table:resultados_failure_1>
+
+Before analyzing @table:resultados_failure_1 lets define the metrics shown there. RMSE stands for Root Mean Squared Error, and is defined the following way:
+
+$ "RMSE" = sqrt(1/N_D sum_(j = 1)^(N_D)(y_j - hat(y)_j)^2), $<eq:RMSE_definition>
+
+where $N_D$ is the number of data entries, $y_j$ is the value of the target and $hat(y)_j$ is the prediction of the value of the target. This is no other than the objective function to be minimized when fitting a regression model. To have an idea of the error we could expect when using the model we have the MAE, which stands for Mean Absolute Error, and is defined the following way:
+
+$ "MAE" = 1/N_D sum_(j = 1)^(N_D) abs(y_j - hat(y)_j). $
+
+In the case of the first linear model, we could expect an error of 1.291 $"Tdyn"/"cm"^2$ or 129.1 $"GPa"$ for using the model. This is a huge error considering that, for example, this is approximately the difference between the constant $C_11$ of gold and the constant $C_11$ of potassium fluoride, as we can see in @apx:cubic_constants. These results suggest that a more complex model (a model which takes account no linearities and has more parameters) is needed to fit $K$ and $G$. The next model that was tried was a polynomial regression. 
+
+
+== Other models trained
+
+Several polynomial models and Random Forest models were trained with the data generated with the random approach. All the models showed high values of RMSE, MAE and MAPE metrics even in the train data. This means that some of those models weren't even able to overfit the data. Other models just displayed high values of RMSE, MAE and MAPE metrics on the test data. The results of the model with the lowest values of those metrics is shown in @table:resultados_failure_2. This was a random forest model with 200 estimators and other parameters left by default, trained with polynomial features of degree 3 and "Yeo-Johnson" power transformation. The details about the parameters of a Random Forest and the "Yeo-Johnson" transform can be found in the scikit-learn documentation #cite(<scikit-learn>). Also the training and the testing of this model was performed only using the data of parallelepiped shapes. 
+
+#figure(
+  table(
+    columns: 3,
+    [], [*Train*], [*Test*],
+    [*RMSE*], [0.199 $"Tdyn"/"cm"^2$], [0.527 $"Tdyn"/"cm"^2$],
+    [*MAE*], [0.125 $"Tdyn"/"cm"^2$], [0.337 $"Tdyn"/"cm"^2$],
+    [*MAPE*], [7.58%], [23.21%]
+  ),
+  caption: [Performance metric for the best model (lowest RMSE, MAE and MAPE matrics) trained with the approach presented in the present chapter.]
+)<table:resultados_failure_2>
+
+The test metrics given by this model are poor. For example, MAPE metric is telling us that the expected percentage error obtained from using the model is 23.21%. Also, the difference between the train and test metrics in @table:resultados_failure_2 shows that the model is overfitting. This means that solving the inverse problem the way it is being solved in the present chapter needs a very complex model, with a huge number of training parameters. Also more data is needed in order to solve such model to avoid overfitting. There is another way of solving the inverse problem without needing complex models with lots of parameters, at least for the isotropic case as shown in @chap:inverse_problem. 
+
+Also the approach of solving the inverse problem in the present chapter is very limited. It only intends to solve the inverse problem for samples whose characteristics, like its $K$, $G$ and dimension values, are within the ranges exposed in @table:feat_ranges. It is possible to have a non limited approach with a solution of the inverse problem for samples regardless of its dimensions, size or elastic constants scale. @chap:transformations will explore this approach right now. 
