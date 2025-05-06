@@ -9,20 +9,20 @@ Data consists of entry rows where an entry of the dataset is composed of two geo
 === Distribution of geometric variables $eta$ and $beta$<sec:eta_beta_generation>
 Regardless of the crystal structure, each value of $eta$ and $beta$ was generated in such a way that it would be uniformly distributed over the surface of a sphere, where $eta$ is the polar angle and $beta$ is the azimuthal angle. 
 
-The data was generated inside a region where $eta$ is between 0 and $0.61 pi$ and $beta$ is between 0 and $pi$, as shown in @fig:geometrical_features_distribution.
+The data was generated inside a region where $eta$ lies between 0 and $0.61 pi$ and $beta$ ranges between 0 and $pi$, as shown in @fig:geometrical_features_distribution.
 
 #figure(
   image("../images/geo_feat_dist.png", width: 40%),
   caption: [Distribution of the features $eta$ and $beta$ over the unit sphere.]
 )<fig:geometrical_features_distribution>
 
-This uniform distribution of data over the surface of a sphere was done using the methods described in the work of Deserno #cite(<Deserno_2004>). Since, during the evaluation of the inverse problem shown in @fig:diagram_inverse, we are forcing the largest dimension to be $L_z$ and the shortest dimensions to be $L_y$, every possible aspect ratio is represented as a single point inside the mentioned region on the surface of the sphere. In other words, each aspect ratio has its unique pair of values of $eta$ and $beta$. 
+This uniform distribution of data over the surface of a sphere was done using the methods described in the work of Deserno #cite(<Deserno_2004>). Since during the evaluation of the inverse problem shown in @fig:diagram_inverse, we are forcing the largest dimension to be $L_z$ and the shortest dimensions to be $L_y$, every possible aspect ratio is represented as a single point inside the above mentioned region on the surface of the sphere. In other words, each aspect ratio has its unique pair of values of $eta$ and $beta$. 
 
-For example, an aspect ratio of 3:4:5 has a value of $eta = 2 arctan(1) = 0.5 pi$ and $beta = 4 arctan(3/4) = 0.82 pi$, and an aspect ratio of 1:8:7 has a value of $eta = 2 arctan(sqrt(50)/8) = 0.46 pi$ and $beta = 4 arctan(1/7) = 0.18 pi$. Both aspect ratios the same probability of being generated. The same can be said for every other aspect ratio. This way each aspect ratio on the surface of the sphere has equal representation in the dataset.
+For example, an aspect ratio of 3:4:5 has a value of $eta = 2 arctan(1) = 0.5 pi$ and $beta = 4 arctan(3/4) = 0.82 pi$, and an aspect ratio of 1:8:7 has a value of $eta = 2 arctan(sqrt(50)/8) = 0.46 pi$ and $beta = 4 arctan(1/7) = 0.18 pi$. Both aspect ratios have the same probability of being generated. The same can be said for every aspect ratio.
 
-This equal representation is important because it allows a model to learn more generalized patterns improving its performance. For example, a model trained with as dataset where 80% of its entries are composed of values of $beta < pi/2$ and 20% of its entries are composed of values of beta $beta > pi/2$ can have problems predicting data whose values of $beta$ is greater than $pi/2$. This is an example of a biased dataset. Even if we get a good model trained with tons of biased data, we can get the same good, or even a better model training it with fewer entries of balanced data, and wasting less time and computational resources in the training process.  
+This equal representation is important because it allows a model to learn more generalized patterns, improving its performance. For example, a model trained with as dataset where 80% of its entries are composed of values of $beta < pi/2$ and 20% of its entries are composed of values of beta $beta > pi/2$ can have problems predicting data whose values of $beta$ is greater than $pi/2$. This is an example of a biased dataset. Even if we get a good model trained with tons of biased data, we can get the same good, or even a better model training it with fewer entries of balanced data, and wasting less time and computational resources in the training process.  
 
-=== Data generation in isotropic case<sec:data_gen_isotropic>
+=== Data generation in the isotropic case<sec:data_gen_isotropic>
 
 - Each value of $phi_K$ was uniformly distributed between 0 and $pi/2$.
 - Each pair of values $eta$ and $beta$ were generated according to @sec:eta_beta_generation. 
@@ -31,11 +31,10 @@ This equal representation is important because it allows a model to learn more g
   + Obtain $lambda_n$ replacing the values of $K$, $G$, $eta$ and $beta$ into @eq:eig_final and @eq:Peso_matrix_def.
   + Get the values of $xi_n$ dividing eigenvalues as follows: $xi_n = lambda_n/lambda_(n+1)$. 
 
-=== Data generation in cubic case<sec:data_gen_cubic>
+=== Data generation in the cubic case<sec:data_gen_cubic>
 
 - Each pair of values $eta$ and $beta$ were generated according to @sec:eta_beta_generation. 
 - Each pair of values $phi_Kappa$ and $phi_a$ were generated in the same way as $eta$ and $beta$. $phi_Kappa$ and $phi_a$ are uniformly distributed over the surface of a sphere where $phi_Kappa$ is the polar angle and $phi_a$ is the azimuthal angle.
-
 - The data was generated inside a region where $phi_Kappa$ is  between 0 and $pi/2$ and $phi_a$ is between 0 and $pi/2$, as shown in @fig:targets_distribution. Similar to the distribution of geometrical features; here, we can see that every proportion between $Kappa$, $a$ and $mu$ is equally represented in the dataset. The equal representation of the targets is as important as the equal representation of the features for the same reasons exposed in @sec:eta_beta_generation. 
 
 #figure(
@@ -50,20 +49,22 @@ This equal representation is important because it allows a model to learn more g
 
 === Exploratory data analysis for the isotropic case<sec:isotropic_exploration>
 
-A total of 252474 data entries were generated with variables distributed as described in @sec:data_gen_isotropic. In @chap:transformations we reduced redundancy of geometric variables. Now we're going to explore if there is any redundancy inside the relation between eigenvalues. For that purpose the correlation matrix will be calculated. As mentioned in @chap:failure every element of the correlation matrix has the Pearson product-moment correlation coefficient, which measures the lineal dependence between two features #cite(<Raschka_2022>). If any coefficient is close to 1 or -1 means that two features are heavily correlated, which means that they are holding the same information. Thus, when a value close to 1 or -1 is found the dataset may carry redundant information from a pair of highly correlated features, which means that one of them can be eliminated. On the other hand if we find values close to 0, it means independence between a pair of features, which means that every feature is holding different information that cannot be ignored.   
+A total of 252474 data entries were generated with variables distributed as described in @sec:data_gen_isotropic. In @chap:transformations we reduced redundancy of geometric variables. Now we're going to explore if there is any redundancy among all $xi_n$ values. For that purpose the correlation matrix will be calculated. As mentioned in @chap:failure every element of the correlation matrix has the Pearson product-moment correlation coefficient, which measures the lineal dependence between two features #cite(<Raschka_2022>). If any coefficient is close to 1 or -1 means that two features are heavily correlated (positively or negatively, respectively), which means that they are holding the same information. Thus, when a value close to 1 or -1 is found the dataset may carry redundant information from a pair of highly correlated features, which means that one of them can be eliminated. On the other hand, if we find correlation values close to 0, it means independence between a pair of features, which, in turn, means that every feature is holding different information that cannot be ignored.   
 
-Lets see the correlation matrix, calculated with these data, of the features of the isotropic case:
+Let's see the correlation matrix, calculated with these data, of the features of the isotropic case:
 
 #figure(
   image("../images/corr_matrix_isotropic.png", width: 50%),
   caption: [Correlation matrix of the features in the isotropic case.]
 )<fig:correlation_matrix_isotropic>
 
-As seen in @fig:correlation_matrix_isotropic the features have a moderate or low correlation, being the correlation of 0.55 between $beta$ and $xi_4$ the case with highest absolute correlation. While this indicates a moderate positive linear relationship, is not high enough to suggest strong redundancy between these features. In other words although, $beta$ and $xi_4$ may share some information, they are still sufficiently independent to be considered complementary rather than redundant. This supports the inclusion of both variables in a model, as each likely contributes unique information that may improve the model's predictive performance. Given that every other pair of features have less absolute correlation, all of them will be included as well in any model to be trained. In other words, all features shown in @fig:correlation_matrix_isotropic are not redundant and will be fed in both of machine learning models studied in @sec:isotropic_results. 
+As seen in @fig:correlation_matrix_isotropic the features have a moderate or low correlation, being the correlation of 0.55 between $beta$ and $xi_4$ the case with highest absolute value correlation. While this indicates a moderate positive linear relationship, is not high enough to suggest strong redundancy between these features. In other words although, $beta$ and $xi_4$ may share some information, they are still sufficiently independent to be considered complementary rather than redundant. This supports the inclusion of both variables in a model, as each likely contributes unique information that may improve the model's predictive performance. Given that every other pair of features have less absolute correlation, all of them will be included as well in any model to be trained. In other words, all features shown in @fig:correlation_matrix_isotropic are not redundant and will be fed in both of machine learning models studied in @sec:isotropic_results. 
+
+Compared to the correlation matrix in @fig:corr_matrix1 the features in @fig:correlation_matrix_isotropic have lower correlation, which means that the transformed features ($xi_n$, $eta$ and $beta$) are better candidates for the prediction of their respective target than the raw features ($L_x$, $L_y$, $L_z$, $rho$ and $omega_n$). 
 
 In addition to examining linear correlations, it is also important to evaluate nonlinear relationships between features and the target variable. This is where mutual information becomes particularly useful.
 
-Mutual information is a measure of the amount of information that one variable contains about another variable. It is the reduction of uncertainty of one variable due to the knowledge of the other #cite(<Cover_2005>). In other words, mutual information is capable of showing us the statistical dependency between the target and some feature. Mutual information is given by the following expression #cite(<Cover_2005>): 
+Mutual information is a measure of the amount of information that one variable contains about another variable. It is the reduction of uncertainty of one variable due to the knowledge of the other #cite(<Cover_2005>). In other words, mutual information is capable of showing the statistical dependency between the target and some feature beyond the linear approximation provided by the correlation matrix. Mutual information is given by the following expression #cite(<Cover_2005>): 
 
 $ I = sum_y sum_x P_(x, y) ln(P_(x, y)/(P_x P_y)), $<eq:mutual_info_disc>
 
@@ -71,7 +72,7 @@ where $P_(x, y)$ is the joint probability between the two variables, and $P_x$ a
 
 $ I = integral_y integral_x rho_((x,y)) ln(rho_((x,y))/(rho_((x)) rho_((y)) )). $<eq:mutual_info_cont>
 
-A value of zero in mutual information $I$, between a feature and the target, indicates no statistical dependency between them, meaning that the feature provides no information about the target, meaning that the target is independent from the feature. On the other hand a high value of mutual information indicates a strong dependency between the target and the feature. By computing mutual information between each feature and the target, we can identify which features are likely to contribute most meaningfully to a predictive model.  
+A value of zero in mutual information $I$, between a feature and the target, indicates no statistical dependency between them, meaning that the feature provides no information about the target, meaning that the target is independent from the feature. On the other hand, a high value of mutual information indicates a strong dependency between the target and the feature. By computing mutual information between each feature and the target, we can identify which features are likely to contribute most meaningfully to a predictive model.  
 
 Now lets take a look at the mutual information between the target and the features, computed with scikit-learn, to see which one has the grater contribution to the target #cite(<scikit-learn>):
 
@@ -80,18 +81,18 @@ Now lets take a look at the mutual information between the target and the featur
   caption: [Mutual information between features and target $phi_K$ in isotropic case.]
 )<fig:MI_isotropic>
 
-We can see that, in principle, $eta$ and $beta$ hold no relation with the target with a value of near 0 in the mutual information. That was expected because data of $eta$ and $beta$ was generated independently from the data of $phi_K$. Nevertheless that doesn't mean that $eta$ and $beta$ are not correlated to $phi_K$. On the other hand we can see that $xi_0$ shows the highest mutual information score with the target $phi_K$, suggesting it has the most influence on the output variable. This is also expected, since the first frequency is the one that the highest influence either in $K$ or $G$. We can see that other values of $xi_n$ also have some influence in the target, which means that it is convenient to take into account all of them when training the model.   
+We can see that, in principle, $eta$ and $beta$ hold no relation with the target with a value of near 0 in the mutual information. That was expected because data of $eta$ and $beta$ was generated independently from the data of $phi_K$. Nevertheless that doesn't mean that $eta$ and $beta$ should be discarded as a features, because $xi_n$ depend on $eta$ and $beta$, and they are necessary info for the prediction of $phi_K$. On the other hand, we can see that $xi_0$ shows the highest mutual information score with the target $phi_K$, suggesting it has the most influence on the output variable. This is also expected, since the first frequency is the one that the highest influence either in $K$ or $G$. We can see that other values of $xi_n$ also have some influence in the target, which means that it is convenient to take into account all of them when training the model.   
 
 === Exploratory data analysis for the cubic case
 
-A total of 858387 data entries were generated with variables distributed as described in @sec:data_gen_cubic. As well as we did in the isotropic case in @sec:isotropic_exploration, we will check if there is any redundancy between the compositions $chi_n$ computing the correlation matrix of the features, which is shown below: 
+A total of 858387 data entries were generated with variables distributed as described in @sec:data_gen_cubic. As we did in the isotropic case in @sec:isotropic_exploration, we will check if there is any redundancy between the compositions $chi_n$ by computing the correlation matrix of the features, which is shown below: 
 
 #figure(
   image("../images/corr_matrix_cubic.png", width: 70%),
   caption: [Correlation matrix of the features in the cubic model.]
 )<fig:correlation_matrix_cubic>
 
-As seen in @fig:correlation_matrix_cubic, in the cubic case the features have a moderate to low correlation, being the correlation of 0.57 between $beta$ and $chi_0$ the case with highest absolute correlation. As well as the highest absolute correlation in isotropic case, here $beta$ and $chi_0$ may share some information, but they are still sufficiently independent to be considered complementary rather than redundant. This means it is convenient to include both variables in the model. Given that the absolute correlation between the other pairs is even lower, it is convenient to include all the features listed in @fig:correlation_matrix_cubic inside the model studied in @sec:cubic_results. We can see in general that all the features shown in @fig:correlation_matrix_cubic have low collinearity, which implies a high degree of independence.
+As seen in @fig:correlation_matrix_cubic, in the cubic case the features have a moderate to low correlation, being the correlation of 0.57 between $beta$ and $chi_0$ the case with highest absolute correlation value. As well as the highest absolute correlation in isotropic case, here $beta$ and $chi_0$ may share some information, but they are still sufficiently independent to be considered complementary rather than redundant. This means it is convenient to include both variables in the model. Given that the absolute correlation between the other pairs is even lower, it is convenient to include all the features listed in @fig:correlation_matrix_cubic inside the model studied in @sec:cubic_results. We can see in general that all the features shown in @fig:correlation_matrix_cubic have low collinearity, which implies a high degree of independence.
 
 As done in @sec:isotropic_exploration, we will identify which features contribute meaningfully to the targets in the cubic case. To to that, the mutual information between all the features and the targets $phi_Kappa$ and $phi_a$ was performed. @fig:MI_cubic shows the results of such computation:
 
@@ -100,19 +101,33 @@ As done in @sec:isotropic_exploration, we will identify which features contribut
   caption: [Mutual information between the features and the targets in the cubic case.]
 )<fig:MI_cubic>
 
-As expected $eta$ and $beta$ have almost zero values in mutual info between them and $phi_a$, because $eta$ and $beta$ were generated independently from $phi_Kappa$ and $phi_a$. Nevertheless $beta$ and $phi_Kappa$ have a non negligible value of mutual information, which means that there are certain ranges of combinations of  $beta$ and $phi_Kappa$ that are underrepresented. In other words, there are some holes in the spheres of @fig:geometrical_features_distribution and @fig:targets_distribution. Nevertheless the mutual information between $beta$ and $phi_Kappa$ is still lower than the majority of the values of mutual information between $phi_kappa$ and the compositions $chi_n$. On the other hand the lower values of $chi_n$ like $chi_0$, $chi_1$, $chi_2$ and $chi_3$ show the highest mutual information score with both targets, suggesting that they have the most influence on the output variables. This is also expected because a higher dependence between the elastic constants and the first resonance frequencies is expected. In fact, we can observe that, by far the variable with most influence on the targets is $chi_1$, and that's because $chi_1$ has information of both first and second frequency: remember that $chi_1 = (lambda_1 - lambda_0)/lambda_19 = (omega_1^2 - omega_0^2)/omega_19^2$. Both of these frequencies are expected to be highly influential in the elastic constants. Given the correlation matrix and mutual information results it is convenient to take into account all features as well. 
+As expected $eta$ and $beta$ have almost zero values in mutual info between them and $phi_a$, because $eta$ and $beta$ were generated independently from $phi_Kappa$ and $phi_a$. This also makes sense since the elastic constants don't depend on the dimensions of the sample, which implies that, in theory, mutual information between geometric features and elastic constants should be zero. This also happens in the isotropic case in @fig:MI_isotropic. Nevertheless $beta$ and $phi_Kappa$ have a non negligible value of mutual information, which means that there are certain ranges of combinations of  $beta$ and $phi_Kappa$ that are underrepresented. In other words, there are some holes in the spheres of @fig:geometrical_features_distribution and @fig:targets_distribution. For example, if we were going to compute mutual information between $x$ and $y$ variables in @table:MI_data_example, the result would be zero, but if we remove one data entry of the table, for example $x = 3$ and $y = 13$, and compute the mutual information again, the result would be $(1/2)(log(4/3) + log(8/9)) = 0.085$ or non-zero. This is because, in this case, the combination of $x = 3$ with $y = 13$ is underrepresented. Something similar might be happening in the dataset of the cubic case.  
+
+#figure(
+  table(
+    columns: 10,
+    [*$x$*], [1], [1], [1], [2], [2], [2], [3], [3], [3],
+    [*$y$*], [5], [9], [13], [5], [9], [13], [5], [9], [13],
+  ),
+  caption: [Toy combinatorial data between two variables $x$ and $y$.]
+)<table:MI_data_example>
+
+
+Nevertheless the mutual information between $beta$ and $phi_Kappa$ is still lower than the majority of the values of mutual information between $phi_kappa$ and the compositions $chi_n$. On the other hand, the lowest values of $chi_n$ like $chi_0$, $chi_1$, $chi_2$ and $chi_3$ show the highest mutual information score with both targets, suggesting that they have the most influence on the output variables. This is also expected because a higher dependence between the elastic constants and the first resonance frequencies is expected. In fact, we can observe that, by far the variable with most influence on the targets is $chi_1$, and that's because $chi_1$ has information of both first and second frequency: remember that $chi_1 = (lambda_1 - lambda_0)/lambda_19 = (omega_1^2 - omega_0^2)/omega_19^2$. Both of these frequencies are expected to be highly influential in the elastic constants. Given the correlation matrix and mutual information results it is convenient to take into account all features as well.
+
+The EDA performed in both cases, isotropic and cubic, goes to show that the variable transformations defined in @chap:transformations are highly nontrivial and physically meaningful. This will be showed in more detail below, when discussing the performance of the ML models implemented for each case. 
 
 == Results of the isotropic model<sec:isotropic_results>
 
-In the case of isotropic solids, two models were trained. One of them was a polynomial regression of 4th degree, and the other one was a small sequential neural network. Lets see how the two performed.
+In the case of isotropic solids, two models were trained. One of them was a polynomial regression of 4th degree, and the other was a small sequential neural network. Let's see how the two performed on the transformed dataset discussed before. 
 
-In a polynomial regression a target $y$ is modelled in terms of some features $x_i$ as a polynomial whose terms are all possible multiplications between the features up to Nth grade. The value of N is chosen arbitrarily. For example, in the case of a 4th polynomial degree the target $y$ is modeled in terms of the features as shown in @eq:4th_grade_poly_reg. Here, Einstein's notation is not used in order to see clearly the limits of the sums: 
+In a polynomial regression a target $y$ is modelled in terms of some features $x_i$ as a polynomial whose terms are all possible multiplications between the features up to Nth grade. The value of N is chosen as an hyperparameter. For example, in the case of a 4th polynomial degree the target $y$ is modeled in terms of the features as shown in @eq:4th_grade_poly_reg. Here, Einstein's notation is not used in order to clearly see the limits of the sums: 
 
 $ y = sum_(i = 1)^(N_"feat") sum_(j = i)^(N_"feat") sum_(k = j)^(N_"feat") sum_(l=k)^(N_"feat") A_(i j k l) x_i x_j x_k x_l, $<eq:4th_grade_poly_reg>
 
 where $N_"feat"$ is the number of features. 
 
-On the other hand the sequential neural network was made of 3 hidden layers: the first one had 64 neurons, the second one had 32 neurons and the third one had 8 neurons. The input layer had 7 neurons (same as the number of features) and the output layer had 1 neuron. The architecture of this neural network is shown in @fig:nn_isotropic.
+On the other hand, |the sequential neural network was made of 3 hidden layers: the first one had 64 neurons, the second one had 32 neurons and the third one had 8 neurons. The input layer had 7 neurons (same as the number of features) and the output layer had 1 neuron. The architecture of this neural network is shown in @fig:nn_isotropic.
 
 #figure(
   image("../images/nn_iso.png", width:90%),
