@@ -127,24 +127,24 @@ $ y = sum_(i = 1)^(N_"feat") sum_(j = i)^(N_"feat") sum_(k = j)^(N_"feat") sum_(
 
 where $N_"feat"$ is the number of features. 
 
-On the other hand, |the sequential neural network was made of 3 hidden layers: the first one had 64 neurons, the second one had 32 neurons and the third one had 8 neurons. The input layer had 7 neurons (same as the number of features) and the output layer had 1 neuron. The architecture of this neural network is shown in @fig:nn_isotropic.
+On the other hand, the sequential neural network was made of 3 hidden layers: the first one had 64 neurons, the second one had 32 neurons and the third one had 8 neurons. The input layer had 7 neurons (same as the number of features) and the output layer had 1 neuron (representing the target $phi_K$). Initially an architecture with the following neurons in each hidden layer was chosen: 16, 10, 8. This was because this initial neural network has approximately the same number of parameters as the polynomial regression of 4th degree done before (330 parameters for the regression and 360 for the initial neural network). Then more neurons were being added until the MAE was reduced below 0.03. As we see later no overfitting was observed.  The architecture of the final neural network is shown in @fig:nn_isotropic.
 
 #figure(
   image("../images/nn_iso.png", width:90%),
   caption: [Architecture of the neural network trained to predict $phi_K$ in the isotropic case. Image generated with NN-SVG tool #cite(<LeNail_2019>).]
 )<fig:nn_isotropic>
 
-Before any training, the target was modified in a way it had values between 0 and 1, as follows: 
+Before any training, the target was scaled in a way it had values between 0 and 1, as follows: 
 
 $ tilde(phi)_K = phi_K/(pi/2). $<eq:target1_normalized>
 
-A difference between a value $tilde(phi)_K^("real")$ and a predicted value $tilde(phi)_K^("predicted")$ can be interpreted as the error relative to the domain of $phi_K$. For example, a difference of 0.02 means that the predicted value has a deviation of 2% of $pi/2$. In other words a deviation of 2% of $phi_K$'s domain. This way the Mean Absolute Error (MAE) can be seen as the deviation in the prediction of the model given in pieces of the target's domain. For example, a MAE of 0.02 means that the model is deviated 0.02 domains ($0.02 * pi/2$) in average. In a similar way the RMSE can be interpreted as the root square deviation given in pieces of domains, on average. MAE and RMSE are defined in @chap:failure.
+A difference between a value $tilde(phi)_K^("real")$ and a predicted value $tilde(phi)_K^("predicted")$ can be interpreted as the error relative to the domain of $phi_K$. For example, a difference of 0.02 means that the predicted value has a deviation of 2% of $pi/2$. In other words a deviation of 2% of $phi_K$'s domain. This way the Mean Absolute Error (MAE) can be seen as the deviation in the prediction of the model given in pieces of the target's domain, or as an angular error. For example, a MAE of 0.02 means that the model is deviated 0.02 domains ($0.02 * pi/2$) or has an error of 1.8 degrees in average. In a similar way the RMSE can be interpreted as the root square deviation given in pieces of domains, on average. MAE and Root Mean Square Error (RMSE) are defined in @chap:failure.
 
 === Results of the polynomial regression
 
 Fitting $phi_K$ in terms of the features $eta$, $beta$, $xi_0$, $xi_1$, $xi_2$, $xi_3$and $xi_4$ with a polynomial of 4th degree was done splitting 80% of the data for training and 20% for testing. 
  
-The results of the model are shown in the following table: 
+The performance metrics of the model are shown in the following table: 
 #figure(
   table(
     columns: 3,
@@ -156,29 +156,20 @@ The results of the model are shown in the following table:
   caption: [Results of the linear regression model.]
 )<table:linear_resgression_results>
 
-As we can see here, the value of $R^2$ tells us that the model is overfitting, and still the target has an average error of 9% of $pi/2$ or 9% of the domain of $phi_K$, which can be further improved. Nevertheless this model was able to predict the relation between $K$ and $G$ better than any model tried in @chap:failure. In fact this model was tested also with the data generated to train and test the first polynomial model, shown in @chap:failure, and the results were: $"MAE" = 0.084$ and $R^2 = 0.78$. In contrast the model with shortest MAE shown in @chap:failure had a train MAE value of 0.4. This proves that the variable transformations made in @chap:transformations are able to improve any model drastically. Now we're going to see the performance of a neural network. 
-/*
-$ "MAE" = (1/N_("data")) sum_(m = 1)^(N_"data") abs(tilde(phi_(K m)^("real")) - tilde(phi_(K m)^("predicted"))). $<eq:MAE_def>
+As we can see here, the values of $R^2$ and RMSE tells us that the model is overfitting, and still the target has an average error of 9% of $pi/2$ or 9% of the domain of $phi_K$, which can be further improved. Nevertheless this model was able to predict its target with similar performance metrics as the best model shown in @chap:failure. In fact this model was tested also with the data generated to train and test the first polynomial model, shown in @chap:failure, and the performance metrics for the prediction of $phi_K$ were: $"MAE" = 0.084$ and $R^2 = 0.78$. The model with shortest MAE shown in @chap:failure had a test MAE value of $0.337 "Tdyn"/"cm"^2$ which is 6% of its domain (6% of $5.3 "Tdyn"/"cm"^2)$, which is 3% below the percentage error of the polynomial regression model. Nevertheless, the best model of @chap:failure was a complex random forest model fed with polynomial features of degree 3, while this model is just a linear regression fed with polynomial features of degree 4. In other words a very complex model outlined in @chap:failure is having similar metrics as a simple polynomial model shown here. This proves that the feature and target transformations proposed in @chap:transformations are able to improve any model drastically. Now we're going to see the performance of a neural network. 
 
-Also another metric that will give us an idea of how well the model is fitting the data is the coefficient of determination $R^2$, which is defined as: 
 
-$ R^2 = 1 - "SSE"/"SST", $
-
-where,
-
-$ "SSE" = sum_(m = 1)^(N_"data") (tilde(phi_(K m)) - tilde())^2 $
-*/
 === Results of the neural network
 
-Splitting 60% of the data for training, 20% for validation and 20% for testing the sequential neural network described in @fig:nn_isotropic was trained.The activation function of all input layers was ReLu and the activation of the last layer was the following custom function: 
+Splitting 60% of the data for training, 20% for validation and 20% for testing, the sequential neural network described in @fig:nn_isotropic was trained. The activation function of all input layers was ReLu and the activation of the last layer was the following custom function: 
 
 $ g(x) = (1/N) log((1 + e^(N x))/(1 + e^(N (x-1)))). $
 
-This function is similar to $y = x$ when $x$ is between 0 and 1, close to 0 if $x < 0$ and 1 if $x > 1$ for large values of $N$. The highest possible value of $N$ was chosen, which was $N=20$. Values of $N$ of 21 or larger yielded to NaN metrics during the training. This way the target was going to have values between 0 and 1. However, as we will see later in the cubic case, the hard sigmoid performs better because it has the same advantages but makes the training a lot faster.  
+This function was chosen because it returns values between 0 and 1, and is similar to $y = x$ when $x$ is between 0 and 1, close to 0 if $x < 0$ and 1 if $x > 1$ for large values of $N$. The highest possible value of $N$ was chosen, which was $N=20$. Values of $N gt.eq 21$ yielded to NaN metrics during the training. This way the target was going to have values between 0 and 1. However, as we will see later in the cubic case, the hard sigmoid performs better because it has a similar behavior but makes the training a lot faster and doesn't yield to NaN values during training.  
 
-The training of the model was performed using Keras 3.0 #cite(<keras>) in Python, using Torch #cite(<torch>) as the backend with an AMD 6600M GPU. It took 72 minutes to complete the training. Full system specs of the PC used to train the models can be seen in @apx:specs. Learning rate and batch size were tuned monitoring the MSE and RMSE in the first 5 epochs during the training of the model. Learning rate of 0.0005 and batch size of 16 ensured smooth and stable updates, fast convergence and 41 second of training per epoch, as shown in @fig:train_history_isotropic. Default values of learning rate of 0.001 and batch size of 32 yielded a faster training, but a slightly slower convergence. Batches under 16 yielded to large training times with very little enhancement in convergence.  
+The training of the model was performed using Keras 3.0 #cite(<keras>) in Python, using Torch #cite(<torch>) as backend with an AMD 6600M GPU. It took 72 minutes to complete the training. Full system specifications of the PC used to train the models can be seen in @apx:specs. The learning rate and batch size were tuned monitoring the MSE and RMSE in the first 5 epochs during the training of the model. A learning rate of 0.0005 and batch size of 16 ensured smooth and stable updates, fast convergence and 41 second of training per epoch, as shown in @fig:train_history_isotropic. Default values of learning rate of 0.001 and batch size of 32 yielded a faster training, but a slightly slower convergence. Batches under 16 yielded to large training times with very little enhancement in convergence.  
 
-The results of this model are shown in @table:NN1_results: 
+The performance metrics of this model are shown in @table:NN1_results: 
 
 #figure(
   table(
@@ -202,13 +193,13 @@ These results demonstrate that the neural network is capable of reliably estimat
   caption: [Train history of the neural network model in the isotropic case. As it can be seen there is no sign of overfitting.]
 )<fig:train_history_isotropic>
 
-@fig:train_history_isotropic shows the evolution of the Mean Absolute Error (MAE) for both the training and validation sets across epochs. Overall, both curves exhibit a consistent downward trend, indicating that the model is effectively learning and improving its predictive accuracy over time. The validation MAE closely follows the training MAE throughout the training process, with only minor fluctuations. This behavior suggests that the model is not overfitting and is generalizing well to unseen data. The slight oscillations observed in the validation curve are expected due to the stochastic nature of training with a small batch size. Notably, even in the later epochs, the validation MAE continues to improve, albeit at a slower rate, indicating that the model may not have fully converged. 
+@fig:train_history_isotropic shows the evolution of the Mean Absolute Error (MAE) for both the training and validation sets across epochs. Overall, both curves exhibit a consistent downward trend, indicating that the model is effectively learning and improving its predictive accuracy over epochs. The validation MAE closely follows the training MAE throughout the training process, with only minor fluctuations. This behavior suggests that the model is not overfitting and is generalizing well to unseen data. The slight oscillations observed in the validation curve are expected due to the stochastic nature of training with a small batch size. Notably, even in the later epochs, the validation MAE continues to improve, albeit at a slower rate, indicating that the model may not have fully converged. 
 
 //Presentar las graficas que muestran los valores del phi_K predicho con los datos combinatoriales. 
 
 == Results of the cubic model<sec:cubic_results>
 
-In the case of cubic solids, only one model was trained: a big neural network with as architecture represented in the following piece of code: 
+In the case of cubic solids, only one model was trained: a feed-forward neural network with an architecture represented in the following piece of code: 
 
 #figure(
   table(
@@ -234,16 +225,16 @@ In the case of cubic solids, only one model was trained: a big neural network wi
   ```
     ],
   ),
-  caption: [Architecture of the neural network used to predict the cubic targets $phi_Kappa$ and $phi_a$.]
+  caption: [Architecture of the neural network used to predict the targets $phi_Kappa$ and $phi_a$ of a cubic crystal.]
 )<code:nn_cubic>
 
-Every line of ```Python modelo.add(keras.layers.Dense(N_neurons, activation)``` in @code:nn_cubic indicates the addition of a new layer, with the number of neurons as its first argument and the activation function as the second argument. Every one of the hidden layers in the model has ReLU as its activation function (```Python def_act = 'relu'```) and the output layer has a hard sigmoid as its activation. 
+Every line of ```Python modelo.add(keras.layers.Dense(N_neurons, activation)``` in @code:nn_cubic indicates the addition of a new layer, with the number of neurons as its first argument and the activation function as the second argument. Every one of the hidden layers in the model has ReLU as its activation function (```Python def_act = 'relu'```) and the output layer has a hard sigmoid as its activation function. 
 
 Before any training, the target variables in the cubic case were modified like $phi_K$ in the isotropic case: 
 
 $ tilde(phi)_Kappa = phi_Kappa/(pi/2); tilde(phi)_a = phi_a/(pi/2). $<eq:targets_normalized>
 
-This guarantees that the new targets are in the range between 0 and 1. Just like the isotropic case, any difference between a real value of $tilde(phi)_Kappa$ or $phi_a$ can be interpreted as the error in pieces of domain of $phi_Kappa$ or $phi_a$. This way, the MAE is the average value of this error. In a similar way RMSE can be interpreted as the root squared deviation given in pieces of domains, of given in units $pi/2$, on average. Here, fitting $tilde(phi)_Kappa$ and $tilde(phi)_a$ in terms of the features $eta$, $beta$ and the compositions from $chi_0$ to $chi_19$ was done splitting 76% of the data for training, 12% of the data for validation and 12% of the data for testing. The training of the model was performed using Keras #cite(<keras>). The hardware specifications are the same as the training of the neural network in the isotropic model and can be found in @apx:specs. The learning rate was kept the same (```Python lr_var = 0.0005```) as the learning rate of the neural network in the isotropic model as there was no need to modify it. The batch size was increased to 160 given that the cubic case has 3.4 more data entries than the isotropic case, so this number had to be increased in order reduce the training time.
+This guarantees that the new targets are in the range between 0 and 1. Just like the isotropic case, any difference between a real value of $tilde(phi)_Kappa$ or $phi_a$ can be interpreted as the error in pieces of domain of $phi_Kappa$ or $phi_a$. This way, the MAE is the average value of this error. In a similar way RMSE can be interpreted as the root squared deviation given in pieces of domains, of given in units $pi/2$, on average. Here, fitting $tilde(phi)_Kappa$ and $tilde(phi)_a$ in terms of the features $eta$, $beta$ and the compositions from $chi_0$ to $chi_19$ was done splitting 76% of the data for training, 12% of the data for validation and 12% of the data for testing. This split was used to allocate more data to training, given the significantly larger and more complex architecture of the model. The training of the model was performed using Keras #cite(<keras>). The hardware specifications are the same as the training of the neural network in the isotropic model and can be found in @apx:specs. The learning rate was kept the same (```Python lr_var = 0.0005```) as the learning rate of the neural network in the isotropic model, as there was no need to modify it. The batch size was increased to 160 given that the cubic case has 3.4 more data entries than the isotropic case, so this number had to be increased in order reduce the training time.
 
 The results of the model are shown in @table:NN2_results:
 
@@ -269,13 +260,13 @@ The $R^2$ score is 0.973 on the training set, dropping to 0.924 on the validatio
 
 The overall trend demonstrates successful learning, with both training and validation MAE decreasing significantly during the early epochs. However, in the later stages of training, a slight divergence begins to emerge between the training and validation curves. While the training MAE continues to decrease steadily, the validation MAE begins to plateau and exhibits minor fluctuations. This behavior suggests the onset of mild overfitting, where the model starts to learn patterns specific to the training data that do not generalize perfectly to unseen data.
 
-This is not unexpected given the very large capacity of the model, with millions of parameters and no explicit regularization mechanisms such as dropout, weight decay, or early stopping, the network can easily begin to memorize training data. Despite this, the final validation MAE remains very low (around 0.028), corresponding to an angular error of approximately $0.014 pi$ radians or 2.43 degrees, which is still highly accurate given the scale of the target.
+This is not unexpected given the very large capacity of the model, with millions of parameters and no explicit regularization mechanisms such as dropout, weight decay, or early stopping, the network can easily begin to memorize training data. Despite this, the final validation MAE remains very low (around 0.028), corresponding to an angular error of approximately $0.014 pi$ radians or 2.43 degrees, which is still highly accurate given the scale of the target. Given the small divergence between the train MAE and validation MAE in @fig:train_history_cubic none of the mentioned regularization methods were used. 
 
 == Performance of the whole pipeline of the inverse problem
 
-Previous section (@sec:cubic_results) presented the performance of a model able to predict $phi_Kappa$ and $phi_a$. Nevertheless the main objective of the inverse problem, in the cubic case, is to predict the constants. To do that it is necessary to follow the steps described in @sec:cubic_targets or, in other words, place the neural network model inside the "Predict" box inside the pipeline described in @fig:diagram_inverse. This pipeline can be evaluated with some reported values of elastic constants of cubic materials reported by Fukuda #cite(<Fukuda_2023>), which also has its own model to be evaluated. This means that we can evaluate the present work pipeline with those constants and also compare this approach with Fukuda's model. 
+The previous section (@sec:cubic_results) presented the performance of a model able to predict $phi_Kappa$ and $phi_a$. Nevertheless the main objective of the inverse problem, in the cubic case, is to predict the elastic constants. To do that it is necessary to follow the steps described in @sec:cubic_targets or, in other words, place the neural network model inside the "Predict" box inside the pipeline described in @fig:diagram_inverse. This pipeline can be evaluated with some reported values of elastic constants of cubic materials reported by Fukuda et al #cite(<Fukuda_2023>), which also trained a model to predict the cubic elastic constants. This means that we can evaluate the present work pipeline with those constants and also compare this approach with Fukuda et al's model. 
 
-To evaluate the pipeline a forward problem was performed (getting the eigenvalues $lambda_n$) on every material reported in table [] of @apx:cubic_constants, with an aspect ratio of the sample of 3:4:5, which is the aspect ratio where the Fukuda model works. Then for every material, the constants were predicted with the pipeline. With both the reported constants and the predicted constants, a value of non-absolute percentage error $"NaErr"$ (which was the metric used by Fukuda #cite(<Fukuda_2023>)) and a value of absolute percetage error $"AbsErr"$ was calculated the following way: 
+To evaluate the pipeline a forward problem was performed (getting the eigenvalues $lambda_n$) on every material reported in @apx:cubic_constants, with an aspect ratio of the sample of 3:4:5, which is the aspect ratio where the Fukuda et al's model was trained. Then for every material, the elastic constants were predicted with the pipeline. With both the reported elastic constants and the predicted constants, a value of non-absolute percentage error $"NaErr"$ (which was the metric used by Fukuda et al #cite(<Fukuda_2023>)) and a value of absolute percentage error $"AbsErr"$ was calculated the following way: 
 
 $ "NaErr" = 100 times (C_(i j)^("reported") - C_(i j )^("predicted"))/C_(i j)^("reported"), $
 
@@ -283,56 +274,58 @@ where $C_(i j)$ is any of the three elastic constants and,
 
 $ "AbsErr" = abs("NaErr"). $
 
-The average and the standard deviation were calculated for the predictions of the Fukuda model and the predictions of the present work pipeline in @table:Fukuda_comparison. Note that the average of $"AbsErr"$ is no other than the MAPE (Mean Absolute Percentage Error) defined in @chap:failure.
+The average and the standard deviation were calculated for the predictions of the Fukuda et al's model and the predictions of the present work pipeline in @table:Fukuda_comparison. Note that the average of $"AbsErr"$ is no other than the MAPE (Mean Absolute Percentage Error) defined in @chap:failure.
 
 #figure(
   table(
     columns: 7,
     [], [*$C_11$ mean*], [*$C_11$ std*], [*$C_12$ mean*], [*$C_12$ std*], [*$C_44$ mean*], [*$C_33$ std*],
     [*$"AbsErr"$ PP*], [4.14], [3.87],  [8.31], [8.50], [2.44], [2.86],
-    [*$"AbsErr"$ Fukuda*], [5.15], [5.36], [10.90], [11.94], [7.78], [12.92],
+    [*$"AbsErr"$ Fukuda et al*], [5.15], [5.36], [10.90], [11.94], [7.78], [12.92],
     [*$"NaErr"$ PP*], [-1.94], [5.32],  [-2.68], [11.58], [-0.13], [3.75],
-    [*$"NaErr"$ Fukuda*], [1.13], [7.35], [2.31], [16.00], [-0.71], [15.07],
+    [*$"NaErr"$ Fukuda et al*], [1.13], [7.35], [2.31], [16.00], [-0.71], [15.07],
   ),
-  caption: [Comparison between the mean percentage errors and its standard deviations between the present work's pipeline and Fukuda's model #cite(<Fukuda_2023>). The rows with "PP" mean Present Pipeline.]
+  caption: [Comparison between the mean percentage errors and its standard deviations between the present work's pipeline and Fukuda et al's model #cite(<Fukuda_2023>). The rows with "PP" mean Present Pipeline.]
 )<table:Fukuda_comparison>
 
-@table:Fukuda_comparison shows that all values of MAPE are lower for the present pipeline, with lower standard deviations. That means that the present pipeline has more predictive power than Fukuda's model, which was trained with more powerful hardware (Fukuda's Nvidia RTX 3090 vs the Radeon 6600M of the present work), more data (3672000 of data entries in Fukuda's work vs 656414 data entries of the present work) and more eigenvalues (100 eigenvalues in Fukuda's case and 20 eigenvalues in the present work). Also a box plot showing the quantiles of $"NaErr"$ and $"AbsErr"$ is show in @fig:box_plot_nonabs_error and @fig:box_plot_abs_error:
+@table:Fukuda_comparison shows that all values of MAPE are lower for the present pipeline, with lower standard deviations. That means that the present pipeline has more predictive power than Fukuda et al's model, which was trained with more powerful hardware (Fukuda's Nvidia RTX 3090 vs the Radeon 6600M of the present work), more data (3672000 of data entries in Fukuda's work vs 656414 data entries of the present work), and more eigenvalues (100 eigenvalues in Fukuda's case and 20 eigenvalues in the present work). Also box plots showing the quantiles of $"NaErr"$ and $"AbsErr"$ are shown in @fig:box_plot_nonabs_error and @fig:box_plot_abs_error:
 
 #figure(
   image("../images/box_plot_result1.png", width: 70%),
-  caption: [Quantiles of the non absolute percentage errors of the predicted constants of Fukudas model and present pipeline. "PP" means Present Pipeline. ]
+  caption: [Quantiles of the non absolute percentage errors of the predicted constants of Fukuda et al's model and present pipeline. "PP" means Present Pipeline. ]
 )<fig:box_plot_nonabs_error>
 
 #figure(
   image("../images/box_plot_result2.png", width: 70%),
-  caption: [Quantiles of the absolute percentage errors of the predicted constants of Fukudas model and present pipeline. "PP" means Present Pipeline. ]
+  caption: [Quantiles of the absolute percentage errors of the predicted constants of Fukuda et al's model and present pipeline. "PP" means Present Pipeline. ]
 )<fig:box_plot_abs_error>
 
-Both box plots shows evidence of similar predicting power of $C_11$ constant in both models (Fukuda's model and present pipeline). Here Fukuda's model is slightly superior. Nevertheless the predicting power of the other two constants is superior in the present pipeline according to @fig:box_plot_nonabs_error and @fig:box_plot_abs_error. 
+Both box plots shows evidence of similar predicting power of $C_11$ constant in both models (Fukuda et al's model and present pipeline). Here Fukuda et al's model is slightly superior. Nevertheless the predicting power of the other two constants is superior in the present pipeline according to @fig:box_plot_nonabs_error and @fig:box_plot_abs_error.
 
-To see how the predictions of the present pipeline compare to the reported values of the constants, a scatter plot of the reported constant vs the predicted constant was made for each of the three constants: 
+In summary the present pipeline is able to predict the cubic elastic constants with smaller errors than Fukuda el at's model, having less resources and time during training. Also the present pipeline is able to predict the elastic constants of every parallelepiped sample despite its proportions. This was achieved thanks to the fact that the present pipeline uses a model that predicts targets in a well defined range (all of them are between 0 and $pi/2$) and following the restrictions of thermodynamic stability mentioned in @chap:elastic_theory, while Fukuda et al's model doesn't follow those restrictions. 
+
+To see how the predictions of the present pipeline compare to the reported values of the elastic constants, a scatter plot of the reported constant vs the predicted constants was made for each of the three independent elastic constants: 
 
 #figure(
   image("../images/c_11_predictions.png", width: 50%),
   caption: [Reported $C_11$ values in $x$ axis vs predicted $C_11$ values in $y$ axis.]
 )<fig:c11_predictions>
 
-We can observe in @fig:c11_predictions that the present pipeline has strong predictive power for low values of $C_11$, between 0 and 300 GPa. The predicting power for greater values fades the grater the value of $C_11$. 
+We can observe in @fig:c11_predictions that the present pipeline has strong predictive power for low values of $C_11$, between 0 and 300 GPa. The predicting power for greater values fades the grater the value of $C_11$ is. This might be because, after predicting $phi_Kappa$ and $phi_a$ values, when using equation @eq:M_determination_cubic, the errors scale with $lambda_0$, which is proportional to any of the elastic constants. In other words, one can have the same error in $cos(phi_Kappa)$, for example, regardless the value of $C_11$, but $M$ in equation @eq:cubic_K_relation is greater when the constants are greater, which yields to a bigger error in $K$.  
 
 #figure(
   image("../images/c_12_predictions.png", width: 50%),
   caption: [Reported $C_12$ values in $x$ axis vs predicted $C_12$ values in $y$ axis.]
 )<fig:c12_predictions>
 
-@fig:c12_predictions shows that the prediction of the $C_12$ constant is the most challenging one for the present pipeline. There is lots of points of data distant from the line $y = x$. 
+@fig:c12_predictions shows that the prediction of the $C_12$ constant is the most challenging one for the present pipeline. There is lots of points of data distant from the line $y = x$. This might be because $C_12$ has information about both shear and bulk stresses. Also, $C_12$ is carrying the error of two predictions: $K$ and $a$.
 
 #figure(
   image("../images/c_44_predictions.png", width: 50%),
   caption: [Reported $C_44$ values in $x$ axis vs predicted $C_44$ values in $y$ axis.]
 )<fig:c44_predictions>
 
-On the other hand $C_44$ is the easiest constant for the present pipeline to predict. We can observe in @fig:c44_predictions that almost all the point are over the line $y = x$, which means a very precise prediction of this constant.
+On the other hand $C_44$ is the easiest constant for the present pipeline to predict. This might be because it only carries the prediction error of $mu$, and also, is has only information about shear stresses, which are typically lower than bulk stresses. We can observe in @fig:c44_predictions that almost all the point are over the line $y = x$, which means an almost perfect prediction of this constant.
 
 Finally is worth to mention that the codes made to generate the data, visualize data, train the models and evaluate the models make extensive use of the following Python libraries:
 - numpy #cite(<numpy>) 

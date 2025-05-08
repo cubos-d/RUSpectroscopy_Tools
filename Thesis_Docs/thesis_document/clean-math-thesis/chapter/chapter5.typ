@@ -163,7 +163,7 @@ $ Kappa_("base") = M cos(phi_Kappa), $
 $ a_("base") = M sin(phi_Kappa)cos(phi_a), $
 $ mu_("base") = M sin(phi_Kappa)sin(phi_a). $
 - Compute the eigenvalues of the "base" constants performing a forward problem. Lets call them $lambda_0^("fwd"), lambda_1^("fwd")$, etc. Note that the relation between eigenvalues obtained from this forward problem $chi_n^("fwd")$ must be equal to the original eigenvalues $chi_n$.
-- Get the real magnitude $sqrt(Kappa^2 + a^2 + mu^2)$, using the proportion relation mentioned in @eq:prop_M_lambda2, with any of the eigenvalues (not necessarily $lambda_0$): $ sqrt(Kappa^2 + a^2 + mu^2) = (lambda_0/lambda_0^("fwd")) sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2). $<eq:M_determination1>
+- Get the real magnitude $sqrt(Kappa^2 + a^2 + mu^2)$, using the proportion relation mentioned in @eq:prop_M_lambda2, with any of the eigenvalues (not necessarily $lambda_0$): $ sqrt(Kappa^2 + a^2 + mu^2) = (lambda_0/lambda_0^("fwd")) sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2). $<eq:M_determination_cubic>
 - Finally, get the constants $Kappa$, $a$ and $mu$ the following way: 
 $ Kappa = M cos(phi_K), $<eq:cubic_K_relation> 
 $ a = M sin(phi_Kappa)cos(phi_a), $<eq:cubic_a_relation>
