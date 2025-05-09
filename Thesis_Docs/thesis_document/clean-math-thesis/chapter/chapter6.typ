@@ -49,12 +49,21 @@ This equal representation is important because it allows a model to learn more g
 
 === Exploratory data analysis for the isotropic case<sec:isotropic_exploration>
 
+The behavior of the values of $xi_n$ as a function of $phi_K$ was explored for different values of $eta$ and $beta$. @fig:pretty_sample_of_xi_vs_phiK shows this behavior for $eta = 0.31 pi$ and $beta = 0.5 pi$. 
+
+#figure(
+  image("../images/xi_exploration.png", width: 85%),
+  caption: [First 5 values of $xi_n$ as a function of $phi_K$ for values of $eta = 0.31 pi$ and $beta = 0.5 pi$.]
+)<fig:pretty_sample_of_xi_vs_phiK>
+
+Plots of $xi_n$ as a function of $phi_K$ for other values of $eta$ and $beta$ are shown in @apx:phiK_plots. We can observe in @fig:pretty_sample_of_xi_vs_phiK and the figures of @apx:phiK_plots that there is no pair of values of $phi_K$ with the same  values of $xi_0$, $xi_1$, $xi_2$, $xi_3$ and $xi_4$. In other words, each value of $phi_K$ has it's unique set of the first 5 values of $xi_n$. This is the reason why only 5 values of $phi_K$ were fed into the models discussed in @sec:isotropic_results. We can also observe that the plots in @fig:pretty_sample_of_xi_vs_phiK and in @apx:phiK_plots are very similar to several ReLU functions concatenated. This is the reason why a neural network was trained as we will see later. 
+
 A total of 252474 data entries were generated with variables distributed as described in @sec:data_gen_isotropic. In @chap:transformations we reduced redundancy of geometric variables. Now we're going to explore if there is any redundancy among all $xi_n$ values. For that purpose the correlation matrix will be calculated. As mentioned in @chap:failure every element of the correlation matrix has the Pearson product-moment correlation coefficient, which measures the lineal dependence between two features #cite(<Raschka_2022>). If any coefficient is close to 1 or -1 means that two features are heavily correlated (positively or negatively, respectively), which means that they are holding the same information. Thus, when a value close to 1 or -1 is found the dataset may carry redundant information from a pair of highly correlated features, which means that one of them can be eliminated. On the other hand, if we find correlation values close to 0, it means independence between a pair of features, which, in turn, means that every feature is holding different information that cannot be ignored.   
 
 Let's see the correlation matrix, calculated with these data, of the features of the isotropic case:
 
 #figure(
-  image("../images/corr_matrix_isotropic.png", width: 50%),
+  image("../images/corr_matrix_isotropic.png", width: 55%),
   caption: [Correlation matrix of the features in the isotropic case.]
 )<fig:correlation_matrix_isotropic>
 
@@ -266,15 +275,15 @@ This is not unexpected given the very large capacity of the model, with millions
 
 The previous section (@sec:cubic_results) presented the performance of a model able to predict $phi_Kappa$ and $phi_a$. Nevertheless the main objective of the inverse problem, in the cubic case, is to predict the elastic constants. To do that it is necessary to follow the steps described in @sec:cubic_targets or, in other words, place the neural network model inside the "Predict" box inside the pipeline described in @fig:diagram_inverse. This pipeline can be evaluated with some reported values of elastic constants of cubic materials reported by Fukuda et al #cite(<Fukuda_2023>), which also trained a model to predict the cubic elastic constants. This means that we can evaluate the present work pipeline with those constants and also compare this approach with Fukuda et al's model. 
 
-To evaluate the pipeline a forward problem was performed (getting the eigenvalues $lambda_n$) on every material reported in @apx:cubic_constants, with an aspect ratio of the sample of 3:4:5, which is the aspect ratio where the Fukuda et al's model was trained. Then for every material, the elastic constants were predicted with the pipeline. With both the reported elastic constants and the predicted constants, a value of non-absolute percentage error $"NaErr"$ (which was the metric used by Fukuda et al #cite(<Fukuda_2023>)) and a value of absolute percentage error $"AbsErr"$ was calculated the following way: 
+To evaluate the pipeline a forward problem was performed (getting the eigenvalues $lambda_n$) on every material reported in @apx:cubic_constants, with an aspect ratio of the sample of 3:4:5, which is the aspect ratio where the Fukuda et al's model was trained. Then for every material, the elastic constants were predicted with the pipeline. All the predicted elastic constants can be found in @table:reported_and_predicted_constants_p1, @table:reported_and_predicted_constants_p2, @table:reported_and_predicted_constants_p3 and @table:reported_and_predicted_constants_p4 inside @apx:cubic_constants. With both the reported elastic constants and the predicted constants, a value of non-absolute percentage error $"NaErr"$ (which was the metric used by Fukuda et al #cite(<Fukuda_2023>)) and a value of absolute percentage error $"AbsErr"$ was calculated the following way: 
 
-$ "NaErr" = 100 times (C_(i j)^("reported") - C_(i j )^("predicted"))/C_(i j)^("reported"), $
+$ "NaErr" = 100 times (C_(i j)^("reported") - C_(i j )^("predicted"))/C_(i j)^("reported"), $<eq:non_absolute_error>
 
 where $C_(i j)$ is any of the three elastic constants and,
 
 $ "AbsErr" = abs("NaErr"). $
 
-The average and the standard deviation were calculated for the predictions of the Fukuda et al's model and the predictions of the present work pipeline in @table:Fukuda_comparison. Note that the average of $"AbsErr"$ is no other than the MAPE (Mean Absolute Percentage Error) defined in @chap:failure.
+The average and the standard deviation were calculated for the predictions of the Fukuda et al's model and the predictions of the present work pipeline in @table:Fukuda_comparison. Note that the average of $"AbsErr"$ is no other than the MAPE (Mean Absolute Percentage Error) defined in @chap:failure. All the calculated errors ($"NaErr"$) for each material can be found in @table:errors_p1, @table:errors_p2, @table:errors_p3 and @table:errors_p4 inside @apx:cubic_constants.
 
 #figure(
   table(
@@ -307,25 +316,17 @@ In summary the present pipeline is able to predict the cubic elastic constants w
 To see how the predictions of the present pipeline compare to the reported values of the elastic constants, a scatter plot of the reported constant vs the predicted constants was made for each of the three independent elastic constants: 
 
 #figure(
-  image("../images/c_11_predictions.png", width: 50%),
-  caption: [Reported $C_11$ values in $x$ axis vs predicted $C_11$ values in $y$ axis.]
-)<fig:c11_predictions>
+  image("../images/c_xx_predictions.png", width: 95%),
+  caption: [Reported values in $x$ axis vs predicted values in $y$ axis.]
+)<fig:cxx_predictions>
 
-We can observe in @fig:c11_predictions that the present pipeline has strong predictive power for low values of $C_11$, between 0 and 300 GPa. The predicting power for greater values fades the grater the value of $C_11$ is. This might be because, after predicting $phi_Kappa$ and $phi_a$ values, when using equation @eq:M_determination_cubic, the errors scale with $lambda_0$, which is proportional to any of the elastic constants. In other words, one can have the same error in $cos(phi_Kappa)$, for example, regardless the value of $C_11$, but $M$ in equation @eq:cubic_K_relation is greater when the constants are greater, which yields to a bigger error in $K$.  
+We can observe in @fig:cxx_predictions that the present pipeline has strong predictive power for low values of $C_11$, between 0 and 300 GPa. The predicting power for greater values fades the grater the value of $C_11$ is. This might be because, after predicting $phi_Kappa$ and $phi_a$ values, when using equation @eq:M_determination_cubic, the errors scale with $lambda_0$, which is proportional to any of the elastic constants. In other words, one can have the same error in $cos(phi_Kappa)$, for example, regardless the value of $C_11$, but $M$ in equation @eq:cubic_K_relation is greater when the constants are greater, which yields to a bigger error in $K$.  
 
-#figure(
-  image("../images/c_12_predictions.png", width: 50%),
-  caption: [Reported $C_12$ values in $x$ axis vs predicted $C_12$ values in $y$ axis.]
-)<fig:c12_predictions>
 
-@fig:c12_predictions shows that the prediction of the $C_12$ constant is the most challenging one for the present pipeline. There is lots of points of data distant from the line $y = x$. This might be because $C_12$ has information about both shear and bulk stresses. Also, $C_12$ is carrying the error of two predictions: $K$ and $a$.
+The prediction of the $C_12$ constant is the most challenging one for the present pipeline, as shown in @fig:cxx_predictions. There is lots of points of data distant from the line $y = x$. This might be because $C_12$ has information about both shear and bulk stresses. Also, $C_12$ is carrying the error of two predictions: $K$ and $a$.
 
-#figure(
-  image("../images/c_44_predictions.png", width: 50%),
-  caption: [Reported $C_44$ values in $x$ axis vs predicted $C_44$ values in $y$ axis.]
-)<fig:c44_predictions>
 
-On the other hand $C_44$ is the easiest constant for the present pipeline to predict. This might be because it only carries the prediction error of $mu$, and also, is has only information about shear stresses, which are typically lower than bulk stresses. We can observe in @fig:c44_predictions that almost all the point are over the line $y = x$, which means an almost perfect prediction of this constant.
+On the other hand $C_44$ is the easiest constant for the present pipeline to predict. This might be because it only carries the prediction error of $mu$, and also, is has only information about shear stresses, which are typically lower than bulk stresses. We can observe in @fig:cxx_predictions that almost all the point are over the line $y = x$, which means an almost perfect prediction of this constant.
 
 Finally is worth to mention that the codes made to generate the data, visualize data, train the models and evaluate the models make extensive use of the following Python libraries:
 - numpy #cite(<numpy>) 
