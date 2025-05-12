@@ -189,11 +189,15 @@ In summary, the original problem of training a model to predict the elastic cons
 
 === Setting new targets in cubic case<sec:cubic_targets>
 
-In the cubic case the elastic constant matrix has the form shown in @eq:cubic_constant_matrix. Lets define the following new variables based on the restrictions specified in @eq:restrictions_cubic_solids:
+In the cubic case, the elastic constant matrix takes the form shown in @eq:cubic_constant_matrix. To perform a target transformation similar to that used in the isotropic case—expressing the elastic constants in terms of angles—we must identify variables that are strictly positive, just as $K$ and $G$ were in the isotropic formulation.
 
-$ Kappa = 1/3 (C_11 + 2C_12); a = 1/3(C_11 - C_12); mu = C_44. $<eq:cubic_const_tranf>
+Fortunately, the thermodynamic stability conditions provided by Mouhat and Coudert #cite(<Mouhat_2014>) (and discussed in detail in @section:Constant_Restrictions) allow us to define new transformed variables that are constrained to be positive by construction. These new variables serve as the basis for our transformation.
 
-With these new variables the constant matrix of a cubic solid can be expressed as follows: 
+Let us now define the new variables, based on the stability conditions described in @eq:restrictions_cubic_solids:
+
+$ Kappa = 1/3 (C_11 + 2C_12); " "a = 1/3(C_11 - C_12); " "mu = C_44. $<eq:cubic_const_tranf>
+
+Each of these variables corresponds to a stability condition from @eq:restrictions_cubic_solids, redefined here as standalone positive quantities. The factor of $(1/3)$ was introduced to make the resulting elastic constant matrix more directly comparable to the isotropic case. With these new variables, the elastic constant matrix for a cubic solid can be rewritten as follows:
 
 $ arrow.l.r(C) = mat(
   Kappa + 2a, Kappa - a, Kappa - a, 0, 0, 0;
