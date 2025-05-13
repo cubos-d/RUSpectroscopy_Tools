@@ -151,7 +151,7 @@ Now let us define a new variable, $xi$, which captures a relationship between co
 
 $ xi_n = lambda_n/lambda_(n+1). $
 
-The values of $xi_n$ are the same for both solid A and solid B. This is because $xi_n$ depends only on the ratio between $K$ and $G$, not on their absolute magnitudes. In other words, we have constructed a new variable that captures the elastic behavior independent of scale.
+The values of $xi_n$ are the same for both solid A and solid B. Thus, $xi_n$ depends only on the ratio between $K$ and $G$, not on their absolute magnitudes. In other words, we have constructed a new variable that captures the elastic behavior independent of scale.
 
 $xi_n$ is not the only variable capable of expressing the relationship between eigenvalues. For example, consider:
 
@@ -208,15 +208,23 @@ $ arrow.l.r(C) = mat(
   0, 0, 0, 0, 0, mu;
 ) $<eq:cubic_constant_matrix_definitive>
 
-Each of the new variables, have now the following restrictions: 
+The domain of each transformed constant is now simply
 
-$ Kappa > 0; a > 0; mu >0. $
+$ Kappa > 0," " a > 0," " mu >0, $
 
-Just like the isotropic case, here the eigenvalues are also proportional to the magnitude of the constants. For example the eigenvalues of a solid with values of $Kappa = 5$, $a = 4$ and $mu = 3$ will be half the eigenvalues of a solid, with the same dimensions, with values of $Kappa = 10$, $a = 8$ and $mu = 6$. Thus the following applies to cubic solids: 
+ensuring that all stability conditions from @eq:restrictions_cubic_solids are satisfied by construction.
 
-$ lambda_n prop M = sqrt(Kappa^2 + a^2 + mu^2), $<eq:prop_M_lambda2>
+Just as in the isotropic case, the eigenvalues of a solid with elastic parameters $Kappa = 50 "GPa"$, $a = 40 "GPa"$, and $mu = 30 "GPa"$ will be half those of a solid with the same dimensions but with $Kappa = 100 "GPa"$, $a = 80 "GPa"$, and $mu = 60 "GPa"$. In other words, the eigenvalues scale proportionally with a magnitude defined as:
 
-for a given relation between $Kappa$, $a$ and $mu$. Also in this case the relations between eigenvalues depend only on the relations between constants and the aspect ratio of the sample. The relations between constants will be represented here with the following angles: 
+$ M = sqrt(Kappa^2 + a^2 + mu^2), $
+
+for a fixed proportion between $Kappa$, $a$ and $mu$. 
+
+Thus, for cubic solids, the following relationship holds:
+
+$ lambda_n prop M = sqrt(Kappa^2 + a^2 + mu^2). $<eq:prop_M_lambda2>
+
+As in the isotropic case, the relative proportions between eigenvalues (e.g., through variables like $xi_n$ or $chi_n$) depend only on the relative proportions of the elastic constants and the aspect ratio of the sample. To represent these internal proportions in a bounded and interpretable way, we define the following angles: 
 
 $ phi_Kappa = arctan(sqrt(a^2 + mu^2)/Kappa), $
 
@@ -224,25 +232,39 @@ and,
 
 $ phi_a = arctan(mu/a). $
 
-In the case of cubic solids, the relation between eigenvalues will be represented only by the variable 
+The motivation for defining the new targets and the magnitude in a form resembling spherical coordinates is the same as in the isotropic case: to ensure that the targets are easy to generate within a bounded range, without infinities or compositional constraints. In this formulation: $phi_Kappa$ ranges over $[0, pi/2]$ and $phi_a$ also ranges over $[0, pi/2]$. These angular variables allow us to uniformly and safely sample all valid ratios between $Kappa$, $a$, and $mu$.
 
 $ chi_n = (lambda_n - lambda_(n-1))/lambda_N, $<eq:chi_definition>
 
-where $N$ is the maximum number of eigenvalues used, because to train a model able to predict $phi_a$ and $phi_Kappa$ we will need to use more eigenvalues. To be exact $N = 20$ eigenvalues. This makes $xi_n$ a bad candidate for use as a feature, because for large $n$, like $n = 20$, all the values of $xi_n$ will be very close to 1. In the present work the variables $chi_n$ were given a special name: "compositions". This is because $chi_n$ represents the percentage of occupation of the gap between two eigenvalues in the whole spectrum from 0 to the Nth eigenvalue (20th in this case). The first composition $chi_0$ is defined differently as the others: $chi_0 = lambda_0/lambda_N$. Similar to the isotropic case we can create a model able to predict $phi_Kappa$ and $phi_a$ given the values of $chi_n$, $eta$ and $beta$. Once we have that model, we perform the following steps to get $Kappa$, $a$ and $mu$:
+which encodes the relative spacing between eigenvalues, normalized by the $N$th eigenvalue, where N is the maximum number of eigenvalues used. This variable serves as a stable and scale-invariant input for the machine learning model. 
 
-- Predict $phi_Kappa$ and $phi_a$ using the values of $chi_n$, $eta$ and $beta$ as the features. 
-- Establish an arbitrary base value of magnitude, for example $M = sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2) = 1$ and calculate a base value of $Kappa$, $a$ and $mu$ using: 
-$ Kappa_("base") = M cos(phi_Kappa), $
-$ a_("base") = M sin(phi_Kappa)cos(phi_a), $
-$ mu_("base") = M sin(phi_Kappa)sin(phi_a). $
-- Compute the eigenvalues of the "base" constants performing a forward problem. Lets call them $lambda_0^("fwd"), lambda_1^("fwd")$, etc. Note that the relation between eigenvalues obtained from this forward problem $chi_n^("fwd")$ must be equal to the original eigenvalues $chi_n$.
-- Get the real magnitude $sqrt(Kappa^2 + a^2 + mu^2)$, using the proportion relation mentioned in @eq:prop_M_lambda2, with any of the eigenvalues (not necessarily $lambda_0$): $ sqrt(Kappa^2 + a^2 + mu^2) = (lambda_0/lambda_0^("fwd")) sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2). $<eq:M_determination_cubic>
-- Finally, get the constants $Kappa$, $a$ and $mu$ the following way: 
+In this case, we set $N=19$ because predicting both $phi_Kappa$ and $phi_a$ requires more information than in the isotropic case, where only one target was predicted. We are now working in a two-dimensional target space (as shown in @fig:targets_distribution), rather than a one-dimensional one. This increased complexity demands more data to achieve reliable predictions. The most practical approach, therefore, is to utilize all available information — that is, the first 20 eigenvalues.
+
+With such a large number of eigenvalues, the variable $xi_n = lambda_n/lambda_(n+1)$ becomes less effective, since for large $n$ (e.g., $n=19$), the values of $xi_n$ tend to approach 1 (e.g., 0.999), reducing their usefulness as input features.
+
+In contrast, the variable $chi_n$ does not suffer from this limitation. In this work, the $chi_n$ values are referred to as "compositions", because they express the relative contribution of each gap between consecutive eigenvalues with respect to the entire spectrum from 0 to $lambda_N$. The first composition, $chi_0$, is defined differently from the others: 
+
+$ chi_0 = lambda_0/lambda_N. $
+
+Following the same strategy used in the isotropic case, we can now train a model to predict the angular targets $phi_Kappa$ and $phi_a$ using the set of $chi_n$ values along with the geometric parameters $eta$ and $beta$.
+
+Once the model has been trained, the following steps are used to recover $Kappa$, $a$, and $mu$:
+
+- Predict $phi_Kappa$ and $phi_a$ using the features $chi_n$, $eta$ and $beta$. 
+- Establish an arbitrary base value of magnitude $M_"base" = sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2) = 1$ and compute a base value of $Kappa$, $a$ and $mu$ using: 
+$ Kappa_("base") = M_"base" cos(phi_Kappa), $
+$ a_("base") = M_"base" sin(phi_Kappa)cos(phi_a), $
+$ mu_("base") = M_"base" sin(phi_Kappa)sin(phi_a). $
+- Compute the eigenvalues corresponding to the “base” constants by solving the forward problem. Let these be denoted as $lambda_0^"base", lambda_1^"base", dots$. Note that the resulting eigenvalue relationships, represented by $chi_n^"base"$, must match the original values $chi_n$ used as input features.
+- Determine the true magnitude $sqrt(Kappa^2 + a^2 + mu^2)$ using the proportional relationship from @eq:prop_M_lambda2. This can be done using any eigenvalue (not necessarily $lambda_0$)
+$ sqrt(Kappa^2 + a^2 + mu^2) = (lambda_0/lambda_0^("base")) sqrt(Kappa_("base")^2 + a_("base")^2 + mu_("base")^2). $<eq:M_determination_cubic>
+
+- Finally, compute the elastic constants $Kappa$, $a$, and $mu$ using the recovered magnitude and the predicted angles:
 $ Kappa = M cos(phi_K), $<eq:cubic_K_relation> 
 $ a = M sin(phi_Kappa)cos(phi_a), $<eq:cubic_a_relation>
 $ mu = M sin(phi_Kappa)sin(phi_a). $<eq:cubic_mu_relation>
 
-All the transformations of features and targets, or in general, the transformation of the inverse problem can be summarized in the following flow diagram: 
+All of the feature and target transformations described in this chapter — and, more broadly, the full inverse problem — can be summarized in the following pipeline diagram, which outlines the complete procedure step by step:
 
 #figure(
   image("../images/Inverse_diagram.png", width: 100%),
