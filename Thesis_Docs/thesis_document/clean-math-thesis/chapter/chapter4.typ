@@ -110,6 +110,10 @@ The estimated Box–Cox transformation parameters ($lambda$) for the variables $
   caption: [Transformations according to $lambda$ parameter in Box-Cox.]
 )<table:box_cox_table>
 
+These transformations make sense since the compressional ($v_K$) and shear ($v_G$) wave speeds depend on the square root of their respective modulus and the density, as shown in @eq:wave_speeds. Those speeds are related with related with their respective frequencies and the relation volume/area ("r") of the sample the following way: $v = omega r$. This gives us the hint that the frequencies depend on the geometry of the sample. 
+
+$ v_K = sqrt(K/rho); " "v_G = sqrt(G/rho). $<eq:wave_speeds>
+
 After applying the transformations discussed above, the input features and targets used for the modeling were redefined as follows:
 
 - *Features*: the sample dimensions $L_x$, $L_y$, and $L_z$; the square root of the density, $rho$; and the logarithms of the first 10 resonance frequencies, $log(omega_n)$.
@@ -118,17 +122,26 @@ After applying the transformations discussed above, the input features and targe
 
 == Fitting a linear model
 
-The dataset, generated with the random approach and transformed as mentioned before was used to fit an ordinary linear regression. Because this dataset showed better results than the model trained with combinatorial data. The results, of the prediction power of the model for $K$ target, are shown in the following table:
+The dataset, generated with the combinatorial approach and transformed as mentioned before was used to fit an ordinary linear regression, using statsmodels library #cite(<statsmodels>). In a linear regression a target $y$ is fitted in terms of some features $x_i$ the following way: 
+
+$ y = sum_(i = 0)^(N_F) A_i x_i + A_0, $
+
+where $N_F$ is the number of features and $A_i$ are the coefficients. For example, a model that fits $sqrt(K)$ in terms of the features mentioned above can be written as: 
+
+$ sqrt(K) = A_0 + A_1 log(omega_1) + A_2 log(omega_2) + dots. $
+
+The results, of the prediction power of the model for $K$ target, in the linear regression, are shown in the following table:
 
 #figure(
   table(
     columns: 3,
     [], [*Train*], [*Test*],
-    [*RMSE*], [1.511 $"Tdyn"/"cm"^2$], [1.515 $"Tdyn"/"cm"^2$], 
-    [*MAE*], [1.291 $"Tdyn"/"cm"^2$], [1.296 $"Tdyn"/"cm"^2$],
-    [*MAPE*], [80%], [80%]
+    [*RMSE*], [0.650 $"Tdyn"/"cm"^2$], [0.651 $"Tdyn"/"cm"^2$], 
+    [*MAE*], [0.532 $"Tdyn"/"cm"^2$], [0.534 $"Tdyn"/"cm"^2$],
+    [*MAPE*], [40%], [40%],
+    [*$R^2$*], [0.86], [0.86]
   ),
-  caption: [Performance metrics for the first linear model trained.]
+  caption: [Performance metrics for $K$ prediction in the first linear model trained.]
 )<table:resultados_failure_1>
 
 Before analyzing @table:resultados_failure_1 lets define the metrics shown there. RMSE stands for Root Mean Squared Error, and is defined the following way:
@@ -137,11 +150,47 @@ $ "RMSE" = sqrt(1/N_D sum_(j = 1)^(N_D)(y_j - hat(y)_j)^2), $<eq:RMSE_definition
 
 where $N_D$ is the number of data entries, $y_j$ is the value of the target and $hat(y)_j$ is the prediction of the value of the target. This is no other than the objective function to be minimized when fitting a regression model. To have an idea of the error we could expect when using the model we have the MAE, which stands for Mean Absolute Error, and is defined the following way:
 
-$ "MAE" = 1/N_D sum_(j = 1)^(N_D) abs(y_j - hat(y)_j). $
+$ "MAE" = 1/N_D sum_(j = 1)^(N_D) abs(y_j - hat(y)_j). $<eq:MAE_DEFINITIONS>
 
-In the case of the first linear model, we could expect an error of 1.291 $"Tdyn"/"cm"^2$ or 129.1 $"GPa"$ for using the model. This is a huge error considering that, for example, this is approximately the difference between the constant $C_11$ of gold and the constant $C_11$ of potassium fluoride, as we can see in @apx:cubic_constants. These results suggest that a more complex model (a model which takes account no linearities and has more parameters) is needed to fit $K$ and $G$. The next model that was tried was a polynomial regression. 
+Other metric that will give us the expected percentage error is the MAPE, which stands for Mean Absolute Percentage Error, is defined the following way:
 
+$ "MAPE" = 1/N_D sum_(j=1)^(N_D) abs((y_j - hat(y)_j)/y_j). $<eq:MAPE_definition>
 
+The last metric shown in @table:resultados_failure_1 is the coefficient of determination $R^2$ which gives us an idea whether the data is behaving like the model intends to. In this case it tells us if the data has linear behavior. 
+
+In the case of the first linear model, we could expect an error of 0.534 $"Tdyn"/"cm"^2$ or 53.4 $"GPa"$ for using the model. This is a huge error considering that, for example, this is approximately the difference between the constant $C_11$ of silver and the constant $C_11$ of NaCl, as we can see in @apx:cubic_constants. Also, the MAPE is telling us that we can expect an error of 40% when predicting a constant, which is not experimentally tolerable. On the other hand, the $R^2$ values suggest us that $sqrt(K)$ has near lineal dependence respect to $log(omega_n)$. @fig:statsmodel_results shows the hypothesis tests done to every feature in the linear regression model.
+
+#figure(
+  image("../images/statsmodels_results.png", width: 65%),
+  caption: [Summary of the model prompted by statsmodels.] 
+)<fig:statsmodel_results>
+
+We can see that, all the p-values reported in @fig:statsmodel_results referring to the frequencies are below 0.05. This indicates that statistically every constant of each frequency is important and is non zero. This tells us that every constant is an important feature an all of them should be included in the model. To conclude the discussion of the linear model predicting $K$, @fig:residuals shows the distribution of the residuals. We can see there that the residuals follow a near normal distribution, which means that the model complies with the homoscedasticity principle. 
+
+#figure(
+  image("../images/residuals.png", width: 65%),
+  caption: [Distribution of the residuals in the first linear model predicting $K$.]
+)<fig:residuals>
+
+Another independent linear model was trained to predict $G$ with the combinatorial dataset. The results of the prediction power of this model are shown in the following table: 
+
+#figure(
+  table(
+    columns: 3,
+    [], [*Train*], [*Test*],
+    [*RMSE*], [0.620 $"Tdyn"/"cm"^2$], [0.625 $"Tdyn"/"cm"^2$], 
+    [*MAE*], [0.510 $"Tdyn"/"cm"^2$], [0.514 $"Tdyn"/"cm"^2$],
+    [*MAPE*], [37%], [37%],
+    [*$R^2$*], [0.90], [0.86]
+  ),
+  caption: [Performance metrics for $G$ prediction in the first linear model trained.]
+)<table:resultados_failure_G>
+
+We can see that the metric of the model predicting $G$ are very similar to the metric of the model predicting $K$. The analysis done above to the linear model predicting $K$ also applies here. The errors of the model predicting $G$ are slightly smaller than the ones in the model predicting $K$. This slight improvement may happen because it is expected that $G$ has more dependence on the lower frequencies, since a shear deformation on any material, usually, requires less energy than a volume deformation. 
+
+The results above suggest that a more complex model (a model which takes account no linearities and has more parameters), which includes the geometric features ($L_x$, $L_y$ and $L_z$), is needed to fit $K$ and $G$. Other models of polynomial regression, which included interaction terms, were trained. Some of those models were trained with polynomial features up to degree 5
+
+/*
 == Other models trained
 
 Several polynomial models and Random Forest models were trained with the data generated with the random approach. All the models showed high values of RMSE, MAE and MAPE metrics even in the train data. This means that some of those models weren't even able to overfit the data. Other models just displayed high values of RMSE, MAE and MAPE metrics on the test data. The results of the model with the lowest values of those metrics is shown in @table:resultados_failure_2. This was a random forest model with 200 estimators and other parameters left by default, trained with polynomial features of degree 3 and "Yeo-Johnson" power transformation. The details about the parameters of a Random Forest and the "Yeo-Johnson" transform can be found in the scikit-learn documentation #cite(<scikit-learn>). Also the training and the testing of this model was performed only using the data of parallelepiped shapes. 
@@ -160,3 +209,6 @@ Several polynomial models and Random Forest models were trained with the data ge
 The test metrics given by this model are poor. For example, MAPE metric is telling us that the expected percentage error obtained from using the model is 23.21%. Also, the difference between the train and test metrics in @table:resultados_failure_2 shows that the model is overfitting. This means that solving the inverse problem the way it is being solved in the present chapter needs a very complex model, with a huge number of training parameters. Also more data is needed in order to solve such model to avoid overfitting. There is another way of solving the inverse problem without needing complex models with lots of parameters, at least for the isotropic case as shown in @chap:inverse_problem. 
 
 Also the approach of solving the inverse problem in the present chapter is very limited. It only intends to solve the inverse problem for samples whose characteristics, like its $K$, $G$ and dimension values, are within the ranges exposed in @table:feat_ranges. It is possible to have a non limited approach with a solution of the inverse problem for samples regardless of its dimensions, size or elastic constants scale. @chap:transformations will explore this approach right now. 
+
+*/
+
