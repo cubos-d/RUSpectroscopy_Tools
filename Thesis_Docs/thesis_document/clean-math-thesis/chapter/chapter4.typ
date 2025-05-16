@@ -110,7 +110,7 @@ The estimated Box–Cox transformation parameters ($lambda$) for the variables $
   caption: [Transformations according to $lambda$ parameter in Box-Cox.]
 )<table:box_cox_table>
 
-These transformations make sense since the compressional ($v_K$) and shear ($v_G$) wave speeds depend on the square root of their respective modulus and the density, as shown in @eq:wave_speeds. Those speeds are related with related with their respective frequencies and the relation volume/area ("r") of the sample the following way: $v = omega r$. This gives us the hint that the frequencies depend on the geometry of the sample. 
+These transformations make sense since the compressional ($v_K$) and shear ($v_G$) wave speeds depend on the square root of their respective modulus and the density, as shown in @eq:wave_speeds. Those speeds are related with related with their respective frequencies and the relation volume/area ($r$) of the sample the following way: $v = omega r$. This gives us the hint that the frequencies depend on the geometry of the sample. 
 
 $ v_K = sqrt(K/rho); " "v_G = sqrt(G/rho). $<eq:wave_speeds>
 
@@ -122,7 +122,7 @@ After applying the transformations discussed above, the input features and targe
 
 == Fitting a linear model
 
-The dataset, generated with the combinatorial approach and transformed as mentioned before was used to fit an ordinary linear regression, using statsmodels library #cite(<statsmodels>). In a linear regression a target $y$ is fitted in terms of some features $x_i$ the following way: 
+The dataset, generated with the combinatorial approach and transformed as mentioned before was used to fit an ordinary linear regression, using statsmodels library #cite(<statsmodels>). In principle, the features $L_x$, $L_y$ and $L_z$ weren't included, to see if it was possible to predict the elastic constants only with the frequencies. In a linear regression a target $y$ is fitted in terms of some features $x_i$ the following way: 
 
 $ y = sum_(i = 0)^(N_F) A_i x_i + A_0, $
 
@@ -188,7 +188,14 @@ Another independent linear model was trained to predict $G$ with the combinatori
 
 We can see that the metric of the model predicting $G$ are very similar to the metric of the model predicting $K$. The analysis done above to the linear model predicting $K$ also applies here. The errors of the model predicting $G$ are slightly smaller than the ones in the model predicting $K$. This slight improvement may happen because it is expected that $G$ has more dependence on the lower frequencies, since a shear deformation on any material, usually, requires less energy than a volume deformation. 
 
-The results above suggest that a more complex model (a model which takes account no linearities and has more parameters), which includes the geometric features ($L_x$, $L_y$ and $L_z$), is needed to fit $K$ and $G$. Other models of polynomial regression, which included interaction terms, were trained. Some of those models were trained with polynomial features up to degree 5
+The results above suggest that a more complex model (a model which takes account no linearities and has more parameters), which includes the geometric features ($L_x$, $L_y$ and $L_z$), is needed to fit $K$ and $G$. Other models of polynomial regression, like the one in the equation @eq:poly_regression_1, were trained. 
+
+$ sqrt(K) = A_1 sqrt(rho) + A_2 log(omega_0) + dots + A_12 rho + A_13 log(omega_0)^2 + dots \ 
++ A_24 sqrt(rho) log(omega_0) + A_25 log(omega_0) log(omega_1)  + dots + A_66 log(omega_8) log(omega_9) + dots. $<eq:poly_regression_1>
+
+Some of those models were trained with polynomial features up to degree 5, including interaction terms such as $sqrt(rho) log(omega_0)$, $log(omega_1) log(omega_2)$, $log(omega_0)^3 log(omega_5)^2$, etc. Nevertheless, those models haven't had a significant boost in performance (for example, the polynomial model with polynomial features, that included $L_x$, $L_y$ and $L_z$ of degree 5 had a train value of $R^2$ of 0.27 and had a test $R^2$ of 0.05 which indicates a poor fit and also overfitting because of the difference of the metric between train and test) and some of them overfitted without even having a value of $R^2$ greater than 0.3 in the training set.
+
+All the results seen in the present chapter suggest that we need a different approach of solving the inverse problem. @chap:transformations will explain a new approach that will let us give a better solution (with solutions of lower MAPE) of the inverse problem. 
 
 /*
 == Other models trained
