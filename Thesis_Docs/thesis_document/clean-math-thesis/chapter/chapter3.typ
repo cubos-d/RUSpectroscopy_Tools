@@ -1,14 +1,14 @@
 = The forward problem <chap:forward>
-In this chapter, we will present a Lagrangian that describes the system of the solid sample oscillating between the transducers in the Resonant Ultrasound Spectroscopy setup. To determine the frequencies, we will use the Rayleigh-Ritz method to express the displacements in terms of basis functions and, finally, extremize the Lagrangian to obtain the equation for the generalized eigenvalue problem. Solving this will allow us to derive the resonance frequencies from the constants. This is, solving the forward problem. 
+In this chapter, we will present a Lagrangian approach that describes a solid sample oscillating between the transducers in the resonant ultrasound spectroscopy setup. To determine the frequencies, we will use the Rayleigh-Ritz method to express the displacements in terms of basis functions and, finally, extremize the Lagrangian to obtain a generalized eigenvalue problem relating resonance frequencies to the elasticity tensor. Solving this eigenproblem will allow us to derive the resonance frequencies from the elastic constants. This is known as the forward problem. 
  
 #v(1cm)
 
-== The forward problem: Getting resonance frequencies from elastic constants
-The kinetic energy for a three spatial dimensional (3D) elastic oscillating body, which applies to the setup of Resonant Ultrasound Spectroscopy, is given by: 
+== The forward problem: Resonance frequencies from elastic constants
+The kinetic energy for a three spatial dimensional (3D) elastic oscillating body is given by
 
 $ K = 1/2 integral_V rho dot(u)^2 d V, $<eq:kinetic_raw>
 
-where $rho$ is the density of the sample, $V$ is its volume and $dot(u)$ is the displacement velocity. Assuming harmonic behavior such that $dot(u) = omega u$ and expressing $u^2$ as $u^2 = sum_(i=0)^2 u_i^2 = sum_(i=0)^2 sum_(k=0)^2 delta_(i k) u_i u_k$, the kinetic energy can be expressed as the following #cite(<Leisure_1997>): 
+where $rho$ is the density of the sample, $V$ is its volume and $dot(u)$ is the velocity. Assuming harmonic behavior such that $dot(u) = plus.minus i omega u$ and expressing $u^2$ as $u^2 = sum_(i=0)^2 u_i^2 = sum_(i=0)^2 sum_(k=0)^2 delta_(i k) u_i u_k$, the kinetic energy can be expressed as the following #cite(<Leisure_1997>): 
 
 $ K = 1/2 integral_V rho omega^2 ( delta_(i k) u_i u_k ) d V. $<eq:kinetic_middle>
 
@@ -20,15 +20,15 @@ Replacing the definition of the strain tensor components given by @eq:strain_ten
 
 $ U = 1/2 integral_V  C_(i j k l) (partial u_i)/(partial r_j) (partial u_k)/(partial r_l) d V, $<eq:potential_raw>
 
-where $r_1 = x$, $r_2 = y$, and $r_3 = z$. Using Rayleigh-Ritz method, described in @apx:Rayleigh-ritz $u_i$ displacements can be expressed in terms of base functions the following way #cite(<Migliori_1993>):
+where $r_1 = x$, $r_2 = y$, and $r_3 = z$. Using Rayleigh-Ritz method, described in @apx:Rayleigh-ritz, the $u_i$ displacements can be expressed in terms of basis functions the following way #cite(<Migliori_1993>):
 
-$ u_i =  a_(i lambda mu nu) phi.alt_(lambda mu nu). $ <eq:u_in_terms_basis_func>
+$ u_i =  a_(i lambda mu nu) phi.alt_(lambda mu nu), $ <eq:u_in_terms_basis_func>
 
-Every term in @eq:u_in_terms_basis_func follows the rule: $lambda + mu + nu lt.eq N_g$, where $N_g$ is the maximum degree of the basis functions and is chosen arbitrarily. The higher this number, the greater the number of frequencies obtained from the problem. However, the computational time will also increase, scaling with the 9th power as $N_g$ increases #cite(<Leisure_1997>). The family of basis functions used in the present project is given by: 
+where $phi.alt_(lambda mu nu)$ is a function of a given basis (for example $phi.alt_(1 2 3) = (x/L_x) (y/L_y)^2 (z/L_z)^3$) and $a_(i lambda mu nu)$ is a coefficient, called weight. Every term in @eq:u_in_terms_basis_func follows the rule: $lambda + mu + nu lt.eq N_g$, where $N_g$ is the maximum degree of the basis functions and is chosen arbitrarily. The higher this number is, the more accurate the approximation to $vec(u)$ is and the greater the number of frequencies obtained. However, the computational time will also increase, scaling with the 9th power as $N_g$ increases #cite(<Leisure_1997>). The family of basis functions used in this work are given by 
 
 $ phi.alt_(lambda mu nu) = (x/L_x)^lambda (y/L_y)^mu (z/L_z)^nu = X^lambda Y^mu Z^nu, $<eq:Basis_functions>
 
-where $L_x$, $L_y$, $L_z$ are the lengths of the sample in the $x$, $y$, $z$ directions respectively. Replacing $u_i$ from @eq:u_in_terms_basis_func in @eq:kinetic_raw and @eq:potential_raw we get new expressions to kinetic energy and potential energy (remember that the conditions $lambda_1 + mu_1 + nu_1 lt.eq N_g$ and $lambda_2 + mu_2 + nu_2 lt.eq N_g$ must be met): 
+where $L_x$, $L_y$, $L_z$ are the lengths of the sample in the $x$, $y$, $z$ directions, respectively. Replacing $u_i$ from @eq:u_in_terms_basis_func in @eq:kinetic_raw and @eq:potential_raw we get new expressions for the kinetic energy and the potential energy (remember that the conditions $lambda_1 + mu_1 + nu_1 lt.eq N_g$ and $lambda_2 + mu_2 + nu_2 lt.eq N_g$ must be met): 
 
 $ K = 1/2 rho omega^2 a_(i lambda_1 mu_1 nu_1) Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) a_(k lambda_2 mu_2 nu_2), $<eq:kinetic_final>
 
@@ -42,7 +42,7 @@ and
 
 $ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = C_(i j k l) integral_V (partial phi.alt_(lambda_1 mu_1 nu_1))/(partial r_j) (partial phi.alt_(lambda_2 mu_2 nu_2))/(partial r_l) d V. $<eq:Gamma_matrix>
 
-The constants $a_(i lambda mu nu)$ can be organized inside a vector $arrow(a)$. The organization of this vector can be arbitrary as long it is consistent with the organization of the values of $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ in their respective matrices. In the present project, all the combinations of $lambda, mu, nu$ concerning the displacement in $x$ ($u_x$) were put first, then the values concerning the displacement in $y$ ($u_y$) and finally the values concerning the displacement in $z$ ($u_z$), creating the vector in three blocks. In each block, we have all the possible combinations of $lambda, mu, nu$ where $lambda + mu + nu lt.eq N_g$. Each block was generated according the following code in C:
+The weights $a_(i lambda mu nu)$ can be organized in a vector $arrow(a)$. Here, all the combinations of $lambda, mu, nu$ concerning the displacement in $x$ ($u_x$) were put first, then the values concerning the displacement in $y$ ($u_y$) and finally the values concerning the displacement in $z$ ($u_z$), creating the vector in three $N_g$ dimensional blocks. In each block, we have all the possible combinations of $lambda, mu, nu$ where $lambda + mu + nu lt.eq N_g$. Each block was generated according the following code in C:
 #figure(
   table(
     columns: 1, 
@@ -75,31 +75,31 @@ int **generate_combinations(int N) {
   caption: [Code to generate all the possible combinations where $lambda + mu + nu lt.eq N_g$.]
 )<code:index_combinations>
 
-In @code:index_combinations, we can see the pointer "combi" as a matrix where each row is a combination of indices $lambda, mu, nu$. The first column contains the value of $lambda$ the second one contains the value of $mu$ and the third one contains the value of $nu$. The values of each block in $arrow(a)$ are arranged in the same order as the rows in the "combi" matrix are arranged. For example, with a value of $N_g = 1$ we get the following vector $arrow(a)$:
+In @code:index_combinations, we can see the pointer "combi" as a matrix where each row is a combination of indices $lambda, mu, nu$. The first column contains the value of $lambda$, the second one contains the value of $mu$, and the third one contains the value of $nu$. The values of each block in $arrow(a)$ are arranged in the same order as the rows in the "combi" matrix are arranged. For example, with a value of $N_g = 1$ we get the following vector $arrow(a)$:
 
-$ arrow(a) = mat(a_(x 000), a_(x 001), a_(x 010), a_(x 100), a_(y 000), a_(y 001), a_(y 010), a_(y 100), a_(z 000), a_(z 001), a_(z 010), a_(z 100))^T $<eq:whois_baby_a>
+$ arrow(a) = mat(a_(x 000), a_(x 001), a_(x 010), a_(x 100), a_(y 000), a_(y 001), a_(y 010), a_(y 100), a_(z 000), a_(z 001), a_(z 010), a_(z 100))^T. $<eq:whois_baby_a>
 
 Note that each block have the combinations of indices 000, 001, 010 and 100. With an $N_g = 2$ we get the following $arrow(a)$:
 
 $ arrow(a) = mat(a_(x 000), a_(x 001), a_(x 010), a_(x 100), a_(x 002), a_(x 011), a_(x 020), a_(x 101), a_(x 110), a_(x 200), a_(y 000), a_(y 001), a_(y 010), dots)^T $<eq:whois_a>
 
-On the other hand, the values of $Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ and $Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ can be organized inside the matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$. In those matrices, the row position is determined by the indices before the semicolon ($i, lambda_1, mu_1, nu_1$) in the same order the indices $i, lambda, mu, nu$ are organized in $arrow(a)$, while the column position is determined by the indices after the semicolon ($k, lambda_2, mu_2, nu_2$), also in the same order as the indices in $arrow(a)$. Equation @eq:E_matrix_example shows an example of an $arrow.l.r(Epsilon)$ matrix built with a value of $N_g = 1$.
+On the other hand, the values of $Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ and $Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2)$ can be organized in matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$. In those matrices, the row position is determined by the indices before the semicolon ($i, lambda_1, mu_1, nu_1$) in the same order the indices $i, lambda, mu, nu$ are organized in $arrow(a)$, while the column position is determined by the indices after the semicolon ($k, lambda_2, mu_2, nu_2$), also in the same order as the indices in $arrow(a)$. Equation @eq:E_matrix_example shows an example of an $arrow.l.r(Epsilon)$ matrix built for $N_g = 1$.
 
 This way, we can express the kinetic and potential energies in terms of vector and matrix products: 
 
 $ K = 1/2 rho omega^2 arrow(a)^T arrow.l.r(Epsilon) arrow(a), $ <eq:kinetic_matrix>
 
-$ U = 1/2 arrow(a)^T arrow.l.r(Gamma) arrow(a), $ <eq:potential_matrix>
+$ U = 1/2 arrow(a)^T arrow.l.r(Gamma) arrow(a). $ <eq:potential_matrix>
 
-Finally, having both the potential and kinetic energy we have the following expression for the Lagrangian: 
+Finally, having both the potential and kinetic energies we have the following expression for the Lagrangian: 
 
-$ cal(L) = K - U = 1/2 rho omega^2 arrow(a)^T arrow.l.r(Epsilon) arrow(a) - 1/2 arrow(a)^T arrow.l.r(Gamma) arrow(a). $ <eq:Lagrangian_final>
+$ L = K - U = 1/2 rho omega^2 arrow(a)^T arrow.l.r(Epsilon) arrow(a) - 1/2 arrow(a)^T arrow.l.r(Gamma) arrow(a). $ <eq:Lagrangian_final>
 
-By extremizing the Lagrangian, $(delta cal(L))/(delta arrow(a)) = 0$, a generalized eigenvalue problem is obtained #cite(<Leisure_1997>).
+By extremizing the Lagrangian, $(delta L)/(delta arrow(a)) = 0$, a generalized eigenvalue problem is obtained #cite(<Leisure_1997>)
 
 $ rho omega^2 arrow.l.r(Epsilon) arrow(a) = arrow.l.r(Gamma) arrow(a). $<eq:raw_eig_problem>
 
-As shown later in @eq:Gamma_matrix_def, matrix $arrow.l.r(Gamma)$ depends on the elastic constants, $C_(i j k l)$, and the dimensions of the sample, $L_x$, $L_y$ and $L_z$. Solving this generalized eigenvalue problem makes it possible to determine the resonance frequencies of the solid, contained inside the eigenvalues, based on its elastic constants. Replacing the basis functions of equation @eq:Basis_functions in @eq:E_matrix and @eq:Gamma_matrix,  and then cancelling the $L_x L_y L_z$ in each side of the equation @eq:raw_eig_problem we have that an element of the $arrow.l.r(Epsilon)$ matrix is given by: 
+As shown below in @eq:Gamma_matrix_def, the matrix $arrow.l.r(Gamma)$ depends on the elastic constants, $C_(i j k l)$, and the dimensions of the sample, $L_x$, $L_y$ and $L_z$. Solving this generalized eigenvalue problem makes it possible to determine the resonance frequencies of the solid, contained in the eigenvalues, based on the elasticity tensor. Replacing the basis functions of equation @eq:Basis_functions in @eq:E_matrix and @eq:Gamma_matrix,  and then cancelling the $L_x L_y L_z$ in each side of equation @eq:raw_eig_problem we have that an element of the $arrow.l.r(Epsilon)$ matrix is given by: 
 
 $ Epsilon_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = integral_V delta_(i k) X^(lambda_1 + lambda_2) Y^(mu_1 + mu_2) Z^(nu_1 + nu_2) d X d Y d Z, $<eq:E_matrix_def>
 
@@ -107,7 +107,7 @@ and an element of the $arrow.l.r(Gamma)$ matrix is given by:
 
 $ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Gamma_matrix_def>
 
-where $b_j = r_j/L_j$. In other words: $b_1 = x/L_x = X, b_2 = y/L_y = Y$ and $b_3 = z/L_z = Z$. Note that both matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ are symmetric and must be definite positive in order for the eigenvalues to be all real positive. In particular $arrow.l.r(Epsilon)$ is a special matrix, whose name is the Gram matrix. This matrix contains all possible inner products between the basis functions. For example, if the basis functions were normalized Legendre Polinomials, this matrix would be just the identity. 
+where $b_j = r_j/L_j$. In other words: $b_1 = x/L_x = X$, $b_2 = y/L_y = Y$ and $b_3 = z/L_z = Z$. Note that both matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ are symmetric. Also, $arrow.l.r(Epsilon)$ must be definite positive in order for the eigenvalues to be all real and positive. In particular, $arrow.l.r(Epsilon)$ is a special matrix, whose name is the Gram matrix. This matrix contains all possible inner products between the basis functions. This matrix defines the distances within the Rayleigh-Ritz manifold defined by the basis. For example, if the basis functions were normalized Legendre polynomials, this matrix would be just the identity. 
 
 Here is an example of $arrow.l.r(Epsilon)$ matrix built with a value of $N_g = 1$: 
 
@@ -125,10 +125,23 @@ $ arrow.l.r(Epsilon) = integral_V mat(1, Z, Y, X, 0, 0, 0, 0, 0, 0, 0, 0;
                            0, 0, 0, 0, 0, 0, 0, 0, X, X Z, X Y, X^2;
                           ) d X d Y d Z. $<eq:E_matrix_example>
 
-For example, in the third row we have the following values for the first 4 indices: $i = 1, lambda_1 = 0, mu_1 = 1, nu_1 = 0$, and in the second column we have the following values for the last 4 indices $k = 1, lambda_2 = 0, mu_2 = 0, nu_2 = 1$. Note that this matrix is made of 3 diagonal blocks of identical matrices. Each block has $N_b times N_b$ dimensions, where $N_b = 1/6 (N_g + 1)(N_g + 2)(N_g + 3)$. In the case of $N_g = 1$ we can see in @eq:E_matrix_example that each block is 4x4 in size. 
+Also, below is an example of $arrow.l.r(Gamma)$ matrix built with a value of $N_g = 1$:
+
+$ arrow.l.r(Gamma) = integral_V mat(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+  0, C_55/L_z^2, C_56/(L_y L_z), C_15/(L_x L_z), 0, C_45/L_z^2, C_25/(L_y L_z), C_56/(L_x L_z), 0, C_35/L_z^2, C_45/(L_y L_z), C_55/(L_x L_z);
+  0, C_56/(L_y L_z), C_66/L_y^2, C_56/(L_x L_y), 0, C_46/(L_y L_z), C_26/L_y^2, C_66/(L_x L_y), 0, C_36/(L_y L_z), C_46/L_y^2, C_56/(L_x L_y);
+  0, C_15/(L_x L_z), C_56/(L_x L_y), C_11/L_x^2, 0, C_14/(L_x L_z), C_12/(L_x L_y), C_16/L_x^2, 0, C_13/(L_x L_z), C_14/(L_x L_y), C_15/L_x^2;
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+  0, C_45/L_z^2, C_46/(L_y L_z), C_14/(L_x L_z), 0, C_44/L_z^2, C_24/(L_y L_z), C_46/(L_x L_z), 0, C_34/L_z^2, C_44/(L_y L_z), C_45/(L_x L_z);
+  0, C_25/(L_y L_z), C_26/L_y^2, C_12/(L_x L_y), 0, C_24/(L_y L_z), C_22/L_y^2, C_26/(L_x L_y), 0, C_23/(L_y L_z), C_24/L_y^2, C_25/(L_x L_y);
+  0, C_56/(L_x L_z), C_66/(L_x L_y), C_16/L_x^2, 0, C_46/(L_x L_z), C_26/(L_x L_y), C_66/L_x^2, 0, C_36/(L_x L_z), C_46/(L_x L_y), C_56/L_x^2;
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+  0, C_35/L_z^2, C_36/(L_y L_z), C_13/(L_x L_z), 0, C_43/L_z^2, C_23/(L_y L_z), C_36/(L_x L_z), 0, C_33/L_z^2, C_34/(L_y L_z), C_35/(L_x L_z);
+  0, C_45/(L_y L_z), C_46/L_y^2, C_14/(L_x L_y), 0, C_44/(L_y L_z), C_24/L_y^2, C_46/(L_x L_y), 0, C_34/(L_y L_z), C_44/L_y^2, C_35/(L_x L_y);
+  0, C_55/(L_x L_z), C_56/(L_x L_y), C_15/L_x^2, 0, C_45/(L_x L_z), C_25/(L_x L_y), C_56/L_x^2, 0, C_35/(L_x L_z), C_45/(L_x L_y), C_55/L_x^2;) d X d Y d Z. $<eq:Gamma_matrix_example>
 
 
-//PLACE HERE THE EXAMPLE OF GAMMA MATRIX
+For example, in the third row we have the following values for the first 4 indices: $i = 1, lambda_1 = 0, mu_1 = 1, nu_1 = 0$, and in the second column we have the following values for the last 4 indices $k = 1, lambda_2 = 0, mu_2 = 0, nu_2 = 1$. Note that $arrow.l.r(Epsilon)$ matrix is made out of 3 diagonal blocks of identical matrices. Each block has $N_b times N_b$ dimensions, where $N_b = 1/6 (N_g + 1)(N_g + 2)(N_g + 3)$. In the case of $N_g = 1$ we can see in @eq:E_matrix_example that each block is 4x4 in size. 
 
 
 == Examples of eigenvalues spectra for a sphere isotropic material
@@ -137,7 +150,7 @@ Using @eq:raw_eig_problem, @eq:E_matrix_def and @eq:Gamma_matrix_def, we are abl
 
 Running the mentioned codes we got the eigenvalues $omega_n$ of a solid sphere, made of an isotropic material with relation between the bulk modulus $K$ and the shear modulus $G$ of $K/G = 7/1$, in the following scatterplot: 
 #figure(
-  image("../images/eigenvals_degeneration.png", width: 100%),
+  image("../images/eigenvals_degeneration.png", width: 80%),
   caption: "Eigenvalues of a spheric isotropic solid with relation of bulk modulus:shear modulus of 7:1"
 
 ) <fig:degenerate_eigenvalues>
