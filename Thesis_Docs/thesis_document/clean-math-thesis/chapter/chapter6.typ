@@ -52,7 +52,7 @@ This equal representation is important because it allows a model to learn more g
 The behavior of the values of $xi_n$ as a function of $phi_K$ was explored for different values of $eta$ and $beta$. @fig:pretty_sample_of_xi_vs_phiK shows this behavior for $eta = 0.31 pi$ and $beta = 0.5 pi$. 
 
 #figure(
-  image("../images/xi_exploration.png", width: 85%),
+  image("../images/xi_exploration.png", width: 75%),
   caption: [First 5 values of $xi_n$ as a function of $phi_K$ for values of $eta = 0.31 pi$ and $beta = 0.5 pi$.]
 )<fig:pretty_sample_of_xi_vs_phiK>
 

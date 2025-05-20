@@ -125,7 +125,7 @@ $ arrow.l.r(Epsilon) = integral_V mat(1, Z, Y, X, 0, 0, 0, 0, 0, 0, 0, 0;
                            0, 0, 0, 0, 0, 0, 0, 0, X, X Z, X Y, X^2;
                           ) d X d Y d Z. $<eq:E_matrix_example>
 
-Also, below is an example of $arrow.l.r(Gamma)$ matrix built with a value of $N_g = 1$:
+Also, we can see an example of $arrow.l.r(Gamma)$ matrix built with a value of $N_g = 1$ below:
 
 $ arrow.l.r(Gamma) = integral_V mat(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   0, C_55/L_z^2, C_56/(L_y L_z), C_15/(L_x L_z), 0, C_45/L_z^2, C_25/(L_y L_z), C_56/(L_x L_z), 0, C_35/L_z^2, C_45/(L_y L_z), C_55/(L_x L_z);
@@ -144,24 +144,37 @@ $ arrow.l.r(Gamma) = integral_V mat(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
 For example, in the third row we have the following values for the first 4 indices: $i = 1, lambda_1 = 0, mu_1 = 1, nu_1 = 0$, and in the second column we have the following values for the last 4 indices $k = 1, lambda_2 = 0, mu_2 = 0, nu_2 = 1$. Note that $arrow.l.r(Epsilon)$ matrix is made out of 3 diagonal blocks of identical matrices. Each block has $N_b times N_b$ dimensions, where $N_b = 1/6 (N_g + 1)(N_g + 2)(N_g + 3)$. In the case of $N_g = 1$ we can see in @eq:E_matrix_example that each block is 4x4 in size. 
 
 
-== Examples of eigenvalues spectra for a sphere isotropic material
+== Examples of resonance spectra for isotropic and cubic materials
 
-Using @eq:raw_eig_problem, @eq:E_matrix_def and @eq:Gamma_matrix_def, we are able to get the resonance frequencies given the elastic constants, dimensions and shape of a sample. In other words, with these equations we are able to solve the forward problem. All the codes made to implement those equations and solve the forward problem are found in the repo https://github.com/jacubillos10/RUSpectroscopy_Tools. The code to generate $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ matrices can be found in rusmodules/rus.c. The generalized eigenvalue problem is solved using linalg.eigh function in scipy #cite(<scipy>). 
+Using @eq:raw_eig_problem, @eq:E_matrix_def and @eq:Gamma_matrix_def, we are able to get the resonance frequencies given the elastic constants, dimensions and shape of a sample. In other words, with these equations we are able to solve the forward problem. All the codes made to implement those equations and solve the forward problem are found in the repo https://github.com/jacubillos10/RUSpectroscopy_Tools. The code to generate the $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ matrices can be found in rusmodules/rus.c. The generalized eigenvalue problem is solved using linalg.eigh function for symmetric matrices in scipy #cite(<scipy>). 
 
-Running the mentioned codes we got the eigenvalues $omega_n$ of a solid sphere, made of an isotropic material with relation between the bulk modulus $K$ and the shear modulus $G$ of $K/G = 7/1$, in the following scatterplot: 
+Running the above mentioned codes we got the values of  $omega_n/omega_0$ of a solid sphere, made of an isotropic material with relation between the bulk modulus $K$ and the shear modulus $G$ of $K/G = 7/1$, in the following scatterplot: 
 #figure(
-  image("../images/eigenvals_degeneration.png", width: 80%),
+  image("../images/eigenvals_degeneration.png", width: 60%),
   caption: "Eigenvalues of a spheric isotropic solid with relation of bulk modulus:shear modulus of 7:1"
 
-) <fig:degenerate_eigenvalues>
+)<fig:degenerate_eigenvalues>
 
-It can be noted that there is a lot of degenerate eigenvalues, and the number of degenerate eigenvalues in each level is odd. This is due to the isotropic nature of the material, and its spherical geometry. 
-
-To check if the code was running correctly the figures 4 and 5 of reference #cite(<Visscher_1991>) were replicated in @fig:cyl_elli_frequencies. The plot at the left side has the frequencies for a family of cylinder samples, while the plot at the right side has the frequencies for a family of ellipsoids. Values below 0.5 in the aspect ratio indicator indicate that the height of the sample is held constant at 2 and the diameter/height ratio is varied linearly from 0 at the origin and 1 at the center of the plot, or when aspect ratio indicator reaches 0.5. Values above 0.5 in the aspect ratio indicator mean that the diameter is held constant at 2 and the height is linearly decreased to 0 at the end of the plot, when the aspect ratio indicator reaches 1.  
+It can be noted that there are degenerate eigenvalues, and the number of degenerate eigenvalues in each level is always odd. This is due to the isotropic nature of the material, and its spherical geometry, associated to the rotations group in 3D, SO(3), which is the relevant symmetry group here. The values of $omega_n/omega_0$ of a solid sphere, made of a cubic material were also computed. These values are shown in the scatterplot below:
 
 #figure(
-  image("../images/cylinder_ellipsoid_frequencies_replication.png", width: 120%),
+  image("../images/eigenvals_degeneration_cubic.png", width: 60%),
+  caption: [Eigenvalues of a spheric solid, with cubic crystal structure, with $C_11$:$C_12$:$C_44$ relation of 7:3:1.]
+)<fig:degenerate_eigenvalues_cubic>
+We can observe in @fig:degenerate_eigenvalues_cubic that there are less degenerate eigenvalues in the cubic case, respect to the isotropic case. This is expected since the cubic crystal structure have less symmetry then the isotropic crystal structure. There is still some degenerate eigenvalues in the cubic case due to the spherical geometry of the sample.
+
+To check if the code was running correctly the figures 4 and 5 of reference #cite(<Visscher_1991>) were replicated in @fig:cyl_elli_frequencies. The plot at the left side shows the frequencies for a family of cylinder samples, while the plot at the right side shows the frequencies for a family of ellipsoids. Values below 0.5 of the aspect ratio indicator indicates that the height of the sample is held constant at 2 and the diameter/height ratio is varied linearly from 0 at the origin and 1 at the center of the plot, or when aspect ratio indicator reaches 0.5. Values above 0.5 of the aspect ratio indicator mean that the diameter is held constant at 2 and the height is linearly decreased to 0 at the end of the plot, when the aspect ratio indicator reaches 1.  
+
+#figure(
+  image("../images/cylinder_ellipsoid_frequencies_replication.png", width: 90%),
   caption: [Resonant frequencies of a family of cylinder isotropic samples on the left, and ellipsoid isotropic samples on the right, both with $K = 3$, $mu = 1$ and $rho = 1$. All frequency values were generated using a value of $N_g=8$.] 
 )<fig:cyl_elli_frequencies>
 
-We can see in the plot at the left of @fig:cyl_elli_frequencies that there are modes which frequencies are independent of the cylinder's diameter for any aspect ratio, which are no other than the torsional modes #cite(<Visscher_1991>) and were also observed in Visscher's work. Also we can observe modes which frequencies are independent of the cylinder's height, at the right side of the plot. This ones are called compressional Young's modulus modes #cite(<Visscher_1991>). We can see that the plots inside @fig:cyl_elli_frequencies are just identical as the figures 4 and 5 reported by #cite(<Visscher_1991>), which indicates that the code is solving the forward problem correctly.   
+We can see in the plot at the left of @fig:cyl_elli_frequencies that there are modes which frequencies are independent of the cylinder's diameter for any aspect ratio, which are no other than the torsional modes #cite(<Visscher_1991>) and were also observed in Visscher's work. Also we can observe modes whose frequencies are independent of the cylinder's height, at the right side of the plot. This ones are called compressional Young's modulus normal modes #cite(<Visscher_1991>). We can see that the plots inside @fig:cyl_elli_frequencies are just identical as those in figures 4 and 5 reported in reference #cite(<Visscher_1991>), which indicates that the code is solving the forward problem correctly.  
+
+These pair of figures were also made for cubic solids, shown in @fig:cyl_elli_frequencies_cubic. We can see there that some of the compressional Young's modulus modes and torsional modes are still present. A difference between the plots in the isotropic case shown in @fig:cyl_elli_frequencies and the plots in the cubic case shown in @fig:cyl_elli_frequencies_cubic, is that the cubic modes have some inflection points and can make some oscillations across the aspect ratio indicator. 
+
+#figure(
+  image("../images/cylinder_ellipsoid_replications_cubic.png", width: 88%),
+  caption: [Resonant frequencies of a family of cylinder cubic samples on the left, and ellipsoid cuboic samples on the right, both with $C_11 = 7$, $C_12 = 1$ and $C_44 = 1$. All frequency values were generated using a value of $N_g=8$.]
+)<fig:cyl_elli_frequencies_cubic>
