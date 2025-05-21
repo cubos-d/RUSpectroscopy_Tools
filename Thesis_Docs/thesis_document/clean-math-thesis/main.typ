@@ -30,7 +30,7 @@
   // Anterior font: Libertinus Serif
   // chapters that need special placement
   abstract: include "chapter/abstract.typ",
-
+  //Aquí supongo que van los agradecimientos
   // equation settings
   equate-settings: (breakable: true, sub-numbering: true, number-mode: "label"),
 	equation-numbering-pattern: "(1.1)",
