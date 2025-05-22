@@ -12,16 +12,27 @@
 
 If the sample is a parallelepiped, the integrals (evaluated from -1 to 1 in $X, Y$ and $Z$) inside the expressions @eq:E_matrix_def and @eq:Gamma_matrix_def can be written as:
 
-$ integral_V X^p Y^q Z^r d X d Y d Z = 1/((p+1)(q+1)(r+1)), $
+$ integral_V X^p Y^q Z^r d X d Y d Z = 8/((p+1)(q+1)(r+1)), $
 
 where the coefficients $p, q$ and $r$ depend on $lambda_1, lambda_2, mu_1, mu_2, nu_1$ and $nu_2$. If the sample is an spheroid, that integral can be written the following way #cite(<Visscher_1991>):
 
-$ integral_V X^p Y^q Z^r d X d Y d Z = ((p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)!!. $
+$ integral_V X^p Y^q Z^r d X d Y d Z = (pi/2 (p-1)!! (q-1)!! (r-1)!!)/(p + q + r + 3)!!. $
 
+In the case of cylinders the integral is given by the following expression #cite(<Visscher_1991>): 
+
+$ integral_V X^p Y^q Z^r d X d Y d Z = (8 pi (p-1)!! (q-1)!!)/((r+1)(p+q+2)!!). $
+
+Is worth to note that, for any shape, the value of the integral is zero if any of the exponents $p$, $q$ or $r$ is odd. This is because the integral of an odd function between $-b$ and $b$, where $b$ is a real positive arbitrary value, is zero.
 
 == Rayleigh-Ritz Method<apx:Rayleigh-ritz>
 
-Here we describe Rayleigh-Ritz method
+The Rayleigh–Ritz method is a variational technique employed to approximate solutions to boundary value problems, particularly in the fields of structural mechanics, elasticity, and quantum mechanics. 
+
+The Rayleigh–Ritz method provides a way to reduce a system with infinitely many degrees of freedom to a finite-dimensional approximation, making analysis feasible and more efficient. This is done by approximating a function—in this case, the displacement vector $arrow(u)$—based on the foundational concept of Rayleigh's principle. The key idea is to express the target function as a weighted sum of simpler, predefined functions that approximate its behavior. According to the Ritz approach, the trial function $f(x)$ is constructed as a linear combination of basis functions, and truncated to an arbitrary degree $N$ #cite(<Rosenhouse_2001>):
+
+$ f(x) = sum_(i=1)^(N) alpha_i phi_(i)(x), $
+
+Here, $alpha_i$ are scalar coefficients, and $phi_(i)(x)$ are chosen basis functions that form a complete set #cite(<Migliori_1993>), often indexed by their degree $i$. For instance, if Legendre polynomials are used, the index $i$ corresponds to the polynomial degree. In this formulation, the overall shape or structure of the approximation is determined by the choice of functions $phi_(i)(x)$, while the specific values are adjusted via the coefficients $alpha_i$ to best approximate the true solution #cite(<Rosenhouse_2001>).
 
 #pagebreak()
 
