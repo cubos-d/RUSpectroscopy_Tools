@@ -434,4 +434,73 @@ abstract = {In this paper we present details of our developed open source softwa
 	author = {G Rosenhouse}
 }
 
+@article{Lakes_2004,
+    author = {Lakes, R. S.},
+    title = {Viscoelastic measurement techniques},
+    journal = {Review of Scientific Instruments},
+    volume = {75},
+    number = {4},
+    pages = {797-810},
+    year = {2004},
+    month = {04},
+    abstract = {Methods for measuring viscoelastic properties of solids are reviewed. The nature of viscoelastic response is first presented. This is followed by a survey of time and frequency-domain considerations as they apply to mechanical measurements. Subresonant, resonant, and wave methods are discussed, with applications.},
+    issn = {0034-6748},
+    doi = {10.1063/1.1651639},
+    url = {https://doi.org/10.1063/1.1651639},
+    eprint = {https://pubs.aip.org/aip/rsi/article-pdf/75/4/797/19214475/797\_1\_online.pdf},
+}
 
+@article{Li_2024,
+	doi = {10.1088/1402-4896/ad9d9e},
+	url = {https://dx.doi.org/10.1088/1402-4896/ad9d9e},
+	year = {2024},
+	month = {dec},
+	publisher = {IOP Publishing},
+	volume = {100},
+	number = {1},
+	pages = {016014},
+	author = {Li, Ze and Alkhayyat, Ahmad and Yadav, Anupam and Samavatian, Majid and Samavatian, Vahid},
+	title = {Elastic constant analysis of orthotropic steel sheets using multitask machine learning and the impulse excitation technique},
+	journal = {Physica Scripta},
+	abstract = {This work presents a novel multitask learning approach featuring a dual convolutional neural network (CNN) system for determining the elastic constants of orthotropic rolled steel sheets. In the proposed model, resonance frequency spectra from the impulse excitation technique are converted into 2D image data. The first CNN focuses on detecting and predicting missing peak intensities, while the second CNN utilizes features from the entire spectrum image to predict elastic constants, including E11, E22, and G12. The input features include raw pixel data alongside three key categories for enhanced analysis: image-based features (such as the mean, median, mode, and skewness of pixel intensity distributions), spatial relations (including spatial frequency, pixel intensity correlations, and local contrast), and geometric features (such as shape descriptors and pixel connectivity). The results reveal that the optimal number of peaks (14), image resolution (121 pixels), and sample size (20 × 20 × 0.3 cm) maximize the model’s efficiency. Under these conditions, the model achieves R2 values of 0.952, 0.902, and 0.913, and RMSE values of 1.89 GPa, 3.09 GPa, and 1.92 GPa for E11, E22, and G12, respectively. It is suggested that the superior prediction accuracy for E11 is attributed to the stability of the Young’s modulus along the rolling direction, which is less variable in orthotropic materials. Furthermore, the study finds a dependency between input weight functions—including image-based features, spatial relations, and geometric features—as the material’s anisotropy changes, underscoring the importance of accounting for process variability in predictive modeling.}
+}
+
+@Article{Liu_2023,
+	author={Liu, Juejing and Zhao, Xiaodong and Zhao, Ke and Goncharov, Vitaliy G and Delhommelle, Jerome and Lin, Jian and Guo, Xiaofeng},
+	title={A modulated fingerprint assisted machine learning method for retrieving elastic moduli from resonant ultrasound spectroscopy},
+	journal={Scientific Reports},
+	year={2023},
+	month={Apr},
+	day={11},
+	volume={13},
+	number={1},
+	pages={5919},
+	abstract={We used deep-learning-based models to automatically obtain elastic moduli from resonant ultrasound spectroscopy (RUS) spectra, which conventionally require user intervention of published analysis codes. By strategically converting theoretical RUS spectra into their modulated fingerprints and using them as a dataset to train neural network models, we obtained models that successfully predicted both elastic moduli from theoretical test spectra of an isotropic material and from a measured steel RUS spectrum with up to 9.6{\%} missing resonances. We further trained modulated fingerprint-based models to resolve RUS spectra from yttrium--aluminum-garnet (YAG) ceramic samples with three elastic moduli. The resulting models were capable of retrieving all three elastic moduli from spectra with a maximum of 26{\%} missing frequencies. In summary, our modulated fingerprint method is an efficient tool to transform raw spectroscopy data and train neural network models with high accuracy and resistance to spectra distortion.},
+	issn={2045-2322},
+	doi={10.1038/s41598-023-33046-w},
+	url={https://doi.org/10.1038/s41598-023-33046-w}
+}
+
+@article{Rossin_2021,
+	title = {Bayesian inference of elastic constants and texture coefficients in additively manufactured cobalt-nickel superalloys using resonant ultrasound spectroscopy},
+	journal = {Acta Materialia},
+	volume = {220},
+	pages = {117287},
+	year = {2021},
+	issn = {1359-6454},
+	doi = {https://doi.org/10.1016/j.actamat.2021.117287},
+	url = {https://www.sciencedirect.com/science/article/pii/S1359645421006674},
+	author = {Jeff Rossin and Patrick Leser and Kira Pusch and Carolina Frey and Sean P. Murray and Chris J. Torbet and Stephen Smith and Samantha Daly and Tresa M. Pollock},
+	keywords = {Additive manufacturing, Texture characterization, Parallel computing, Bayesian inference, Resonance ultrasound spectroscopy, Sequential monte carlo, Residual stress},
+	abstract = {Bayesian inference with sequential Monte Carlo is used to quantify the orientation distribution function coefficients and to calculate the fully anisotropic elastic constants of additively manufactured specimens from only the experimentally-measured resonant frequencies. The parallelizable and open-source SMCPy Python package enabled Bayesian inference within this new modeling framework, resulting in an order of magnitude reduction of the computation time for an 8-core machine. Residual stress-induced shifts on the resonant frequencies were explicitly accounted for during the Bayesian inference, enabling the estimation of their effect on the resonant frequencies without a stress-relief heat treatment. Additively manufactured cobalt-nickel-base superalloy (SB-CoNi-10C) specimens were sectioned at multiple inclinations relative to the build direction and scanned with resonant ultrasound spectroscopy to demonstrate characterization of any arbitrarily textured cubic microstructure through the resonant frequencies. The orientation distribution function coefficients of the textured polycrystalline microstructure were estimated in tensorial form to calculate both the 2nd order Hashin-Shtrikman bounds and the self-consistent estimate of the elastic constants, enabling accurate determination of all 21 possible independent elastic constants through the convergence constraints of the texture. Pole figures generated directly from the calculated texture coefficients showed good agreement with experimentally measured textures.}
+}
+
+@misc{Arora_2008,
+  author       = {Jasbir S. Arora},
+  title        = {Lecture 20: Rayleigh-Ritz Method},
+  year         = {2008},
+  howpublished = {Online},
+  institution  = {Department of Civil and Environmental Engineering, The University of Iowa},
+  url 		   = {https://user.engineering.uiowa.edu/~jsarora/COURSES/53-244Energy/Lecture20.pdf},
+  note         = {Accessed: 2025-05-22}
+}

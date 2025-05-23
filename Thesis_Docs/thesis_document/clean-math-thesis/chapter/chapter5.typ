@@ -1,6 +1,6 @@
-= Making the inverse problem a simpler one <chap:transformations>
+= Toward a physics-informed solution: Simplifying the inverse problem via feature and target transformations <chap:transformations>
 
-In Chapter @chap:forward, we discussed how to obtain the resonance frequencies of a sample in resonant ultrasound spectroscopy, given its elastic constants, mass (or density), and dimensions — a process known as the forward problem. In this chapter, we turn our attention to the inverse problem, and present a set of variable transformations and techniques aimed at simplifying it. We will explain the motivation behind these transformations, their role in making the problem more tractable, and describe the specific methods applied in this work.
+In @chap:forward, we discussed how to obtain the resonance frequencies of a sample in resonant ultrasound spectroscopy, given its elastic constants, mass (or density), and dimensions — a process known as the forward problem. In this chapter, we turn our attention to the inverse problem, and present a set of variable transformations and techniques aimed at simplifying it. We will explain the motivation behind these transformations, their role in making the problem more tractable, and describe the specific methods applied in this work.
 
 #v(1cm)
 

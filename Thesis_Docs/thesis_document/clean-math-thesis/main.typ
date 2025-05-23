@@ -10,7 +10,7 @@
 #show: template.with(
   // personal/subject related stuff
   author: "Jose Alejandro Cubillos Muñoz",
-  title: "Numerical study of the elasticity tensor in the mechanical response of solids to resonant ultrasound modulation",
+  title: "A Machine Learning Approach to the Inverse Problem in Resonant Ultrasound Spectroscopy of Cubic and Isotropic Solids",
   supervisor1: "Prof. PhD. Julian Rincon",
   supervisor2: "",
   degree: "Msc Physics",

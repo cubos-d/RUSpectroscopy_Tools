@@ -26,14 +26,45 @@ Is worth to note that, for any shape, the value of the integral is zero if any o
 
 == Rayleigh-Ritz Method<apx:Rayleigh-ritz>
 
-The Rayleigh–Ritz method is a variational technique employed to approximate solutions to boundary value problems, particularly in the fields of structural mechanics, elasticity, and quantum mechanics. 
+The Rayleigh method reduces a system with infinitely many degrees of freedom to one with a finite number, by making assumptions about the system’s deformation. Rather than deriving or solving a differential equation, the method approximates the solution by directly minimizing a functional. This is done by selecting a finite number of parameters in a trial (assumed) solution, making the approach particularly suitable for equilibrium analysis in macroscopic systems #cite(<Arora_2008>).
 
-The Rayleigh–Ritz method provides a way to reduce a system with infinitely many degrees of freedom to a finite-dimensional approximation, making analysis feasible and more efficient. This is done by approximating a function—in this case, the displacement vector $arrow(u)$—based on the foundational concept of Rayleigh's principle. The key idea is to express the target function as a weighted sum of simpler, predefined functions that approximate its behavior. According to the Ritz approach, the trial function $f(x)$ is constructed as a linear combination of basis functions, and truncated to an arbitrary degree $N$ #cite(<Rosenhouse_2001>):
+Ritz later extended Rayleigh’s method by formalizing the requirement that the trial (or basis) functions form a complete set. This extension allows for a more general and systematic application of the method, and it ensures that the approximation converges to the true solution as more basis functions are included #cite(<Arora_2008>).
+
+To illustrate the method, consider the problem of determining a function $y(x)$ that minimizes the following functional:
+
+$ U = integral_(x_0)^(x_1) F(x, y', y'', dots) d x, $
+
+where F is a given function, $y' = (d y)/(d x)$ and $y'' = (d^2 y)/(d x^2)$ #cite(<Arora_2008>). The function $y(x)$ is restricted to a class of functions that satisfy certain linear forced boundary conditions. This function can be approximated as a sum of basis functions as shown below: 
+
+$ y_(n)(x) = sum_(i=1)^(n) alpha_i g_(i)(x). $
+
+Here, $alpha_i$ are undetermined constants, and $g_(i)(x)$ are some given functions, called basis functions. To ensure that the algebraic equations resulting from Ritz approximation have a solution, and the approximate solution converges to the true solution of the problem as the value of $n$ is increased, the functions $g_(i)(x)$ should satisfy the following conditions #cite(<Arora_2008>):
+
+- $g_(i)(x)$ must have the same boundary conditions of $y_(x)$.
+- $g_(i)(x)$ must satisfy the homogeneous form of the specified boundary conditions.
+- $g_(i)(x)$ should be continuous. 
+- All $g_(i)(x)$ must be linearly independent and complete between $x_0$ and $x_1$.
+
+For a set of functions to be linearly independent, the only solution to the system presented in equation @eq:linear_independence should be $alpha_i = 0$ #cite(<Arora_2008>).
+
+$ sum_(i=1)^(n) alpha_i g_(i)(x) = 0 $<eq:linear_independence>
+
+On the other hand, a set of functions $g_(i)(x)$ is complete in the interval $(x_0, x_1)$ when the mean squared error defined as
+
+$ M_n = integral_(x_0)^(x_1) (y(x) - y_(n)(x))^2 d x, $
+
+can be arbitrarily small as we increase the value of $n$, or in other words when 
+
+$ lim_(n arrow inf) M_n = 0. $
+
+Using the basis function expansion for $y(x)$, the functional $U$ is reduced to a function of the parameters, $alpha_i$; i.e., $U_n = U_(n)(alpha_i)$. The condition $delta U = 0$ gives equations for solution of $alpha_i$ #cite(<Arora_2008>). This yields to an eigenvalue problem like the one outlined in @chap:forward. 
+/*
+This is done by approximating a function—in this case, the displacement vector $arrow(u)$—based on the foundational concept of Rayleigh's principle. The key idea is to express the target function as a weighted sum of simpler, predefined functions that approximate its behavior. According to the Ritz approach, the trial function $f(x)$ is constructed as a linear combination of basis functions, and truncated to an arbitrary degree $N$ #cite(<Rosenhouse_2001>):
 
 $ f(x) = sum_(i=1)^(N) alpha_i phi_(i)(x), $
 
 Here, $alpha_i$ are scalar coefficients, and $phi_(i)(x)$ are chosen basis functions that form a complete set #cite(<Migliori_1993>), often indexed by their degree $i$. For instance, if Legendre polynomials are used, the index $i$ corresponds to the polynomial degree. In this formulation, the overall shape or structure of the approximation is determined by the choice of functions $phi_(i)(x)$, while the specific values are adjusted via the coefficients $alpha_i$ to best approximate the true solution #cite(<Rosenhouse_2001>).
-
+*/
 #pagebreak()
 
 == Reported and predicted values of cubic constants and error predictions<apx:cubic_constants>

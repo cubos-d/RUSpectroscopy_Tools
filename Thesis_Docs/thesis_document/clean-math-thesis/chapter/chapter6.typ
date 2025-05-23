@@ -1,4 +1,4 @@
-= The inverse problem<chap:inverse_problem>
+= Solving the inverse problem<chap:inverse_problem>
 
 In this chapter, we will explore the training process of different machine learning models, whose purpose is to predict the variable $phi_K$ for the isotropic case and the variables $phi_Kappa$ and $phi_a$ for the cubic case. We will examine the training, testing, and validation data generation processes, and perform an exploratory analysis on them. Then, we will present different metrics that demonstrate the performance of the models in predicting their respective $phi$ values. Finally, we will show the performance of the entire pipeline proposed in @chap:transformations and summarized in @fig:diagram_inverse, fed with different models, to predict the elastic constants of different materials, from isotropic and cubic crystal families, whose values are reported in literature.
 
@@ -58,7 +58,14 @@ The behavior of the values of $xi_n$ as a function of $phi_K$ was explored for d
 
 Plots of $xi_n$ as a function of $phi_K$ for other values of $eta$ and $beta$ are shown in @apx:phiK_plots. We can observe in @fig:pretty_sample_of_xi_vs_phiK and the figures of @apx:phiK_plots that there is no pair of values of $phi_K$ with the same  values of $xi_0$, $xi_1$, $xi_2$, $xi_3$ and $xi_4$. In other words, each value of $phi_K$ has it's unique set of the first 5 values of $xi_n$. This is the reason why only 5 values of $phi_K$ were fed into the models discussed in @sec:isotropic_results. We can also observe that the plots in @fig:pretty_sample_of_xi_vs_phiK and in @apx:phiK_plots are very similar to several ReLU functions concatenated. This is the reason why a neural network was trained as we will see later. 
 
-A total of 252474 data entries were generated with variables distributed as described in @sec:data_gen_isotropic. In @chap:transformations we reduced redundancy of geometric variables. Now we're going to explore if there is any redundancy among all $xi_n$ values. For that purpose the correlation matrix will be calculated. As mentioned in @chap:failure every element of the correlation matrix has the Pearson product-moment correlation coefficient, which measures the lineal dependence between two features #cite(<Raschka_2022>). If any coefficient is close to 1 or -1 means that two features are heavily correlated (positively or negatively, respectively), which means that they are holding the same information. Thus, when a value close to 1 or -1 is found the dataset may carry redundant information from a pair of highly correlated features, which means that one of them can be eliminated. On the other hand, if we find correlation values close to 0, it means independence between a pair of features, which, in turn, means that every feature is holding different information that cannot be ignored.   
+A total of 252474 data entries were generated with variables distributed as described in @sec:data_gen_isotropic. A sample of the dataset, with the generated data in the cubic case is shown in @fig:data_sample_isotropic. 
+
+#figure(
+  image("../images/data_sample_isotropic.png", width: 95%),
+  caption: [A sample of the dataset generated to train, validate and test the model that will predict $phi_K$. Each row represents a data entry.] 
+)<fig:data_sample_isotropic>
+
+In @chap:transformations we reduced redundancy of geometric variables. Now we're going to explore if there is any redundancy among all $xi_n$ values. For that purpose the correlation matrix will be calculated. As mentioned in @chap:failure every element of the correlation matrix has the Pearson product-moment correlation coefficient, which measures the lineal dependence between two features #cite(<Raschka_2022>). If any coefficient is close to 1 or -1 means that two features are heavily correlated (positively or negatively, respectively), which means that they are holding the same information. Thus, when a value close to 1 or -1 is found the dataset may carry redundant information from a pair of highly correlated features, which means that one of them can be eliminated. On the other hand, if we find correlation values close to 0, it means independence between a pair of features, which, in turn, means that every feature is holding different information that cannot be ignored.   
 
 Let's see the correlation matrix, calculated with these data, of the features of the isotropic case:
 
@@ -94,10 +101,18 @@ We can see that, in principle, $eta$ and $beta$ hold no relation with the target
 
 === Exploratory data analysis for the cubic case
 
-A total of 858387 data entries were generated with variables distributed as described in @sec:data_gen_cubic. As we did in the isotropic case in @sec:isotropic_exploration, we will check if there is any redundancy between the compositions $chi_n$ by computing the correlation matrix of the features, which is shown below: 
+A total of 858387 data entries were generated with variables distributed as described in @sec:data_gen_cubic. A sample of the dataset, with the generated data in the cubic case is shown in @fig:data_sample_cubic. 
 
 #figure(
-  image("../images/corr_matrix_cubic.png", width: 70%),
+  image("../images/data_sample_cubic.png", width: 95%),
+  caption: [A sample of the dataset generated to train, validate and test the model that will predict $phi_a$ and $phi_Kappa$. Each row represents a data entry.] 
+)<fig:data_sample_cubic>
+
+
+As we did in the isotropic case in @sec:isotropic_exploration, we will check if there is any redundancy between the compositions $chi_n$ by computing the correlation matrix of the features, which is shown below: 
+
+#figure(
+  image("../images/corr_matrix_cubic.png", width: 80%),
   caption: [Correlation matrix of the features in the cubic model.]
 )<fig:correlation_matrix_cubic>
 
@@ -176,7 +191,7 @@ $ g(x) = (1/N) log((1 + e^(N x))/(1 + e^(N (x-1)))). $
 
 This function was chosen because it returns values between 0 and 1, and is similar to $y = x$ when $x$ is between 0 and 1, close to 0 if $x < 0$ and 1 if $x > 1$ for large values of $N$. The highest possible value of $N$ was chosen, which was $N=20$. Values of $N gt.eq 21$ yielded to NaN metrics during the training. This way the target was going to have values between 0 and 1. However, as we will see later in the cubic case, the hard sigmoid performs better because it has a similar behavior but makes the training a lot faster and doesn't yield to NaN values during training.  
 
-The training of the model was performed using Keras 3.0 #cite(<keras>) in Python, using Torch #cite(<torch>) as backend with an AMD 6600M GPU. It took 72 minutes to complete the training. Full system specifications of the PC used to train the models can be seen in @apx:specs. The learning rate and batch size were tuned monitoring the MSE and RMSE in the first 5 epochs during the training of the model. A learning rate of 0.0005 and batch size of 16 ensured smooth and stable updates, fast convergence and 41 second of training per epoch, as shown in @fig:train_history_isotropic. Default values of learning rate of 0.001 and batch size of 32 yielded a faster training, but a slightly slower convergence. Batches under 16 yielded to large training times with very little enhancement in convergence.  
+The training of the model was performed using Keras 3.0 #cite(<keras>) in Python, using Torch #cite(<torch>) as backend with an AMD 6600M GPU. It took 72 minutes to complete the training. Full system specifications of the PC used to train the models can be seen in @apx:specs. The learning rate and batch size were tuned monitoring the MSE and RMSE in the first 5 epochs during the training of the model. A learning rate of 0.0005 and batch size of 16 ensured smooth and stable updates, fast convergence and 41 second of training per epoch, as shown in @fig:train_history_isotropic. The optimizer was RMSprop and it minimized MSE (mean square error). Default values of learning rate of 0.001 and batch size of 32 yielded a faster training, but a slightly slower convergence. Batches under 16 yielded to large training times with very little enhancement in convergence.  
 
 The performance metrics of this model are shown in @table:NN1_results: 
 
@@ -202,7 +217,7 @@ These results demonstrate that the neural network is capable of reliably estimat
   caption: [Train history of the neural network model in the isotropic case. As it can be seen there is no sign of overfitting.]
 )<fig:train_history_isotropic>
 
-@fig:train_history_isotropic shows the evolution of the Mean Absolute Error (MAE) for both the training and validation sets across epochs. Overall, both curves exhibit a consistent downward trend, indicating that the model is effectively learning and improving its predictive accuracy over epochs. The validation MAE closely follows the training MAE throughout the training process, with only minor fluctuations. This behavior suggests that the model is not overfitting and is generalizing well to unseen data. The slight oscillations observed in the validation curve are expected due to the stochastic nature of training with a small batch size. Notably, even in the later epochs, the validation MAE continues to improve, albeit at a slower rate, indicating that the model may not have fully converged. 
+@fig:train_history_isotropic shows the evolution of the Mean Absolute Error (MAE) for both the training and validation sets across epochs. Overall, both curves exhibit a consistent downward trend, indicating that the model is effectively learning and improving its predictive accuracy over epochs. The validation MAE closely follows the training MAE throughout the training process, with only minor fluctuations. This behavior suggests that the model is not overfitting and is generalizing well to unseen data. The slight oscillations observed in the validation curve are expected due to the stochastic nature of training with a small batch size. Notably, even in the later epochs, the validation MAE continues to improve, albeit at a slower rate, indicating that the model may not have fully converged. @apx:phiK_plots shows the deviation between the real values of $phi_K$ and the predicted values of $phi_K$ with different values of $eta$ and $beta$.
 
 //Presentar las graficas que muestran los valores del phi_K predicho con los datos combinatoriales. 
 
@@ -237,7 +252,7 @@ In the case of cubic solids, only one model was trained: a feed-forward neural n
   caption: [Architecture of the neural network used to predict the targets $phi_Kappa$ and $phi_a$ of a cubic crystal.]
 )<code:nn_cubic>
 
-Every line of ```Python modelo.add(keras.layers.Dense(N_neurons, activation)``` in @code:nn_cubic indicates the addition of a new layer, with the number of neurons as its first argument and the activation function as the second argument. Every one of the hidden layers in the model has ReLU as its activation function (```Python def_act = 'relu'```) and the output layer has a hard sigmoid as its activation function. 
+Every line of ```Python modelo.add(keras.layers.Dense(N_neurons, activation)``` in @code:nn_cubic indicates the addition of a new layer, with the number of neurons as its first argument and the activation function as the second argument. Every one of the hidden layers in the model has ReLU as its activation function (```Python def_act = 'relu'```) and the output layer has a hard sigmoid as its activation function. The optimizer of the neural network was Adam and it minimized MSE.  
 
 Before any training, the target variables in the cubic case were modified like $phi_K$ in the isotropic case: 
 
