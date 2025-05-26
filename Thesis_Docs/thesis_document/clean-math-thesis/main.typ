@@ -9,9 +9,9 @@
 
 #show: template.with(
   // personal/subject related stuff
-  author: "Jose Alejandro Cubillos Muñoz",
+  author: "\n Jose Alejandro Cubillos Muñoz",
   title: "A Machine Learning Approach to the Inverse Problem in Resonant Ultrasound Spectroscopy of Cubic and Isotropic Solids",
-  supervisor1: "Prof. PhD. Julian Rincon",
+  supervisor1: "Prof. Julián Rincón, PhD.",
   supervisor2: "",
   degree: "Msc Physics",
   program: "",
