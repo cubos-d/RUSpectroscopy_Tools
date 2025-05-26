@@ -8,7 +8,7 @@ The kinetic energy for a three spatial dimensional (3D) elastic oscillating body
 
 $ K = 1/2 integral_V rho dot(u)^2 d V, $<eq:kinetic_raw>
 
-where $rho$ is the density of the sample, $V$ is its volume and $dot(u)$ is the velocity. Assuming harmonic behavior such that $dot(u) = plus.minus i omega u$ and expressing $u^2$ as $u^2 = sum_(i=0)^2 u_i^2 = sum_(i=0)^2 sum_(k=0)^2 delta_(i k) u_i u_k$, the kinetic energy can be expressed as the following #cite(<Leisure_1997>): 
+where $rho$ is the density of the sample, $V$ is its volume and $dot(u)$ is the velocity. Assuming harmonic behavior such that $dot(u) = plus.minus i omega u$ and expressing $u^2$ as $u^2 = u_i^2 = delta_(i k) u_i u_k$, the kinetic energy can be expressed as the following #cite(<Leisure_1997>): 
 
 $ K = 1/2 integral_V rho omega^2 ( delta_(i k) u_i u_k ) d V. $<eq:kinetic_middle>
 
@@ -24,7 +24,7 @@ where $r_1 = x$, $r_2 = y$, and $r_3 = z$. Using Rayleigh-Ritz method, described
 
 $ u_i =  a_(i lambda mu nu) phi.alt_(lambda mu nu), $ <eq:u_in_terms_basis_func>
 
-where $phi.alt_(lambda mu nu)$ is a function of a given basis (for example $phi.alt_(1 2 3) = (x/L_x) (y/L_y)^2 (z/L_z)^3$) and $a_(i lambda mu nu)$ is a coefficient, called weight. Every term in @eq:u_in_terms_basis_func follows the rule: $lambda + mu + nu lt.eq N_g$, where $N_g$ is the maximum degree of the basis functions and is chosen arbitrarily. The higher this number is, the more accurate the approximation to $vec(u)$ is and the greater the number of frequencies obtained. However, the computational time will also increase, scaling with the 9th power as $N_g$ increases #cite(<Leisure_1997>). The family of basis functions used in this work are given by 
+where $phi.alt_(lambda mu nu)$ is a function of a given basis (for example $phi.alt_(1 2 3) = (x/L_x) (y/L_y)^2 (z/L_z)^3$) and $a_(i lambda mu nu)$ is a coefficient, called weight. Every term in @eq:u_in_terms_basis_func follows the rule: $lambda + mu + nu lt.eq N_g$, where $N_g$ is the maximum degree of the basis functions and is chosen arbitrarily. The higher this number is, the more accurate the approximation to $arrow(u)$ is and the greater the number of frequencies obtained. However, the computational time will also increase, scaling with the 9th power as $N_g$ increases #cite(<Leisure_1997>). The family of basis functions used in this work are given by 
 
 $ phi.alt_(lambda mu nu) = (x/L_x)^lambda (y/L_y)^mu (z/L_z)^nu = X^lambda Y^mu Z^nu, $<eq:Basis_functions>
 
@@ -107,7 +107,7 @@ and an element of the $arrow.l.r(Gamma)$ matrix is given by:
 
 $ Gamma_(i lambda_1 mu_1 nu_1 ; k lambda_2 mu_2 nu_2) = C_(i j k l)/(L_j L_l) integral_V (partial X^(lambda_1) Y^(mu_1) Z^(nu_1) )/(partial b_j) (partial X^(lambda_2) Y^(mu_2) Z^(nu_2) )/(partial b_l) d X d Y d Z, $<eq:Gamma_matrix_def>
 
-where $b_j = r_j/L_j$. In other words: $b_1 = x/L_x = X$, $b_2 = y/L_y = Y$ and $b_3 = z/L_z = Z$. Note that both matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ are symmetric. Also, $arrow.l.r(Epsilon)$ must be definite positive in order for the eigenvalues to be all real and positive. In particular, $arrow.l.r(Epsilon)$ is a special matrix, whose name is the Gram matrix. This matrix contains all possible inner products between the basis functions. This matrix defines the distances within the Rayleigh-Ritz manifold defined by the basis. For example, if the basis functions were normalized Legendre polynomials, this matrix would be just the identity. 
+where $b_j = r_j/L_j$. In other words: $b_1 = x/L_x = X$, $b_2 = y/L_y = Y$ and $b_3 = z/L_z = Z$. Note that both matrices $arrow.l.r(Epsilon)$ and $arrow.l.r(Gamma)$ are symmetric. Also, $arrow.l.r(Epsilon)$ must be definite positive in order for the eigenvalues to be all real and nonnegative. In particular, $arrow.l.r(Epsilon)$ is a special matrix, whose name is the Gram matrix. This matrix contains all possible inner products between the basis functions. This matrix defines the distances within the Rayleigh-Ritz manifold defined by the basis. For example, if the basis functions were normalized Legendre polynomials, this matrix would be just the identity, which implies that the manifold is Euclidean. 
 
 Here is an example of $arrow.l.r(Epsilon)$ matrix built with a value of $N_g = 1$: 
 
@@ -163,14 +163,14 @@ It can be noted that there are degenerate eigenvalues, and the number of degener
 )<fig:degenerate_eigenvalues_cubic>
 We can observe in @fig:degenerate_eigenvalues_cubic that there are less degenerate eigenvalues in the cubic case, respect to the isotropic case. This is expected since the cubic crystal structure have less symmetry then the isotropic crystal structure. There is still some degenerate eigenvalues in the cubic case due to the spherical geometry of the sample.
 
-To check if the code was running correctly the figures 4 and 5 of reference #cite(<Visscher_1991>) were replicated in @fig:cyl_elli_frequencies. The plot at the left side shows the frequencies for a family of cylinder samples, while the plot at the right side shows the frequencies for a family of ellipsoids. Values below 0.5 of the aspect ratio indicator indicates that the height of the sample is held constant at 2 and the diameter/height ratio is varied linearly from 0 at the origin and 1 at the center of the plot, or when aspect ratio indicator reaches 0.5. Values above 0.5 of the aspect ratio indicator mean that the diameter is held constant at 2 and the height is linearly decreased to 0 at the end of the plot, when the aspect ratio indicator reaches 1.  
+To check if the code was running correctly the figures 4 and 5 of Ref #cite(<Visscher_1991>) were replicated in @fig:cyl_elli_frequencies. The plot at the left side shows the frequencies for a family of cylinder samples, while the plot at the right side shows the frequencies for a family of ellipsoids. Values below 0.5 of the aspect ratio indicator indicates that the height of the sample is held constant at 2 and the diameter/height ratio is varied linearly from 0 at the origin and 1 at the center of the plot, or when aspect ratio indicator reaches 0.5. Values above 0.5 of the aspect ratio indicator mean that the diameter is held constant at 2 and the height is linearly decreased to 0 at the end of the plot, when the aspect ratio indicator reaches 1.  
 
 #figure(
   image("../images/cylinder_ellipsoid_frequencies_replication.png", width: 90%),
   caption: [Resonant frequencies of a family of cylinder isotropic samples on the left, and ellipsoid isotropic samples on the right, both with $K = 3$, $mu = 1$ and $rho = 1$. All frequency values were generated using a value of $N_g=8$.] 
 )<fig:cyl_elli_frequencies>
 
-We can see in the plot at the left of @fig:cyl_elli_frequencies that there are modes which frequencies are independent of the cylinder's diameter for any aspect ratio, which are no other than the torsional modes #cite(<Visscher_1991>) and were also observed in Visscher's work. Also we can observe modes whose frequencies are independent of the cylinder's height, at the right side of the plot. This ones are called compressional Young's modulus normal modes #cite(<Visscher_1991>). We can see that the plots inside @fig:cyl_elli_frequencies are just identical as those in figures 4 and 5 reported in reference #cite(<Visscher_1991>), which indicates that the code is solving the forward problem correctly.  
+We can see in the plot at the left of @fig:cyl_elli_frequencies that there are modes which frequencies are independent of the cylinder's diameter for any aspect ratio, which are no other than the torsional modes #cite(<Visscher_1991>) and were also observed in Visscher's work. Also we can observe modes whose frequencies are independent of the cylinder's height, at the right side of the plot. This ones are called compressional Young's modulus normal modes #cite(<Visscher_1991>). We can see that the plots inside @fig:cyl_elli_frequencies are just identical as those in figures 4 and 5 reported in Ref #cite(<Visscher_1991>), which indicates that the code is solving the forward problem correctly.  
 
 These pair of figures were also made for cubic solids, shown in @fig:cyl_elli_frequencies_cubic. We can see there that some of the compressional Young's modulus modes and torsional modes are still present. A difference between the plots in the isotropic case shown in @fig:cyl_elli_frequencies and the plots in the cubic case shown in @fig:cyl_elli_frequencies_cubic, is that the cubic modes have some inflection points and can make some oscillations across the aspect ratio indicator. 
 

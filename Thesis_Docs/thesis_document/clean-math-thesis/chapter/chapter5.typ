@@ -151,19 +151,21 @@ Now let us define a new variable, $xi$, which captures a relationship between co
 
 $ xi_n = lambda_n/lambda_(n+1). $
 
+Note that, because of the order $lambda_1 gt.eq lambda_2 gt.eq dots gt.eq lambda_N$, then $0 < xi_n lt.eq 1$.
+
 The values of $xi_n$ are the same for both solid A and solid B. Thus, $xi_n$ depends only on the ratio between $K$ and $G$, not on their absolute magnitudes. In other words, we have constructed a new variable that captures the elastic behavior independent of scale.
 
 $xi_n$ is not the only variable capable of expressing the relationship between eigenvalues. For example, consider:
 
-$ chi_n = (lambda_n - lambda_(n-1))/lambda_n, $
+$ chi_n = (lambda_n - lambda_(n-1))/lambda_N, $
 
-which will be used in the cubic case later. This variable also depends solely on the relationship between the elastic constants and the aspect ratio of the sample.
+which will be used in the cubic case later. This variable also depends solely on the relationship between the elastic constants and the aspect ratio of the sample. Note that, also $0 < chi_n lt.eq 1$. 
 
 As we saw in @sec:eta_beta_definition, one effective way to encode the relationship between variables in a bounded and continuous way is through angles. In that spirit, we now define a new variable that encodes the ratio between $K$ and $G$, which we will call $phi_K$:
 
 $ phi_K = arctan(G/K). $<eq:phiK_def_isotropic>
 
-Although variables such as $G/K$ or $K/(K+G)$ can be used to represent the relationship between $K$ and $G$, each has drawbacks. The ratio $K/G$ can grow arbitrarily large, making it computationally impractical when generating training data. The expression $K/(K+G)$ has a bounded range between 0 and 1 and can be interpreted as a composition, but in the cubic case, it suffers from the same limitations we encountered with the $g$ values discussed in @sec:eta_beta_definition.
+Although variables such as $G/K$ or $K/(K+G)$ can be used to represent the relationship between $K$ and $G$, each has advantages and drawbacks. The ratio $K/G$ can grow arbitrarily large, making it computationally impractical when generating training data. The expression $K/(K+G)$ has a bounded range between 0 and 1 and can be interpreted as a composition, but in the cubic case, it suffers from the same limitations we encountered with the $g$ values discussed in @sec:eta_beta_definition.
 
 By contrast, the angle $phi_K$, is defined over the finite interval $[0, pi/2]$, making it a more robust and practical choice as a target variable for a machine learning model. It can be easily sampled within a bounded and computationally safe range, and a similar angular variable can be defined for the cubic case. 
 
@@ -197,7 +199,7 @@ Let us now define the new variables, based on the stability conditions described
 
 $ Kappa = 1/3 (C_11 + 2C_12); " "a = 1/3(C_11 - C_12); " "mu = C_44. $<eq:cubic_const_tranf>
 
-Each of these variables corresponds to a stability condition from @eq:restrictions_cubic_solids, redefined here as standalone positive quantities. The factor of $(1/3)$ was introduced to make the resulting elastic constant matrix more directly comparable to the isotropic case. With these new variables, the elastic constant matrix for a cubic solid can be rewritten as follows:
+Each of these variables corresponds to a stability condition from @eq:restrictions_cubic_solids, redefined here as standalone positive quantities. The factor of $(1/3)$ was introduced to make the resulting elastic constant matrix more directly comparable to the isotropic case. Note that $Kappa$ is not the bulk modulus. It is just a new variable introduced to simplify the inverse problem. With these new variables, the elastic constant matrix for a cubic solid can be rewritten as follows:
 
 $ arrow.l.r(C) = mat(
   Kappa + 2a, Kappa - a, Kappa - a, 0, 0, 0;
@@ -236,7 +238,7 @@ The motivation for defining the new targets and the magnitude in a form resembli
 
 $ chi_n = (lambda_n - lambda_(n-1))/lambda_N, $<eq:chi_definition>
 
-which encodes the relative spacing between eigenvalues, normalized by the $N$th eigenvalue, where N is the maximum number of eigenvalues used. This variable serves as a stable and scale-invariant input for the machine learning model. 
+which encodes the relative spacing between eigenvalues, normalized by the $N$th eigenvalue, where $N$ is the maximum number of eigenvalues used. This variable serves as a stable and scale-invariant input for the machine learning model. 
 
 In this case, we set $N=19$ because predicting both $phi_Kappa$ and $phi_a$ requires more information than in the isotropic case, where only one target was predicted. We are now working in a two-dimensional target space (as shown in @fig:targets_distribution), rather than a one-dimensional one. This increased complexity demands more data to achieve reliable predictions. The most practical approach, therefore, is to utilize all available information — that is, the first 20 eigenvalues.
 

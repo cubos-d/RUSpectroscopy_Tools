@@ -122,7 +122,7 @@ After applying the transformations discussed above, the input features and targe
 
 == Fitting a linear model
 
-The dataset, generated with the combinatorial approach and transformed as mentioned before was used to fit an ordinary linear regression, using statsmodels library #cite(<statsmodels>). In principle, the features $L_x$, $L_y$ and $L_z$ weren't included, to see if it was possible to predict the elastic constants only with the frequencies. In a linear regression a target $y$ is fitted in terms of some features $x_i$ the following way: 
+The dataset, generated with the combinatorial approach and transformed as mentioned before, was used to fit an ordinary linear regression, using the statsmodels library #cite(<statsmodels>). In principle, the features $L_x$, $L_y$ and $L_z$ weren't included, to see if it was possible to predict the elastic constants only with the frequencies. In a linear regression a target $y$ is fitted in terms of some features $x_i$ the following way: 
 
 $ y = sum_(i = 0)^(N_F) A_i x_i + A_0, $
 

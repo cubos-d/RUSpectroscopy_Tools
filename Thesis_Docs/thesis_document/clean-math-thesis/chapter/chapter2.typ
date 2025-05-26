@@ -1,6 +1,6 @@
 = Elasticity in Solids<chap:elastic_theory>
 
-In this chapter, we will explore some essential concepts in the theory of elasticity in solids, which are necessary for understanding the forward problem, discussed in @chap:forward, and the inverse problem, outlined in @chap:transformations and @chap:inverse_problem, of resonant ultrasound spectroscopy (RUS). The theory of elasticity plays a crucial role in acoustic measurements #cite(<Maynard_2024>). As we will see in this chapter in @section:Constant_Restrictions, acoustic data determine derivatives of the free energy with respect to atomic positions, and provide important information of the physics of the material, like piezoelectric and thermoelectric phenomena, etc #cite(<Maynard_2024>). Also the measurement of acoustic properties as function of temperature or pressure is related to other fundamental thermodynamic quantities like the specific heat, Debye temperature, and can be used to check theoretical models #cite(<Maynard_2024>). Some other applications of acoustic measurements of solids include determining the phonon distribution function of diamond, checking the life cycle of nuclear fuel like plutonium, finding rare materials with high electrical conductivity and low thermal conductivity to create thermoelectric devices, and studying the ample spectrum of piezoelectric materials #cite(<Maynard_2024>). A solid understanding of acoustic measurements requires a foundation in the theory of elasticity, which will be presented in detail in the following sections.    
+In this chapter, we will explore some essential concepts in the theory of elasticity in solids, which are necessary for understanding the forward problem, discussed in @chap:forward, and the inverse problem, outlined in @chap:transformations and @chap:inverse_problem, of resonant ultrasound spectroscopy (RUS). The theory of elasticity plays a crucial role in acoustic measurements. As we will see in @section:Constant_Restrictions, acoustic data determine derivatives of the free energy with respect to atomic positions, and provide important information of the physics of the material, like piezoelectric and thermoelectric phenomena, etc #cite(<Maynard_2024>). Also the measurement of acoustic properties as function of temperature or pressure is related to other fundamental thermodynamic quantities like the specific heat, Debye temperature, and can be used to check theoretical models #cite(<Maynard_2024>). Some other applications of acoustic measurements of solids include determining the phonon distribution function of diamond, checking the life cycle of nuclear fuel like plutonium, finding rare materials with high electrical conductivity and low thermal conductivity to create thermoelectric devices, and studying the ample spectrum of piezoelectric materials #cite(<Maynard_2024>). A solid understanding of acoustic measurements requires a foundation in the theory of elasticity, which will be presented in detail in the following sections.    
 
 #v(1cm)
 
@@ -75,7 +75,7 @@ $ epsilon_(i j) = 1/2 ((partial u_i) / (partial r_j) + (partial u_j) / (partial 
 
 Notice that, by construction, the strain tensor is symmetric, $epsilon_(i j) = epsilon_(j i).$
 
-== Stress tensor and generalized Hooke's law
+== The stress tensor and the generalized Hooke's law
 
 The deformations of a material occur thanks to external forces that are being applied to it. However, long-range forces (or body forces, which apply to all material at once) such as gravity are ignored in the present treatment #cite(<Leisure_2017>). This is because, such forces don't produce any deformation on the material, and molecular forces are assumed to be short range #cite(<Leisure_2017>). The forces causing deformation differ depending on the position within the solid. That's why it is convenient to consider forces per unit area, which are called stresses. These stresses are represented in the stress tensor $arrow.l.r(sigma)$. @fig:stress_tensor shows the geometrical meaning of the stress tensor.  
 
@@ -85,7 +85,7 @@ The deformations of a material occur thanks to external forces that are being ap
 
 ) <fig:stress_tensor>
 
-The stress component, $sigma_(i j)$, is defined as the force per unit area acting in the direction of $r_i$ axis on a face of the cube perpendicular to the $r_j$ direction.  For example, $sigma_(x z)$ is the force per unit of area acting in the $x$ direction in the face perpendicular to the $z$ axis, that is on the $x y$ plane. The stresses are exerted on the cube by the surrounding material. By convention, positive normal components are taken as pointing outward #cite(<Leisure_2017>). 
+The stress component, $sigma_(i j)$, is defined as the force per unit area acting in the direction of $hat(r)_i$ axis on a face of the cube perpendicular to the $hat(r)_j$ direction.  For example, $sigma_(x z)$ is the force per unit of area acting in the $x$ direction in the face perpendicular to the $z$ axis, that is on the $x y$ plane. The stresses are exerted on the cube by the surrounding material. By convention, positive normal components are taken as pointing outward #cite(<Leisure_2017>). 
 
 To understand the relationship between stress and strain, it is useful to recall the familiar 1D Hooke's law, given by: $F = k x$, where $F$ is the force applied to a spring, $x$ is the resulting extension, and $k$ is the spring constant. This equation expresses a linear relationship between force and displacement in elastic systems. In continuum mechanics, this idea is generalized: instead of simple scalar quantities, we deal with stress and strain tensors, and the proportionality constant becomes a fourth-rank tensor.
 
@@ -93,7 +93,7 @@ This way, the stress applied to our solid sample is related to the strain throug
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l). $ <eq:hookes_law>
 
-From here on out, we will use the Einstein's notation, where repeated indices mean that there is a sum of the terms. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the components of a fourth-rank tensor known as the elasticity tensor. Its components are the elastic constants, which are material dependent only. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are, in fact, less independent constants. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
+From here on out, we will use Einstein's notation, where repeated indices mean that there is a sum of the terms. For example, for the generalized Hooke's law, the expression $sigma_(i j) = sum_(k=1)^(3) sum_(l=1)^(3) C_(i j k l) epsilon_(k l)$ becomes the equation @eq:hookes_law. Just like the strain tensor, the stress tensor is also symmetric, as long as no torques are applied to the infinitesimal element of our solid. That is, $sigma_(i j) = sigma_(j i)$. For example, if we want no torques applied in the $x$ axis, is necessary for $sigma_(y z)$ and $sigma_(z y)$ to be equal in order to avoid rotations on $x$ axis, as we can see in @fig:stress_tensor. The same can be said for the other axes.  Here $C_(i j k l)$ are the components of a fourth-rank tensor known as the elasticity tensor. Its components are the elastic constants, which are material dependent only. As we will see later, the elastic constants correspond to the second derivative of the free energy with respect to strain. In principle, there are 81 independent elastic constants. However, we will see that there are, in fact, less independent constants. As we saw earlier the strain tensor is symmetric: $epsilon_(k l) = epsilon_(l k)$. This means that we can determine the same component $sigma_(i j)$ of the stress tensor as follows:
 
 $ sigma_(i j) = C_(i j k l) epsilon_(k l) = C_(i j k l) epsilon_(l k), $
 
@@ -101,7 +101,7 @@ which implies that
 
 $ C_(i j k l) = C_(i j l k). $<eq:first_constant_reduction>
 
-Moreover, remember that the stress tensor is also symmetric in the absence of torques, $sigma_(i j) = sigma_(j i)$. Applying the generalized Hooke’s law for both $sigma_(i j)$ and $sigma_(j i)$, we have: 
+Moreover, remembering that the stress tensor is also symmetric in the absence of torques, $sigma_(i j) = sigma_(j i)$. Applying the generalized Hooke’s law for both $sigma_(i j)$ and $sigma_(j i)$, we have: 
 
 $ C_(i j k l) epsilon_(k l) =  C_(j i k l) epsilon_(k l),  $
 
@@ -165,11 +165,11 @@ Thus the tensor $arrow.l.r(C)$ has 21 independent elastic constants in the most 
 
 The free energy, which depends on the strain tensor, must remain invariant under any rotation belonging to the SO(3) group in the case of an isotropic solid. Additionally, it must be convex—that is, it should possess a global minimum that is finite. The only way to satisfy both of these conditions is for the free energy to depend on the square of the trace of the strain tensor and the trace of the square of the strain tensor, as shown in equation @eq:energy_for_isotropic_solids:
 
-$ f - f_0 = upsilon = lambda tr(arrow.l.r(epsilon))^2 + 2 G tr(arrow.l.r(epsilon)^2), $<eq:energy_for_isotropic_solids>
+$ f - f_0 = lambda tr(arrow.l.r(epsilon))^2 + 2 G tr(arrow.l.r(epsilon)^2), $<eq:energy_for_isotropic_solids>
 
-where $f$ is the free energy density, $f_0$ is the free energy density at the equilibrium, $upsilon$ is the potential energy per unit of volume shown in equation @eq:potential_energy_density and, $lambda$ and $G$ are known as the Lamé parameters #cite(<Landau_1986>). Note that $tr(arrow.l.r(R) arrow.l.r(epsilon) arrow.l.r(R)^T) = tr(arrow.l.r(R) arrow.l.r(R)^T arrow.l.r(epsilon)) = tr(arrow.l.r(epsilon))$ and $tr(arrow.l.r(R) arrow.l.r(epsilon) arrow.l.r(R)^T arrow.l.r(R) arrow.l.r(epsilon) arrow.l.r(R)^T) = tr(arrow.l.r(R) arrow.l.r(R)^T arrow.l.r(epsilon)^2) = tr(arrow.l.r(epsilon)^2)$. Here, $arrow.l.r(R)$ is any rotation matrix belonging to the SO(3) group.
+where $f$ is the free energy density, $f_0$ is the free energy density at the equilibrium and, $lambda$ and $G$ are known as the Lamé parameters #cite(<Landau_1986>). Note that $tr(arrow.l.r(R) arrow.l.r(epsilon) arrow.l.r(R)^T) = tr(arrow.l.r(R) arrow.l.r(R)^T arrow.l.r(epsilon)) = tr(arrow.l.r(epsilon))$ and $tr(arrow.l.r(R) arrow.l.r(epsilon) arrow.l.r(R)^T arrow.l.r(R) arrow.l.r(epsilon) arrow.l.r(R)^T) = tr(arrow.l.r(R) arrow.l.r(R)^T arrow.l.r(epsilon)^2) = tr(arrow.l.r(epsilon)^2)$. Here, $arrow.l.r(R)$ is any rotation matrix belonging to the SO(3) group.
 
-Given that $sigma_(i j) =  (partial u)/(partial epsilon_(i j))$, one can express the stress tensor, for an isotropic solid, as follows: 
+Given that $sigma_(i j) =  (partial f)/(partial epsilon_(i j))$, one can express the stress tensor, for an isotropic solid, as follows: 
 
 $ arrow.l.r(sigma) = lambda tr(arrow.l.r(epsilon)) arrow.l.r(I) + 2 G arrow.l.r(epsilon), $<eq:hookes_law_isotropic>
 
@@ -181,7 +181,7 @@ Here, $arrow.l.r(Xi)$ is the traceless part of $arrow.l.r(epsilon)$, which is th
 
 $ arrow.l.r(sigma) = lambda tr(arrow.l.r(epsilon)) arrow.l.r(I) + 2/3 G tr(arrow.l.r(epsilon)) arrow.l.r(I) + 2 G arrow.l.r(Xi) = K tr(arrow.l.r(epsilon)) arrow.l.r(I) + 2 G arrow.l.r(Xi). $<eq:stress_tensor_isotropic>
 
-Here, $K$ is called the bulk modulus because it is related to volume change deformations and $G$ is called the shear modulus because it is related to shear deformations #cite(<Thorne>). 
+Here, $K = lambda + 2/3 G$ is called the bulk modulus because it is related to volume change deformations and $G$ is called the shear modulus because it is related to shear deformations #cite(<Thorne>). 
 
 This way, for an isotropic solid, the elastic constant matrix, using Voigt notation is given by 
 
@@ -194,7 +194,7 @@ $ arrow.l.r(C) = mat(
   0, 0, 0, 0, 0, G;
 ). $
 
-A similar procedure for deriving the elastic constant matrix can be carried out for cubic solids. However, this derivation is quite extensive and falls outside the scope of this work. A detailed explanation can be found in reference #cite(<Thomas_1966>). For a cubic solid, the elastic constant matrix expressed in Voigt notation is given by
+A similar procedure for deriving the elastic constant matrix can be carried out for cubic solids. However, this derivation is quite extensive and falls outside the scope of this work. A detailed explanation can be found in Ref #cite(<Thomas_1966>). For a cubic solid, the elastic constant matrix expressed in Voigt notation is given by
 
 $ arrow.l.r(C) = mat(
   C_(11), C_(12), C_(12), 0, 0, 0;
@@ -205,11 +205,15 @@ $ arrow.l.r(C) = mat(
   0, 0, 0, 0, 0, C_(44);
 ). $<eq:cubic_constant_matrix>
 
-In order for a solid to be a feasible one, it must be mechanically stable. That is, its free energy as a  function of the different strains must be in a minimum. This implies that the elastic constants matrix, which is 
+In order for a solid to be a feasible one, it must be mechanically stable. That is, its free energy as a  function of the different strains must be in a minimum. This implies that the elastic constants matrix, whose components are described in @eq:stability_criteria 
 
 $ C_(i j) = (partial^2 f)/(partial epsilon_i partial epsilon_j), $<eq:stability_criteria>
 
-must be definite positive, or in other words, its eigenvalues must be all positive #cite(<Mouhat_2014>). This implies that all the leading principal minors of $arrow.l.r(C)$ (determinants of its upper-left k by k sub-matrix, $1 lt.eq k lt.eq 6$) are positive #cite(<Mouhat_2014>). This is known as the "Born stability criteria". In the case of isotropic solids the bulk and shear moduli must follow the restrictions: $K > 0$ and $G > 0$. In the case of cubic solids the elastic constants matrix must follow the following restrictions #cite(<Mouhat_2014>): 
+must be definite positive, or in other words, its eigenvalues must be all positive #cite(<Mouhat_2014>). This implies that all the leading principal minors of $arrow.l.r(C)$ (determinants of its upper-left k by k sub-matrix, $1 lt.eq k lt.eq 6$) are positive #cite(<Mouhat_2014>). This is known as the "Born stability criteria". In the case of isotropic solids the bulk and shear moduli must follow the restrictions: 
+
+$ K > 0;" "G > 0. $<eq:restrictions_iso_solids>
+
+In the case of cubic solids the elastic constants matrix must follow the following restrictions #cite(<Mouhat_2014>): 
 
 $ C_(11) + 2C_(12) > 0; " "C_(11) - C_(12) > 0; " " C_(44) > 0. $<eq:restrictions_cubic_solids>
 

@@ -90,7 +90,7 @@ $ I = integral_y integral_x rho_((x,y)) ln(rho_((x,y))/(rho_((x)) rho_((y)) )). 
 
 A value of zero in mutual information $I$, between a feature and the target, indicates no statistical dependency between them, meaning that the feature provides no information about the target, meaning that the target is independent from the feature. On the other hand, a high value of mutual information indicates a strong dependency between the target and the feature. By computing mutual information between each feature and the target, we can identify which features are likely to contribute most meaningfully to a predictive model.  
 
-Now lets take a look at the mutual information between the target and the features, computed with scikit-learn, to see which one has the grater contribution to the target #cite(<scikit-learn>):
+Now lets take a look at the mutual information between the target and the features, computed with scikit-learn, to see which one has the greater contribution to the target #cite(<scikit-learn>):
 
 #figure(
   image("../images/MI_phiK.png", width: 60%),
@@ -151,7 +151,7 @@ $ y = sum_(i = 1)^(N_"feat") sum_(j = i)^(N_"feat") sum_(k = j)^(N_"feat") sum_(
 
 where $N_"feat"$ is the number of features. 
 
-On the other hand, the sequential neural network was made of 3 hidden layers: the first one had 64 neurons, the second one had 32 neurons and the third one had 8 neurons. The input layer had 7 neurons (same as the number of features) and the output layer had 1 neuron (representing the target $phi_K$). Initially an architecture with the following neurons in each hidden layer was chosen: 16, 10, 8. This was because this initial neural network has approximately the same number of parameters as the polynomial regression of 4th degree done before (330 parameters for the regression and 360 for the initial neural network). Then more neurons were being added until the MAE was reduced below 0.03. As we see later no overfitting was observed.  The architecture of the final neural network is shown in @fig:nn_isotropic.
+On the other hand, the sequential neural network was made of 3 hidden layers: the first one had 64 neurons, the second one had 32 neurons and the third one had 8 neurons. The input layer had 7 neurons (same as the number of features) and the output layer had 1 neuron (representing the target $phi_K$). Initially an architecture with the following neurons in each hidden layer was chosen: 16, 10, 8. This was because this initial neural network has approximately the same number of parameters as the polynomial regression of 4th degree done before (330 parameters for the regression and 360 for the initial neural network). Then more neurons were being added until the MAE was reduced below 0.03. As we will see later no overfitting was observed.  The architecture of the final neural network is shown in @fig:nn_isotropic.
 
 #figure(
   image("../images/nn_iso.png", width:90%),
@@ -162,7 +162,7 @@ Before any training, the target was scaled in a way it had values between 0 and 
 
 $ tilde(phi)_K = phi_K/(pi/2). $<eq:target1_normalized>
 
-A difference between a value $tilde(phi)_K^("real")$ and a predicted value $tilde(phi)_K^("predicted")$ can be interpreted as the error relative to the domain of $phi_K$. For example, a difference of 0.02 means that the predicted value has a deviation of 2% of $pi/2$. In other words a deviation of 2% of $phi_K$'s domain. This way the Mean Absolute Error (MAE) can be seen as the deviation in the prediction of the model given in pieces of the target's domain, or as an angular error. For example, a MAE of 0.02 means that the model is deviated 0.02 domains ($0.02 * pi/2$) or has an error of 1.8 degrees in average. In a similar way the RMSE can be interpreted as the root square deviation given in pieces of domains, on average. MAE and Root Mean Square Error (RMSE) are defined in @chap:failure.
+A difference between a value $tilde(phi)_K^("real")$ and a predicted value $tilde(phi)_K^("predicted")$ can be interpreted as the error relative to the domain of $phi_K$. For example, a difference of 0.02 means that the predicted value has a deviation of 2% of $pi/2$. In other words a deviation of 2% of $phi_K$'s domain. This way the Mean Absolute Error (MAE) can be seen as the deviation in the prediction of the model given in pieces of the target's domain, or as an angular error. For example, a MAE of 0.02 means that the model is deviated 0.02 domains ($0.02 times pi/2$) or has an error of 1.8 degrees in average. In a similar way the RMSE can be interpreted as the root square deviation given in pieces of domains, on average. MAE and Root Mean Square Error (RMSE) are defined in @chap:failure.
 
 === Results of the polynomial regression
 
@@ -180,12 +180,12 @@ The performance metrics of the model are shown in the following table:
   caption: [Results of the linear regression model.]
 )<table:linear_resgression_results>
 
-As we can see here, the values of $R^2$ and RMSE tells us that the model is overfitting, and still the target has an average error of 9% of $pi/2$ or 9% of the domain of $phi_K$, which can be further improved. Nevertheless this model was able to predict its target with similar performance metrics as the best model shown in @chap:failure. In fact this model was tested also with the data generated to train and test the first polynomial model, shown in @chap:failure, and the performance metrics for the prediction of $phi_K$ were: $"MAE" = 0.084$ and $R^2 = 0.78$. The model with shortest MAE shown in @chap:failure had a test MAE value of $0.337 "Tdyn"/"cm"^2$ which is 6% of its domain (6% of $5.3 "Tdyn"/"cm"^2)$, which is 3% below the percentage error of the polynomial regression model. Nevertheless, the best model of @chap:failure was a complex random forest model fed with polynomial features of degree 3, while this model is just a linear regression fed with polynomial features of degree 4. In other words a very complex model outlined in @chap:failure is having similar metrics as a simple polynomial model shown here. This proves that the feature and target transformations proposed in @chap:transformations are able to improve any model drastically. Now we're going to see the performance of a neural network. 
+As we can see here, the values of $R^2$ and RMSE tells us that the model is overfitting, and still the target has an average error of 9% of $pi/2$ or 9% of the domain of $phi_K$, which can be further improved. Nevertheless, this model was able to predict its target with similar performance metrics as the best model shown in @chap:failure. In fact this model was tested also with the data generated to train and test the first polynomial model, shown in @chap:failure, and the performance metrics for the prediction of $phi_K$ were: $"MAE" = 0.084$ and $R^2 = 0.78$. The model with shortest MAE shown in @chap:failure had a test MAE value of $0.337 "Tdyn"/"cm"^2$ which is 6% of its domain (6% of $5.3 "Tdyn"/"cm"^2)$, which is 3% below the percentage error of the polynomial regression model. Nevertheless, the best model of @chap:failure was a complex random forest model fed with polynomial features of degree 3, while this model is just a linear regression fed with polynomial features of degree 4. In other words a very complex model outlined in @chap:failure is having similar metrics as a simple polynomial model shown here. This proves that the feature and target transformations proposed in @chap:transformations are able to improve any model drastically. Now we're going to see the performance of a neural network. 
 
 
 === Results of the neural network
 
-Splitting 60% of the data for training, 20% for validation and 20% for testing, the sequential neural network described in @fig:nn_isotropic was trained. The activation function of all input layers was ReLu and the activation of the last layer was the following custom function: 
+Splitting 60% of the data for training, 20% for validation and 20% for testing, the sequential neural network described in @fig:nn_isotropic was trained. The activation function of all input layers was a rectified linear unit ReLu and the activation function of the last layer was the following custom function: 
 
 $ g(x) = (1/N) log((1 + e^(N x))/(1 + e^(N (x-1)))). $
 
@@ -309,10 +309,10 @@ The average and the standard deviation were calculated for the predictions of th
     [*$"NaErr"$ PP*], [-1.94], [5.32],  [-2.68], [11.58], [-0.13], [3.75],
     [*$"NaErr"$ Fukuda et al*], [1.13], [7.35], [2.31], [16.00], [-0.71], [15.07],
   ),
-  caption: [Comparison between the mean percentage errors and its standard deviations between the present work's pipeline and Fukuda et al's model #cite(<Fukuda_2023>). The rows with "PP" mean Present Pipeline.]
+  caption: [Comparison between the mean percentage errors and its standard deviations between this work's pipeline and Fukuda et al's model #cite(<Fukuda_2023>). The rows with "PP" mean Present Pipeline.]
 )<table:Fukuda_comparison>
 
-@table:Fukuda_comparison shows that all values of MAPE are lower for the present pipeline, with lower standard deviations. That means that the present pipeline has more predictive power than Fukuda et al's model, which was trained with more powerful hardware (Fukuda's Nvidia RTX 3090 vs the Radeon 6600M of the present work), more data (3672000 of data entries in Fukuda's work vs 656414 data entries of the present work), and more eigenvalues (100 eigenvalues in Fukuda's case and 20 eigenvalues in the present work). Also box plots showing the quantiles of $"NaErr"$ and $"AbsErr"$ are shown in @fig:box_plot_nonabs_error and @fig:box_plot_abs_error:
+@table:Fukuda_comparison shows that all values of MAPE are lower for the present pipeline, with lower standard deviations. That means that the present pipeline has more predictive power than Fukuda et al's model, which was trained with more powerful hardware (Fukuda's Nvidia RTX 3090 vs the Radeon 6600M of this work), more data (3672000 of data entries in Fukuda's work vs 656414 data entries of the present work), and more eigenvalues (100 eigenvalues in Fukuda's case and 20 eigenvalues in this work). Also box plots showing the quantiles of $"NaErr"$ and $"AbsErr"$ are shown in @fig:box_plot_nonabs_error and @fig:box_plot_abs_error:
 
 #figure(
   image("../images/box_plot_result1.png", width: 70%),
@@ -324,9 +324,9 @@ The average and the standard deviation were calculated for the predictions of th
   caption: [Quantiles of the absolute percentage errors of the predicted constants of Fukuda et al's model and present pipeline. "PP" means Present Pipeline. ]
 )<fig:box_plot_abs_error>
 
-Both box plots shows evidence of similar predicting power of $C_11$ constant in both models (Fukuda et al's model and present pipeline). Here Fukuda et al's model is slightly superior. Nevertheless the predicting power of the other two constants is superior in the present pipeline according to @fig:box_plot_nonabs_error and @fig:box_plot_abs_error.
+Both box plots shows evidence of similar predicting power of $C_11$ constant in both models (Fukuda et al's model and present pipeline). Here Fukuda et al's model is slightly superior, but not by much given the simplificy of out model. Nevertheless the predicting power of the other two constants is superior in the present pipeline according to @fig:box_plot_nonabs_error and @fig:box_plot_abs_error.
 
-In summary the present pipeline is able to predict the cubic elastic constants with smaller errors than Fukuda el at's model, having less resources and time during training. Also the present pipeline is able to predict the elastic constants of every parallelepiped sample despite its proportions. This was achieved thanks to the fact that the present pipeline uses a model that predicts targets in a well defined range (all of them are between 0 and $pi/2$) and following the restrictions of thermodynamic stability mentioned in @chap:elastic_theory, while Fukuda et al's model doesn't follow those restrictions. 
+In summary, the present pipeline is able to predict the cubic elastic constants with smaller errors than Fukuda el at's model, having less resources and running time during training. Additionally, the present pipeline is able to predict the elastic constants of every parallelepiped sample despite its proportions. This was achieved thanks to the fact that the present pipeline uses a model that predicts targets in a well defined range (all of them are between 0 and $pi/2$) and following the restrictions of thermodynamic stability mentioned in @chap:elastic_theory, while Fukuda et al's model doesn't follow those restrictions. 
 
 To see how the predictions of the present pipeline compare to the reported values of the elastic constants, a scatter plot of the reported constant vs the predicted constants was made for each of the three independent elastic constants: 
 
@@ -341,9 +341,9 @@ We can observe in @fig:cxx_predictions that the present pipeline has strong pred
 The prediction of the $C_12$ constant is the most challenging one for the present pipeline, as shown in @fig:cxx_predictions. There is lots of points of data distant from the line $y = x$. This might be because $C_12$ has information about both shear and bulk stresses. Also, $C_12$ is carrying the error of two predictions: $K$ and $a$.
 
 
-On the other hand $C_44$ is the easiest constant for the present pipeline to predict. This might be because it only carries the prediction error of $mu$, and also, is has only information about shear stresses, which are typically lower than bulk stresses. We can observe in @fig:cxx_predictions that almost all the point are over the line $y = x$, which means an almost perfect prediction of this constant.
+On the other, hand $C_44$ is the easiest constant for the present pipeline to predict. This might be because it only carries the prediction error of $mu$, and also, is has only information about shear stresses, which are typically lower than bulk stresses. We can observe in @fig:cxx_predictions that almost all the point are over the line $y = x$, which means an almost perfect prediction of this constant.
 
-Finally is worth to mention that the codes made to generate the data, visualize data, train the models and evaluate the models make extensive use of the following Python libraries:
+In closing, it is worth mentioning that the code made to generate the data, visualize it, train and evaluate the models make extensive use of the following Python libraries:
 - numpy #cite(<numpy>) 
 - pandas #cite(<pandas>) 
 - matplotlib #cite(<matplotlib>)
