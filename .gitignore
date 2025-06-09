@@ -21,5 +21,6 @@ ruspectroscopy_tools.egg-info/*
 dist/*
 output_data/*.csv
 input_data/*.csv
+input_data_legacy/*.csv
 datamodules/__pycache__/*
 rusmodules/__pycache__/*
