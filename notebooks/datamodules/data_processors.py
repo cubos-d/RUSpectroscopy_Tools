@@ -73,11 +73,17 @@ def preprocess_data(d_frame, N_eig, target, opt = True, compositions = True, ang
     return dat_copy[features_tot]
 #fin procesar_datos
 
-def scale(d_frame):
+def scale(d_frame, statistical_data = {}):
     dat_copy = d_frame.copy()
-    for key in d_frame.keys():
-        dat_copy[key] = (d_frame[key] - np.average(d_frame[key]))/np.std(d_frame[key])
-    #fin for
+    if len(statistical_data.keys()) == 0:
+        for key in d_frame.keys():
+            dat_copy[key] = (d_frame[key] - np.average(d_frame[key]))/np.std(d_frame[key])
+        #fin for
+    else: 
+        for key in d_frame.keys():
+            dat_copy[key] = (d_frame[key] - statistical_data[key]["mean"])/statistical_data[key]["std"]
+        #fin for 
+    #fin if
     return dat_copy
 #fin función
 
