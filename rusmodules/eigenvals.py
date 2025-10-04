@@ -2,6 +2,33 @@ from . import rus, geometry
 import numpy as np
 import scipy
 
+def transform_frequencies(m, frequencies, dims):
+    """
+    Get the eigenvalues from the resonance frequencies: lambda_n = (m*(omega_n)^2)/R 
+    where R = (Lx^2 + Ly^2 + Lz^2)^(1/2). The function returns an arrays called eigs, 
+    where the first element eig[0] is just lambda_0 and the others (eig[1:]) are just
+    eig[i] = lambda_i/lambda_0.
+
+    Arguments: 
+    m -- <float> Mass of the sample. Put it in your favorite units. 
+    frequencies -- <np.array> Array with the resonance frequencies. This arrays can have an arbitrary length.
+        Nevertheless, frequencies beyond N_max will be just ignored. 
+    dims -- <np.array> List with the sample dimensions. dims[0] = Lx, dims[1] = Ly, dims[2] = Lz
+
+    Returns:
+    (np.array) An array with the eigenvalues described as before. 
+    """
+    #Lets be sure frequencies are an numpy array:
+    frequencies = np.array(frequencies)
+    dims = np.array(dims)
+    R = dims.dot(dims)**0.5
+    lambdas = (m*frequencies**2)/R
+    eig = np.zeros(len(lambdas))
+    eig[0] = lambdas[0]
+    eig[1:] = lambdas[1:]/lambdas[0]
+    return eig
+#fin función
+
 def get_eigenvalues(Ng, C, eta, beta, shape):
     """
     Get the normalized eigenvalues given the shape of the sample and the

@@ -1,4 +1,5 @@
 from . import eigenvals
+from . import geometry
 import numpy as np
 import pandas as pd
 
@@ -200,7 +201,55 @@ def get_constants(eigs, eta, beta, model_data, include_x0 = True, Nmax = 20, sha
     return pred_C
 #fin función
  
+def inverse_problem(m, frequencies, dims, model_data, N_max = 20, Ng = 6, shape = "Parallelepiped", check = True):
+    """
+    This function makes it's best effort to predict the elastic constants (only till cubic 
+    crystal structure) of a parallelepiped solid given the mass, the dimensions and the 
+    frequencies. With the predicted constants it computes the frequencias and compares them
+    with the given frequencies and returns an average percentage error, if check parameter
+    is True. 
 
+    Arguments: 
+    m -- <float> Mass of the sample. Put it in your favorite units. 
+    frequencies -- <np.array> Array with the resonance frequencies. This arrays can have an arbitrary length.
+        Nevertheless, frequencies beyond N_max will be just ignored. 
+    dims -- <np.array> List with the sample dimensions. dims[0] = Lx, dims[1] = Ly, dims[2] = Lz
+    model_data -- <dict> A dictionary containing the following: The Keras or 
+            scikit-learn model, the mean and the standars deviation of 
+            every feature the following way: {"model": <keras.model>,
+            "mean": {"eta": <float>, "beta": <float>, "x_0": <float>,
+            ...}, "std": {"eta": <float>, "beta": <float>, ...}}
+    N_max -- <int> Number of frequencies to work. Default: 20
+    Ng -- <int> Maximum degree of the bsis functions 
+    shape -- <str> Shape of the solid. Only Parallelepiped is supported. Support for other shapes will be added soon. 
+    check -- <bool> Set True if you want to check the result with a forward problem. 
+    """
+    eigs = eigenvals.transform_frequencies(m, frequencies, dims)
+    eta_and_beta = geometry.transform_geometries(dims)
+    eta = eta_and_beta["eta"]
+    beta = eta_and_beta["beta"]
+    constants = get_constants(eigs, eta, beta, model_data, shape = shape, Nmax=N_max, Ng=Ng)
+    if not check:
+        return constants
+    else:
+        C = np.zeros((6,6))
+        C_prim = np.array(tuple(map(lambda i: tuple(map(lambda j: 1 if i == j and i<3 else 0, range(6))), range(6)))) #Valores de C00, C11, C22
+        C_sec = np.array(tuple(map(lambda i: tuple(map(lambda j: 1 if i == j and i >= 3 else 0, range(6))), range(6)))) #Valores de C33, C44, C55
+        C_shear_prim = np.array(tuple(map(lambda i: tuple(map(lambda j: 1 if i != j and i<3 and j<3 else 0, range(6))), range(6)))) #Valores de C01, C02, C12
+        C_prim = C_prim*constants["C00"]
+        C_sec = C_sec*constants["C33"]
+        C_shear_prim = C_shear_prim*constants["C01"]
+        C = C_prim + C_sec + C_shear_prim
+        computed_eigs = eigenvals.get_eigenvalues(Ng, C, eta, beta, shape)["eig"]
+        lambdas = np.zeros(N_max)
+        c_lambdas = np.zeros(N_max)
+        lambdas[0] = eigs[0]
+        lambdas[1:] = eigs[0]*eigs[1:N_max]
+        c_lambdas[0] = computed_eigs[0]
+        c_lambdas[1:] = computed_eigs[0]*computed_eigs[1:N_max]
+        f_MAE = sum(map(lambda x: abs(lambdas[x] - c_lambdas[x])/lambdas[x], range(N_max)))
+        return {"constants": constants, "MAEf2": f_MAE}
+#fin función
 
 if __name__ == "__main__":
     print("Hello")

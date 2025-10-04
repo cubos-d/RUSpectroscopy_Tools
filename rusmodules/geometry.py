@@ -1,6 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def transform_geometries(dims):
+    """
+    Gets the parameters eta and beta from the dimensions of the sample
+
+    Arguments:
+    dims -- <np.array> List with the sample dimensions. dims[0] = Lx, dims[1] = Ly, dims[2] = Lz
+
+    Returns
+    (dict) -- Returns a dictionary with eta and beta variables: {"eta": <float>, "beta": <float>}
+    """
+    dims = np.array(dims)
+    R = dims.dot(dims)**0.5
+    eta = 2*np.arccos(dims[2]/R)
+    beta = 4*np.arctan(dims[1]/dims[0])
+    return {"eta": eta, "beta": beta}
+#fin función
+
 def generate_sphere_surface_points_random(N, max_theta, max_phi, options = {"theta": False, "phi": False}):
     """
     Generates N random points uniformly distributed in the surface of a sphere,
