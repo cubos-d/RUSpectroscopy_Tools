@@ -226,6 +226,7 @@ def inverse_problem(m, frequencies, dims, model_data, N_max = 20, Ng = 6, shape 
     """
     eigs = eigenvals.transform_frequencies(m, frequencies, dims)
     eta_and_beta = geometry.transform_geometries(dims)
+    R = (dims.dot(dims))**(1/2)
     eta = eta_and_beta["eta"]
     beta = eta_and_beta["beta"]
     constants = get_constants(eigs, eta, beta, model_data, shape = shape, Nmax=N_max, Ng=Ng)
@@ -247,8 +248,9 @@ def inverse_problem(m, frequencies, dims, model_data, N_max = 20, Ng = 6, shape 
         lambdas[1:] = eigs[0]*eigs[1:N_max]
         c_lambdas[0] = computed_eigs[0]
         c_lambdas[1:] = computed_eigs[0]*computed_eigs[1:N_max]
-        f_MAE = sum(map(lambda x: abs(lambdas[x] - c_lambdas[x])/lambdas[x], range(N_max)))
-        return {"constants": constants, "MAEf2": f_MAE}
+        c_frequencies = (c_lambdas*R/m)**(0.5)
+        f_MAE = (1/N_max)*sum(map(lambda x: abs(frequencies[x] - c_frequencies[x])/frequencies[x], range(N_max)))
+        return {"constants": constants, "MAE": f_MAE, "frequencies": c_frequencies}
 #fin función
 
 if __name__ == "__main__":

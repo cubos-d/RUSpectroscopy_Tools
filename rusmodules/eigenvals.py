@@ -12,7 +12,7 @@ def transform_frequencies(m, frequencies, dims):
     Arguments: 
     m -- <float> Mass of the sample. Put it in your favorite units. 
     frequencies -- <np.array> Array with the resonance frequencies. This arrays can have an arbitrary length.
-        Nevertheless, frequencies beyond N_max will be just ignored. 
+        Nevertheless, frequencies beyond N_max will be just ignored. Frequencies must be fed in radians/s, not Hz.
     dims -- <np.array> List with the sample dimensions. dims[0] = Lx, dims[1] = Ly, dims[2] = Lz
 
     Returns:
