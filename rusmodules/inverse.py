@@ -3,7 +3,7 @@ from . import geometry
 import numpy as np
 import pandas as pd
 
-def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", Ng = 6, method = "Full_freqs"):
+def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", Ng = 6, method = "Full_freqs", N_max=20):
     """
     Get the predicted values of the elastic constants given the
     predicted values of phi (relations between K, a and mu), the 
@@ -24,6 +24,8 @@ def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", N
     shape -- <string> Shape of the sample. Currently only supports one of these
             values: "Parallelepiped", "Cylinder", and "Ellipsoid".
     Ng -- <int> Maximum degree of the basis function in the forward problem. 
+    N_max -- <int> NUmber of frequencis thta will be used
+            to predict the constants
 
     Returns:
     A dictionary containing the following: {"C00": <float>, "C01":
@@ -36,7 +38,7 @@ def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", N
     #Magnitude = lambda_0/eigs[0]
     Magnitude_0 = eigs_orig[0]/eigs[0]
     if method == "Full_freqs":
-        Magnitude = (Magnitude_0/len(eigs_orig))*(1 + sum(map(lambda i: eigs_orig[i]/eigs[i], range(1, len(eigs_orig)))))
+        Magnitude = (Magnitude_0/N_max)*(1 + sum(map(lambda i: eigs_orig[i]/eigs[i], range(1, N_max))))
     else:
         Magnitude = Magnitude_0
     #fin if 
@@ -197,7 +199,7 @@ def get_constants(eigs, eta, beta, model_data, include_x0 = True, Nmax = 20, sha
     else:
         raise ValueError("Crystal structures above cubic are not supported yet!")
     #fin if
-    pred_C = get_predicted_C(eigs, eta, beta, dic_phi, shape, Ng)
+    pred_C = get_predicted_C(eigs, eta, beta, dic_phi, shape, Ng, N_max=Nmax)
     return pred_C
 #fin función
  
