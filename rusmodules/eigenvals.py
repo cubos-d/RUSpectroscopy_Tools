@@ -190,6 +190,29 @@ def forward_standard(phis, eta, beta, shape, Ng):
     return relative_eig
 #fin función
 
+def forward_problem(m, C, dims, Ng = 6, shape = "Parallelepiped"):
+    """
+    Get the resonence frequencies in Hz given the elastic constants, shape and dimensions of the sample
+
+    Arguments: 
+    m -- <float> Mass of the sample
+    C -- <np.array> 6x6 Matrix with the elastic constant values
+    dims -- <list/np.array> List with the sample dimensions. dims[0] = Lx, dims[1] = Ly, dims[2] = Lz
+    Ng -- <int> Maximum degree of the basis function in the forward problem.
+    shape -- <str> Shape of the sample. Valid values are: "Parallelepiped", "Cylinder", "Ellipsoid"
+
+    Returns:
+    (np.array) Resonance Frequencies of the sample in Hz
+    """
+    dic_shapes = {"Parallelepiped": 0, "Cylinder": 1, "Ellipsoid": 2}
+    r = (sum(dims**2))**0.5
+    Gamma = rus.gamma_matrix(Ng, C, dims, dic_shapes[shape])
+    E = rus.E_matrix(Ng, dic_shapes[shape])
+    vals, vects = scipy.linalg.eigh(a = Gamma/r, b = E)
+    freq = (vals[6:]*(r/m))**0.5
+    freq_vueltas = freq*(1/(2*np.pi))
+    return freq_vueltas
+
 if __name__ == "__main__":
     C_test = get_elastic_constants({"K": 3, "mu":1})
     print(C_test)

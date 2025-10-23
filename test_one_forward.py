@@ -13,6 +13,7 @@ import keras
 
 np.set_printoptions(suppress = True)
 shape = 0 # 0: parallelepiped, 1: cilinder, 2: ellipsoid 
+list_shapes = ["Parallelepiped", "Cylinder", "Ellipsoid"]
 alphas = (1.0, np.pi/4, np.pi/6)
 alpha = alphas[shape]
 """
@@ -37,6 +38,7 @@ nombre_archivo = 'constant_data/constantesFeGa.csv' #Mbar
 
 
 C_const = np.genfromtxt(nombre_archivo, delimiter=',', skip_header=0, dtype=float)
+#print(C_const)
 #geometry = np.array([0.30529,0.20353,0.25334]) #cm  FeGa
 #geometry = np.array([0.10872, 0.13981, 0.01757]) #cm SmB6
 #geometry = np.array([0.29605, 0.29138, 0.31034])
@@ -51,7 +53,8 @@ vals, vects = scipy.linalg.eigh(a = Gamma/r, b = E)
 #print("Norma: ", np.linalg.norm(E - E.T))
 sq_freq = vals[6:]*(r/m)
 freq = (vals[6:]*(r/m))**0.5
-freq_vueltas = freq*(1/(2*np.pi))
+freq_vueltas_dep = freq*(1/(2*np.pi))
+freq_vueltas = eigenvals.forward_problem(m, C_const, geometry, Ng, list_shapes[shape])
 print("Original:")
 print("Eigs completos:")
 print(vals[6:6+12])
@@ -59,7 +62,9 @@ vals_new = vals[6:]
 vals_new[1:] = vals_new[1:]/vals_new[0]
 print("Eigs relativos:")
 print(vals_new[:12])
-print("Frecuencias en MHz:")
+print("Frecuencias en MHz (deprecated method):")
+print(freq_vueltas_dep[:12])
+print("Frecuencias en MHz (Nueva_función):")
 print(freq_vueltas[:12])
 print("!^^! !^^! Getting GPU device info !^^! !^^!")
 print(torch.cuda.get_device_properties(torch.device("cuda")))
@@ -69,6 +74,7 @@ stats_modelo = pd.read_csv(path_modelo[:-6]+"_stats.csv")
 stats_modelo = stats_modelo.set_index("Unnamed: 0")
 dic_stats = dict(map(lambda x: (x, dict(map(lambda y: (y, stats_modelo[y][x]),stats_modelo.keys()))), ["mean", "std"]))
 modelo_datos = {"model": modelo, **dic_stats}
+print(modelo_datos)
 print("Getting results of inverse problem")
 results = inverse.inverse_problem(m, freq, geometry, modelo_datos)
 print(results)
