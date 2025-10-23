@@ -3,7 +3,7 @@
 Some functions for solving forward and inverse problems in Resonant Ultrasound Spectroscopy. 
 
 ### Forward:
-A C extension module for generating Gamma and Epsilon matrices, in Resonant Ultrasound Spectroscopy.
+A C extension module for getting the resonance frequencies given the estic constants, the dimension and the shpe of the sample.
 
 ### Inverse
 Uses a neural network model to get the constants of a cubic (more complex crystal structures coming soon) solid 
