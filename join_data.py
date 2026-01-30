@@ -1,5 +1,7 @@
 import numpy as np 
 import pandas as pd
+ 
+#Comment to test the change of the username
 
 data_parallelepiped_raw = pd.read_csv("input_data/Combinatoriales_214825_Eigen_Parallelepiped.csv", delimiter = ",", index_col = 0)
 data_cylinder_raw = pd.read_csv("input_data/Combinatoriales_1962981_Eigen_Cylinder.csv", delimiter = ",", index_col = 0)
