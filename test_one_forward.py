@@ -53,6 +53,7 @@ vals, vects = scipy.linalg.eigh(a = Gamma/r, b = E)
 #print("Norma: ", np.linalg.norm(E - E.T))
 sq_freq = vals[6:]*(r/m)
 freq = (vals[6:]*(r/m))**0.5
+print(freq)
 freq_vueltas_dep = freq*(1/(2*np.pi))
 freq_vueltas = eigenvals.forward_problem(m, C_const, geometry, Ng, list_shapes[shape])
 print("Original:")
