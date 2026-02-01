@@ -6,6 +6,12 @@
 
 - Solves forward problem also using all your CPU cores (written in C). Working on support for GPU
 
+## Installation
+
+```bash
+pip3 install ruspectroscopy-tools
+```
+
 ## Forward
 
 A C extension module for getting the resonance frequencies given the estic constants, the dimension and the shpe of the sample.
@@ -23,18 +29,6 @@ Uses a neural network model to get the constants of a cubic (more complex crysta
 If the tool or any of the code is useful to you please cite:
 
 Cubillos Muñoz, J.  (2025).  A machine learning approach to the inverse problem in resonant ultrasound spectroscopy of cubic and isotropic solids.    Universidad de los Andes.  Available at: [Repositorio Seneca Uniandes](https://hdl.handle.net/1992/77055)
-
-## Installation
-
-```bash
-pip3 install ruspectroscopy-tools
-```
-
-## Import
-
-```python
-from rusmodules import rus
-```
 
 ## Forward Problem Usage
 
