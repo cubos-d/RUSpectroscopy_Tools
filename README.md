@@ -23,7 +23,7 @@ Uses a neural network model to get the constants of a cubic (more complex crysta
 
 ## Authors
 
-- Alejandro Cubillos - [mail1](alejandro4cm@gmail.com) [mail2](ja.cubillos10@uniandes.edu.co)
+- Alejandro Cubillos - [alejandro4cm@gmail.com](mailto:alejandro4cm@outlook.com?cc=ja.cubillos10@uniandes.edu.co&subject=Issue%20with%20your%20Ruspectroscopy%20repo%20in%20github) [ja.cubillos10@uniandes.edu.co](mailto:alejandro4cm@outlook.com?cc=ja.cubillos10@uniandes.edu.co&subject=Issue%20with%20your%20Ruspectroscopy%20repo%20in%20github)
 - Julián Rincón
 
 If the tool or any of the code is useful to you please cite:
