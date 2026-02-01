@@ -1,100 +1,86 @@
 import numpy as np
-import rusmodules
-from rusmodules import rus
-from rusmodules import data_generator
-import scipy 
+import pandas as pd
+import scipy
+import os
+import itertools
+import sys
+from rusmodules import eigenvals, data_generation
 
-np.set_printoptions(suppress = True)
-C_ranks = (0.3, 5.6)
-dim_min = (0.01, 0.01, 0.01)
-dim_max = (0.5, 0.5, 0.5)
-Density = (2.0, 10)
-write_header = True
-
-input_data = { 
-                "Dimensions": 
-                {
-                    "Min": dim_min,
-                    "Max": dim_max
-                },
-                "C_rank": C_ranks,
-                "Density": Density,
-                "Crystal_structure": 0,
-                "Shape": 0,
-                "Verbose": False,
-                "N_freq": 500,
-                "Ng": 14
-              }
-nombre_archivo = "output_data/datos_antigua.csv"
-nombre_archivo_adim = "output_data/datos_nueva.csv" 
-
-def generate_eigenvalues(Dimensions, C_rank, Density, Crystal_structure, Shape, N_freq, Ng, Verbose = False):
-    alpha = (1, np.pi/4, np.pi/6)
-    dims = np.random.uniform(Dimensions["Min"], Dimensions["Max"])
-    vol = alpha[Shape]*np.prod(dims)
-    dims_adim = dims/(vol**(1/3))
-    C = data_generator.generate_C_matrix(C_rank[0], C_rank[1], Crystal_structure)
-    rho = np.random.uniform(Density[0], Density[1])
-    gamma = rus.gamma_matrix(Ng, C, dims_adim, Shape)
-    E = rus.E_matrix(Ng, Shape)
-    vals, vects = scipy.linalg.eigh(a = gamma, b = E)
-    norma_gamma = np.linalg.norm(gamma - gamma.T)
-    norma_E = np.linalg.norm(E - E.T)
-    tol = 1e-7
-    if Verbose:
-        print("**** C_matrix: *****")
-        print(C)
-        print("*** dimensions: ***")
-        print(dims)
-        print("*** end verbose ***")
+def generate_data_isotropic(path, Ng, data_gen,shape, mode = "Magnitude", N_vals = 20):
+    if data_gen["type"] == "combi":
+        pars = data_generation.gen_combinatorial_parameters({"phi_K": {"min": 0, "max": np.pi/2, "Finura": data_gen["N_const"]}}, data_gen["N_geo"], shape)
+    else:
+        pars = data_generation.gen_random_parameters({"phi_K": {"min": 0, "max": np.pi/2, "Finura": data_gen["N_data"]}}, data_gen["N_data"], shape)
     #fin if 
-    if abs(norma_gamma) > tol or abs(norma_E) > tol:
-        print("Norma gamma: ", norma_gamma)
-        print("Norma E: ", norma_E)
-        raise ArithmeticError("Either gamma or E is non-symetric")
-    #fin if
-    if any((abs(vals[i]) > tol for i in range(6))):
-        raise ArithmeticError("One of the first six eigenvalues is not zero")
-    #fin if
-    if N_freq == "all":
-        N_freq = len(vals)
-    #fin if 
-    C_reshaped = np.r_[*(C[i,i:] for i in range(6))]
-    print(C_reshaped)
-    eigenvals = vals[6:N_freq+6]
-    freqs_2 = eigenvals/(rho * vol**(2/3))
-    return [np.array([np.r_[Shape, Crystal_structure, dims_adim, C_reshaped, eigenvals]]),
-            np.array([np.r_[Shape, Crystal_structure, rho, dims, C_reshaped, freqs_2]])]
-#fin funcion
-
-def generate_keys(N_vals):
-    keys_ini = ["Shape", "Cry_st", "Density", "Lx", "Ly", "Lz"]
-    keys_ini_adim = ["Shape", "Cry_st", "bx", "by", "bz"]
-    keys_C = sum(map(lambda x: list(map(lambda y: "C" + str(x) + str(y) , range(x,6))), range(6)), [])
-    keys_eigenvals = list(map(lambda x: "eig_" + str(x), range(N_vals)))
-    keys_freq = list(map(lambda x: "(omega^2)_" + str(x), range(N_vals)))
-    return [keys_ini_adim + keys_C + keys_eigenvals,
-            keys_ini + keys_C + keys_freq]
+    exponents = {"Magnitude": 1, "Sum": 2}
+    for a, param in enumerate(pars):
+        x_K = (np.cos(param["phi_K"]))**exponents[mode]
+        x_mu = (np.sin(param["phi_K"]))**exponents[mode]
+        constant_relations = {"x_K": x_K, "x_mu": x_mu}
+        data_vals = eigenvals.get_eigenvalues_from_crystal_structure(Ng, constant_relations, param["eta"], param["beta"], shape)
+        vals = data_vals["eig"]
+        keys_eigen = tuple(map(lambda x: "eig_" + str(x), range(N_vals)))
+        for i in range(N_vals):
+            param[keys_eigen[i]] = vals[i]
+        #fin for
+        possible_shapes = ("Parallelepiped", "Cylinder", "Ellipsoid")
+        for shape_i in possible_shapes:
+            param[shape_i] = 1 if shape == shape_i else 0
+        #fin for 
+        with open(path, "a+t") as f:
+            if a == 0:
+                f.write(",".join(list(param.keys())) + "\n")
+            #fin if 
+            f.write(",".join(list(map(lambda x: str(x), param.values()))) + "\n")
+        #fin with
+    #fin for 
+    #return pd.DataFrame(pars)
 #fin función
 
-keys = generate_keys(input_data["N_freq"])
-keys_adim = ",".join(keys[0])
-keys_str = ",".join(keys[1])
+def generate_data_cubic(path, Ng, N_data, shape, mode = "Magnitude", N_vals = 20):
+    """
+    This one will have only the option to generate random data. Is quite crazy to generate combinatorial data at this point
+    """
+    param_rank = {"phi_a": {"min": 0, "max": np.pi/2, "Finura": N_data},
+                  "x_K": {"min": 0, "max": 1, "Finura": N_data}}
+    pars = data_generation.gen_random_parameters(param_rank, N_data, shape)
+    exponents = {"Magnitude": 1, "Sum": 2}
+    for a, param in enumerate(pars):
+        param["phi_K"] = np.arccos(param["x_K"])
+        x_K = (param["x_K"])**exponents[mode]
+        x_a = (np.sin(param["phi_K"])*np.cos(param["phi_a"]))**exponents[mode]
+        x_mu = (np.sin(param["phi_K"])*np.sin(param["phi_a"]))**exponents[mode]
+        constant_relations = {"x_K": x_K, "x_a": x_a, "x_mu": x_mu}
+        data_vals = eigenvals.get_eigenvalues_from_crystal_structure(Ng, constant_relations, param["eta"], param["beta"], shape)
+        vals = data_vals["eig"]
+        keys_eigen = tuple(map(lambda x: "eig_" + str(x), range(N_vals)))
+        for i in range(N_vals):
+            param[keys_eigen[i]] = vals[i]
+        #fin for 
+        for shape_i in ("Parallelepiped", "Cylinder", "Ellipsoid"):
+            param[shape_i] = 1 if shape == shape_i else 0
+        #fin for 
+        with open(path, "a+t") as f:
+            if a == 0:
+                f.write(",".join(list(param.keys())) + "\n")
+            #fin if 
+            f.write(",".join(list(map(lambda x: str(x), param.values()))) + "\n")
+        #fin with 
+    #fin for
+    #return pd.DataFrame(pars)
+#fin función
 
-if write_header:
-    datos = generate_eigenvalues(**input_data)
-    with open(nombre_archivo, "w+t") as f:
-        print(len(keys[1]), len(datos[1][0]))
-        np.savetxt(f, datos[1], header = keys_str, delimiter = ",")
-    with open(nombre_archivo_adim, "w+t") as f:
-        print(len(keys[0]), len(datos[0][0]))
-        np.savetxt(f, datos[0], header = keys_adim, delimiter = ",")
-else:
-    while True:
-        datos = generate_eigenvalues(**input_data)
-        with open(nombre_archivo, "a+t") as f:
-            np.savetxt(f, datos[1], delimiter = ",")
-        with open(nombre_archivo_adim, "a+t") as f:
-            np.savetxt(f, datos[0], delimiter = ",")
-#fin if
 
+if __name__ == "__main__":
+    """
+    data_gen = {"type": sys.argv[1],
+                "N_const": 10,
+                "N_geo": 6,
+                "N_data": 20,
+                }
+    ruta_archivo = "input_data/" + data_gen["type"] +"_" + str(os.getpid()) + ".csv"
+    generate_data_isotropic(ruta_archivo, 6, data_gen, sys.argv[2]) 
+    """
+    ruta_archivo = "input_data/cubic_" + str(os.getpid()) + ".csv"
+    generate_data_cubic(ruta_archivo, 6, 50000, sys.argv[1])
+#el fin
