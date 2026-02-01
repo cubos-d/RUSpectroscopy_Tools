@@ -18,7 +18,7 @@ jobs:
         env:
           
           # This is the magic key to unlock Python 3.14
-          CIBW_ENABLE: prerelease-pythons  
+          CIBW_ENABLE: cpython-prerelease  
             
           # Build ONLY for 64-bit x86
           CIBW_ARCHS_LINUX: "x86_64"
