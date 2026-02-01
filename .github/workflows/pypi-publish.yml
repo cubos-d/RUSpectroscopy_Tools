@@ -16,6 +16,10 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0
         env:
+          
+          # This is the magic key to unlock Python 3.14
+          CIBW_ENABLE: prerelease-pythons  
+            
           # Build ONLY for 64-bit x86
           CIBW_ARCHS_LINUX: "x86_64"
           
