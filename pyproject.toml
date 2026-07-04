@@ -1,3 +1,21 @@
+[project]
+name = "rus-tools"
+version = "0.1.0"
+description = "Out best effort to apply machine learning in inverse problem in resonant ultrasound spectroscopy"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "keras>=3.15.0",
+    "matplotlib>=3.11.0",
+    "numpy>=2.5.0",
+    "pandas>=3.0.3",
+    "scikit-learn>=1.9.0",
+    "torch>=2.12.1",
+]
+
 [build-system]
 requires = ["setuptools", "wheel", "numpy"]
 build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = []
