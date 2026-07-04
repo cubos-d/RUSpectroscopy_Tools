@@ -18,4 +18,6 @@ requires = ["setuptools", "wheel", "numpy"]
 build-backend = "setuptools.build_meta"
 
 [dependency-groups]
-dev = []
+dev = [
+    "ipykernel>=7.3.0",
+]
