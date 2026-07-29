@@ -15,6 +15,7 @@ pkgs.mkShell {
     gnumake
     glibc
     glibc.dev
+    llvmPackages.openmp
   ];
 
   shellHook = ''
