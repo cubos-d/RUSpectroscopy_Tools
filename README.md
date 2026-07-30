@@ -4,7 +4,7 @@
 
 - Model used for the tool available at [HuggingFace](https://huggingface.co/Cubos/InverseRUS).
 
-- Solves forward problem also using all your CPU cores (written in C). Working on support for GPU
+- Solves forward problem also using all your CPU cores (written in C). Working on support for GPU (only AMD HIP/ROCm. I REFUSE TO DO A NVIDIA CUDA VERSION)
 
 ## Installation
 
