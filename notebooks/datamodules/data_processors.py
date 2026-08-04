@@ -117,12 +117,13 @@ def get_mape(y, y_gorro):
     return resp
 #fin get shape
 
-def get_metrics(X, y, model, mapes = False):
+def get_metrics(X, y, model, mapes = False, y_gorro = []):
     """
     This is a function just to return some metrics given the real values
     "y", the features X and any model that has the "fit" method. 
     """
-    y_gorro = model.predict(X)
+    if len(y_gorro) == 0:
+        y_gorro = model.predict(X)
     R2 = r2_score(y, y_gorro)
     RMSE = root_mean_squared_error(y, y_gorro)
     MAE = mean_absolute_error(y, y_gorro)
