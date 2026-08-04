@@ -84,7 +84,7 @@ wget https://huggingface.co/Cubos/InverseRUS/resolve/main/cubico_L4.keras
 ```
 
 To use the model trained in this work you can follow this example.
-The stats of the training data of the model can be found at [repo/notebooks/models/cubico_L4.csv](https://raw.githubusercontent.com/cubos-d/RUSpectroscopy_Tools/refs/heads/develop/notebooks/models/cubico_L4_stats.csv).
+The stats of the training data of the model can be found at [repo/notebooks/models/cubico_L4.csv](https://raw.githubusercontent.com/cubos-d/RUSpectroscopy_Tools/refs/heads/main/notebooks/models/cubico_L4_stats.csv).
 
 ```python
 import os
