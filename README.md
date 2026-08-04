@@ -72,7 +72,7 @@ Where:
 
 - model_data (dict) A dictionary containing the machine learning model and statistics of the training data that was used to generate the model.
 
-The machine learning models can be found in hugging face: [Cubos/HuggingFace](https://huggingface.co/Cubos/InverseRUS/tree/main) and the statistics of each model can be found in [Means and Averages of the feeding](https://github.com/cubos-d/RUSpectroscopy_Tools/tree/develop/notebooks/models).  
+The machine learning models can be found in hugging face: [Cubos/HuggingFace](https://huggingface.co/Cubos/InverseRUS/tree/main) and the statistics of each model can be found in [Means and Averages of the feeding](https://github.com/cubos-d/RUSpectroscopy_Tools/tree/main/notebooks/models).  
 
 ### Inverse Problem example usage
 
