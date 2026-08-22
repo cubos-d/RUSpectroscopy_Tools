@@ -16,6 +16,7 @@
 *.doc
 *.pyc
 *.keras
+.clangd
 build/*
 ruspectroscopy_tools.egg-info/*
 dist/*

@@ -30,6 +30,11 @@ pkgs.mkShell {
     export C_INCLUDE_PATH="$C_INCLUDE_PATH:${pkgs.glibc.dev}/include:${pkgs.glibc}/include"
     export CPLUS_INCLUDE_PATH="${pkgs.glibc.dev}/include"
     export MPLBACKEND="TkAgg"
+    cat <<EOF > .clangd
+    CompileFlags:
+      Add:
+    $(echo $C_INCLUDE_PATH | tr ':' '\n' | sed 's/^/    - -I/')
+    EOF
     echo "=== NixOS Library Bridge Active ==="
     echo "*** Welcome to the thesis shell!!!! ****"
     echo "### Let's get to work! ###"
