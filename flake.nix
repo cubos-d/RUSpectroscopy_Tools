@@ -19,6 +19,8 @@
           pkgs.python314.pkgs.numpy
           pkgs.python314.pkgs.matplotlib
           pkgs.python314.pkgs.tkinter
+          pkgs.cm_unicode
+          pkgs.newcomputermodern
         ];
 
         nativeBuildInputs = with pkgs; [
