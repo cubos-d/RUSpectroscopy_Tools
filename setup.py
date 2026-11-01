@@ -6,12 +6,12 @@ extra_link_flags = ["-fopenmp"]
 
 setup(
     name = "ruspectroscopy_tools",
-    version = "0.0.3",
+    version = "0.0.4",
     description = "A tool to solve the inverse problem in RUS (Resonant Ultrasound Spectroscopy) of cubic materials using Machine Learning",
     long_description = open("README.md").read(),
     long_description_content_type = "text/markdown",
     author = "Alejandro Cubillos",
-    author_email = "alejandro4cm@gmail.com",
+    author_email = "ja.cub05.19@gmail.com",
     url = "https://github.com/cubos-d/RUSpectroscopy_Tools",
     # This picks up all python files in the rusmodules directory
     packages = ["rusmodules"], 
@@ -29,12 +29,13 @@ setup(
         "numpy",
         "pandas",
         "scipy",
-        "matplotlib"
+        "matplotlib",
+        "keras"
     ],
     classifiers = [
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "Operating System :: Linux",
     ],
     license = "MIT",
     python_requires = ">=3.12",
