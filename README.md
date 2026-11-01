@@ -93,7 +93,7 @@ This returns a dictionary that looks like this:
 }
 ```
 
-The returned frequencies in radians (NOT Hz) are the ones to compare to the original frequencies. MAE is the mean absolute error between the experimental frequencies and the computed frequencies from the predicted constants.
+The returned frequencies in radians (NOT Hz) are the ones to compare to the original frequencies. MAE is the mean absolute error between the experimental frequencies and the computed frequencies from the predicted constants. C00 is the $C_{11}$ elastic constant, C01 is $C_{12}$ and C33 is $C_{44}$. The units of the elastic constants depend on the units of the given mass and dimensions. In this case the mass $m$ was given in g, dimensionds were given in cm, so the constants in this example are given in CGS units.
 
 ## Forward Problem Usage
 
