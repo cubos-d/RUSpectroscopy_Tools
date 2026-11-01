@@ -1,5 +1,5 @@
 [project]
-name = "rus-tools"
+name = "ruspectroscopy_tools"
 version = "0.0.4"
 description = "Out best effort to apply machine learning in inverse problem in Resonant Ultrasound Spectroscopy (RUS)"
 readme = "README.md"
