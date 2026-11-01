@@ -11,7 +11,7 @@ setup(
     long_description = open("README.md").read(),
     long_description_content_type = "text/markdown",
     author = "Alejandro Cubillos",
-    author_email = "ja.cub05.19@gmail.com",
+    author_email = "alejandro4cm@gmail.com",
     url = "https://github.com/cubos-d/RUSpectroscopy_Tools",
     # This picks up all python files in the rusmodules directory
     packages = ["rusmodules"], 
