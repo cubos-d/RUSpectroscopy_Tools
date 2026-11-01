@@ -30,6 +30,71 @@ If the tool or any of the code is useful to you please cite:
 
 Cubillos Muñoz, J.  (2025).  A machine learning approach to the inverse problem in resonant ultrasound spectroscopy of cubic and isotropic solids.    Universidad de los Andes.  Available at: [Repositorio Seneca Uniandes](https://hdl.handle.net/1992/77055)
 
+## Inverse problem usage
+
+### Getting the elastic constants from the resonence frequencies
+
+```python
+from rusmodules import inverse
+
+inverse_data = inverse.inverse_problem_default(m, omega, dimensions)
+```
+
+Where:
+
+- m (float) Is the mass of the sample
+
+- omega (np.array) Resonance omegas (frequencies in radians NOT in Hz)
+
+- dimensions (np.array) (3,) shape array containing the dimensions of the sample: [Lx, Ly, Lz]
+
+### Inverse Problem usage example
+
+Here we predict the elstic constants of a Parallelepiped sample with mass:
+
+$ m = 0.1254 $,
+
+dimensions:
+
+$L_x = 0.30529, L_y = 0.20353, L_z = 0.25334$,
+
+and the following frequencies (in radians):
+
+```python3
+omega = [1.50926584, 1.65836575, 1.75117538, 2.01686081, 2.06256988,
+       2.19098222, 2.34152748, 2.8107501 , 2.89962897, 2.90586193,
+       2.98053128, 3.01687171, 3.04870302, 3.0491472 , 3.11933117,
+       3.54120588, 3.65460307, 3.69446139, 3.75998903, 3.78313654] 
+```
+
+using the following code:
+
+```python3
+m = 0.1254 #g
+dimensions = np.array([0.30529, 0.20353, 0.25334]) #cm
+inverse_data_default = inverse.inverse_problem_default(m,  omega, dimensions)
+```
+
+This returns a dictionary that looks like this:
+
+```python3
+{
+       'constants': {
+              'C00': np.float64(1.30054267050163), 
+              'C01': np.float64(1.1006489848946313), 
+              'C33': np.float64(0.8854417640647991)
+       }, 
+       'MAE': np.float64(0.02978091807048346), 
+       'frequencies': array([1.52869445, 1.67824553, 1.77995932, 
+        2.04882852, 2.09089336, 2.226468  , 2.35439033, 2.75882012, 
+        2.85318217, 2.93387907, 3.00654262, 3.0245675 , 3.04501862, 
+        3.05716655, 3.06015376, 3.5581114 , 3.56426523, 3.65992212, 
+        3.69013139, 3.75229874])
+}
+```
+
+The returned frequencies in radians (NOT Hz) are the ones to compare to the original frequencies. MAE is the mean absolute error between the experimental frequencies and the computed frequencies from the predicted constants.
+
 ## Forward Problem Usage
 
 ### Getting the resonance frequencies from the elastic constants
@@ -52,31 +117,9 @@ Where:
 
 - shape (str) Currently supports "Parallelepiped", "Cylinder" and "Ellipsoid"
 
-## Inverse problem usage
+### Inverse Problem with cusom models
 
-### Getting the elastic constants from the resonence frequencies
-
-```python
-from rusmodules import inverse
-
-inverse_data = inverse.inverse_problem(m, omega, dimensions, model_data)
-```
-
-Where:
-
-- m (float) Is the mass of the sample
-
-- omega (np.array) Resonance omegas (frequencies in radians NOT in Hz)
-
-- dimensions (np.array) (3,) shape array containing the dimensions of the sample: [Lx, Ly, Lz]
-
-- model_data (dict) A dictionary containing the machine learning model and statistics of the training data that was used to generate the model.
-
-The machine learning models can be found in hugging face: [Cubos/HuggingFace](https://huggingface.co/Cubos/InverseRUS/tree/main) and the statistics of each model can be found in [Means and Averages of the feeding](https://github.com/cubos-d/RUSpectroscopy_Tools/tree/main/notebooks/models).  
-
-### Inverse Problem example usage
-
-To use the model you must download it from huggingFace and store it in you preferred location i.e: **./models/**:
+You can also download another model (for now we've only uploaded one) from huggingFace and store it in your preferred location i.e: **./models/**:
 
 ```bash
 mkdir models
@@ -84,7 +127,7 @@ wget https://huggingface.co/Cubos/InverseRUS/resolve/main/cubico_L4.keras
 ```
 
 To use the model trained in this work you can follow this example.
-The stats of the training data of the model can be found at [repo/notebooks/models/cubico_L4.csv](https://raw.githubusercontent.com/cubos-d/RUSpectroscopy_Tools/refs/heads/main/notebooks/models/cubico_L4_stats.csv).
+The stats of the training data of the model must match their corresponding model. For example to get the statistics of cubico_L4, we can download the from: [repo/notebooks/models/cubico_L4.csv](https://raw.githubusercontent.com/cubos-d/RUSpectroscopy_Tools/refs/heads/main/notebooks/models/cubico_L4_stats.csv).
 
 ```python
 import os
@@ -110,22 +153,4 @@ model_data = {**dic_stats, "model": model}
 inverse_data = inverse.inverse_problem(m, omega, dimensions, model_data)
 ```
 
-The dictionary that returns inverse_problem (inverse_data) function looks like this:
-
-```python
-{
-       'constants': {
-              'C00': np.float64(1.30054267050163), 
-              'C01': np.float64(1.1006489848946313), 
-              'C33': np.float64(0.8854417640647991)
-       }, 
-       'MAE': np.float64(0.02978091807048346), 
-       'frequencies': array([1.52869445, 1.67824553, 1.77995932, 
-        2.04882852, 2.09089336, 2.226468  , 2.35439033, 2.75882012, 
-        2.85318217, 2.93387907, 3.00654262, 3.0245675 , 3.04501862, 
-        3.05716655, 3.06015376, 3.5581114 , 3.56426523, 3.65992212, 
-        3.69013139, 3.75229874])
-}
-```
-
-The returned frequencies in radians (NOT Hz) are the ones to compare to the original frequencies. MAE is the mean absolute error between the experimental frequencies and the computed frequencies from the predicted constants.
+The machine learning models can be found in hugging face: [Cubos/HuggingFace](https://huggingface.co/Cubos/InverseRUS/tree/main) and the statistics of each model can be found in [Means and Averages of the feeding](https://github.com/cubos-d/RUSpectroscopy_Tools/tree/main/notebooks/models).

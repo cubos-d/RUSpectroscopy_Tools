@@ -1,7 +1,13 @@
-from . import eigenvals
-from . import geometry
+import os
+import io
+import requests
 import numpy as np
 import pandas as pd
+import keras
+
+from huggingface_hub import hf_hub_download
+from . import eigenvals
+from . import geometry
 
 def get_predicted_C(eigs_orig, eta, beta, phis_pred, shape = "Parallelepiped", Ng = 6, method = "Full_freqs", N_max=20):
     """
@@ -222,7 +228,7 @@ def inverse_problem(m, frequencies, dims, model_data, N_max = 20, Ng = 6, shape 
             "mean": {"eta": <float>, "beta": <float>, "x_0": <float>,
             ...}, "std": {"eta": <float>, "beta": <float>, ...}}
     N_max -- <int> Number of frequencies to work. Default: 20
-    Ng -- <int> Maximum degree of the bsis functions 
+    Ng -- <int> Maximum degree of the basis functions 
     shape -- <str> Shape of the solid. Only Parallelepiped is supported. Support for other shapes will be added soon. 
     check -- <bool> Set True if you want to check the result with a forward problem. 
     """
@@ -254,6 +260,45 @@ def inverse_problem(m, frequencies, dims, model_data, N_max = 20, Ng = 6, shape 
         f_MAE = (1/N_max)*sum(map(lambda x: abs(frequencies[x] - c_frequencies[x])/frequencies[x], range(N_max)))
         return {"constants": constants, "MAE": f_MAE, "frequencies": c_frequencies}
 #fin función
+
+def load_inverse_rus_model():
+    """
+    This functions downloads locally the default model to use in inverse problem
+    """
+    local_model_path = hf_hub_download(
+        repo_id="Cubos/InverseRUS", 
+        filename="cubico_L4.keras" 
+    )
+    
+    model = keras.models.load_model(local_model_path)
+    return model
+
+def inverse_problem_default(m, omega, dimensions, keras_backend = "torch"):
+    """
+        This function makes it's best effort to predict the elastic constants (only till cubic 
+        crystal structure) of a parallelepiped solid given the mass, the dimensions and the 
+        frequencies. With the predicted constants it computes the frequencias and compares them
+        with the given frequencies and returns an average percentage error, if check parameter
+        is True. This uses a default model downloaded from hugging face. 
+    
+        Arguments: 
+        m -- <float> Mass of the sample. Put it in your favorite units. 
+        frequencies -- <np.array> Array with the resonance frequencies. This arrays can have an arbitrary length.
+            Nevertheless, frequencies beyond N_max will be just ignored. 
+        dims -- <np.array> List with the sample dimensions. dims[0] = Lx, dims[1] = Ly, dims[2] = Lz
+        keras_backend <string>: Can be either "torch", "tensorflow" or "jax". Default: torch. Be sure to have one of them installed 
+        """
+    os.environ["KERAS_BACKEND"] = keras_backend
+    url = "https://raw.githubusercontent.com/cubos-d/RUSpectroscopy_Tools/refs/heads/main/notebooks/models/cubico_L4_stats.csv"
+    response = requests.get(url)
+    response.raise_for_status()
+    stats_model = pd.read_csv(io.StringIO(response.text))
+    stats_model = stats_model.set_index("Unnamed: 0")
+    dic_stats = dict(map(lambda x: (x, dict(map(lambda y: (y, stats_model[y][x]),stats_model.keys()))), ["mean", "std"]))
+    model = load_inverse_rus_model()
+    model_data = {**dic_stats, "model": model}
+    inverse_data = inverse_problem(m, omega, dimensions, model_data)
+    return inverse_data
 
 if __name__ == "__main__":
     print("Hello")
